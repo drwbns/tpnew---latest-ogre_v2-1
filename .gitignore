@@ -1,0 +1,34 @@
+*.txt
+*.material
+*.mesh
+*.tga
+*.jpg
+*.zip
+*.skeleton
+*.dds
+*.png
+*.cfg
+*.rar
+*.cd
+*.tlog
+*.manifest
+*.sdf
+*.res
+*.idb
+*.lastbuildstate
+*.ipch
+*.rc
+*.filters
+*.ico
+*.vcxproj
+*.unsuccessfulbuild
+*.sln
+*.props
+*.md
+*.opensdf
+*.cg
+My Amplifier XE Results - 1stperson
+My Inspector XE Results - 1stperson
+particles
+/bin
+/*.vcproj

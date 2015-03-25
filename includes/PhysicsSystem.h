@@ -1,0 +1,76 @@
+/*
+Copyright (c) 2010 Yunus Kara
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+#ifndef PhysicsSystem_H_
+#define PhysicsSystem_H_
+
+#include <NxCooking.h>
+#include "NxControllerManager.h"
+#include "PhysicsHelper.h"
+#include "Gutility.h"
+#include "PhysicsStream.h"
+#include "PhysicsContactReport.h"
+
+#define PHY PhysicsSystem::getSingletonPtr()
+
+class PhysicsSystem : public Ogre::Singleton<PhysicsSystem>, public Ogre::GeneralAllocatedObject
+{
+public:
+	PhysicsSystem();
+	~PhysicsSystem();
+	static PhysicsSystem& getSingleton();
+	static PhysicsSystem* getSingletonPtr();
+
+	void Initialize();
+	void Finalize();
+	void Update();
+	void FlipDebug();
+
+	//utility
+	Ogre::Vector3 CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir);
+	Ogre::Vector3 CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxShape** shape, NxMaterialIndex &mat);
+	Ogre::Vector3 CastRay3(Ogre::Vector3 from, Ogre::Vector3 to);
+	bool OverlapTest(Ogre::Vector3 min, Ogre::Vector3 max);
+
+	//gets & sets
+	std::vector<Ogre::String> * getMaterials() { return &materials; }
+	NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; }
+	NxScene*      getScene() const { return gScene; }
+	NxControllerManager* getCManager() const { return gManager; }
+	void SetActorCollisionGroup(NxActor* actor, NxCollisionGroup group);
+	NxMaterialIndex addNewMaterial(Ogre::String name);
+	Ogre::String getMaterialName(NxMaterialIndex index);
+	
+private:
+	NxPhysicsSDK*        gPhysicsSDK;
+    NxScene*	         gScene;
+	NxControllerManager* gManager;
+	PhysicsContactReport gContactReport;
+	std::vector<Ogre::String> materials;
+
+	//debugging
+	Ogre::ManualObject*	mVisualDebugger;
+	Ogre::SceneNode*	mVisualDebuggerNode;
+	bool				mDebuggerView;
+};
+
+#endif
