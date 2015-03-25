@@ -20,9 +20,7 @@
 *.rc
 *.filters
 *.ico
-*.vcxproj
 *.unsuccessfulbuild
-*.sln
 *.props
 *.md
 *.opensdf
@@ -31,4 +29,3 @@ My Amplifier XE Results - 1stperson
 My Inspector XE Results - 1stperson
 particles
 /bin
-/*.vcproj
