@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef EnemyFireState_h_
 #define EnemyFireState_h_
 
+#include "prereqs.h"
+
 #include "AIState.h"
 
 class EnemyFireState : public AIState

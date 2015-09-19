@@ -23,8 +23,11 @@ THE SOFTWARE.
 #ifndef BillboardSystem_H_
 #define BillboardSystem_H_
 
-#include "BillboardNode.h"
-#include "BillboardNodeSet.h"
+#include "prereqs.h"
+#include "OgrePrerequisites.h"
+
+#include "OgreSingleton.h"
+#include "OgreMemoryAllocatorConfig.h"
 
 #define BBS BillboardSystem::getSingletonPtr()
 

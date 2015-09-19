@@ -10,6 +10,7 @@ class NavMesher;
 class BoxItem;
 class Moving;
 class MovableText;
+class BillboardNodeSet;
 
 #endif // !prereqs_h
 

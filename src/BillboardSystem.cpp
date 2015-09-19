@@ -24,6 +24,11 @@ THE SOFTWARE.
 #include "BillboardSystem.h"
 #include "GraphicsSystem.h"
 #include "tinyxml.h"
+#include "BillboardNodeSet.h"
+#include "BillboardNode.h"
+#include "OgreSceneNode.h"
+
+
 using namespace Ogre;
 
 template<> BillboardSystem* Ogre::Singleton<BillboardSystem>::msSingleton = 0;

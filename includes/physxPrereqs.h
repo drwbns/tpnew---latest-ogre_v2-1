@@ -9,6 +9,8 @@ namespace physx {
 	class PxScene;
 	class PxCapsuleController;
 	class PxVec3;
+	class PxControllerManager;
+	class PxMaterial;
 
 }
 

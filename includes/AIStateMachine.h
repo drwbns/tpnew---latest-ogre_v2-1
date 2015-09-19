@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "EnemyPatrolState.h"
 #include "EnemyWaitState.h"
 #include "EnemyNextPatrolState.h"
-#include "EnemyPatrolIdlingState.h"
+#include "EnemyPatrollingState.h"
 #include "EnemyWaitIdlingState.h"
 #include "EnemyLookAroundState.h"
 #include "EnemyAttackState.h"

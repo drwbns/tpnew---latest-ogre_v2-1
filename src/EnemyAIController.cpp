@@ -52,7 +52,7 @@ void EnemyAIController::SetAgent(Agent* a)
 				EnemyPatrolState* patrol_state = new EnemyPatrolState(id++);//2
 
 					EnemyNextPatrolState*   nextp_state  = new EnemyNextPatrolState(id++);//3
-					EnemyPatrolIdlingState* pidling_state = new EnemyPatrolIdlingState(id++);//4
+					EnemyPatrollingState* pidling_state = new EnemyPatrollingState(id++);//4
 
 				EnemyWaitState* wait_state = new EnemyWaitState(id++);//5
 

@@ -22,11 +22,8 @@ THE SOFTWARE.
 
 
 #include "EnemyFireState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "AgentInfo.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 EnemyFireState::EnemyFireState(int id) : AIState(id)
@@ -54,7 +51,7 @@ void EnemyFireState::Execute(Agent* agent)
 		float coeff = agent->GetPosition().distance(closest) / agent->getAttackRange();
 		Vector3 target = closest;
 		target.x += coeff * Math::RangeRandom(-1.0 , 1.0);
-		target.y += coeff * Math::RangeRandom(-0.125*agent->getEyePos().y, 1.50*agent->getEyePos().y);
+		target.y += coeff * Math::RangeRandom(-0.125 * agent->getEyePos().y, 1.50 * agent->getEyePos().y);
 		target.z += coeff * Math::RangeRandom(-1.0 , 0.0);
 		agent->Shoot(false, target);
 

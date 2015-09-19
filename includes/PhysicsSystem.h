@@ -23,23 +23,12 @@ THE SOFTWARE.
 #ifndef PhysicsSystem_H_
 #define PhysicsSystem_H_
 
+#include "physxPrereqs.h"
+
+#include "OgreSingleton.h"
+#include "OgreMemoryAllocatorConfig.h"
+
 using namespace physx;
-
-#include "PxMaterial.h"
-#include "PxPhysics.h"
-#include "characterkinematic\PxControllerManager.h"
-#include "foundation/PxFlags.h"
-
-
-
-/*
-#include <Cooking\PxCooking.h>
-#include "characterkinematic\PxControllerManager.h"
-#include "PhysicsHelper.h"
-#include "Gutility.h"
-#include "PhysicsStream.h"
-#include "PhysicsContactReport.h"
-*/
 
 #define PHY PhysicsSystem::getSingletonPtr()
 

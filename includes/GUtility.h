@@ -78,6 +78,8 @@
 #include "foundation\PxVec3.h"
 #include "foundation\PxQuat.h"
 
+using namespace physx;
+
 class TemplateUtils
 {
     public:

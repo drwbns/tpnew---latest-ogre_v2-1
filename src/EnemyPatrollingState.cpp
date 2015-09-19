@@ -20,20 +20,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef EnemyPatrolIdlingState_h_
-#define EnemyPatrolIdlingState_h_
 
-#include "AIState.h"
+#include "EnemyPatrollingState.h"
+#include "Agent.h"
+#include "GlobalVars.h"
 
-class EnemyPatrolIdlingState : public AIState
+using namespace Ogre;
+
+EnemyPatrollingState::EnemyPatrollingState(int id) : AIState(id)
 {
-public:
-	EnemyPatrolIdlingState(int id);
-	~EnemyPatrolIdlingState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
-};
+}
 
-#endif
+EnemyPatrollingState::~EnemyPatrollingState()
+{
+}
+
+void EnemyPatrollingState::Enter(Agent* agent)
+{
+	agent->setWaitTime(0);
+	//turn around randomly
+	Quaternion mq = agent->GetRotation();
+	float some = Math::fDeg2Rad * Math::RangeRandom(-90, 90);
+	Quaternion aq; aq.FromAngleAxis(Radian(some), Vector3::UNIT_Y);
+	agent->SetDirection(mq * aq);
+}
+
+void EnemyPatrollingState::Execute(Agent* agent)
+{
+	agent->add2WaitTime(GlobalVars::Tick);
+}
+
+void EnemyPatrollingState::Exit(Agent* agent)
+{
+	agent->setWaitTime(agent->getMwaitTime());
+}
+
+bool EnemyPatrollingState::isReady(Agent* agent)
+{
+	return agent->getCwaitTime() < agent->getMwaitTime();
+}

@@ -22,7 +22,6 @@ THE SOFTWARE.
 
 
 #include "EnemyDefenseState.h"
-using namespace Ogre;
 
 EnemyDefenseState::EnemyDefenseState(int id) : AIState(id)
 {

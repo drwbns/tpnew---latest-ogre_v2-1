@@ -186,7 +186,7 @@
     <ClCompile Include="src\EnemyLookAroundState.cpp" />
     <ClCompile Include="src\EnemyNextPatrolState.cpp" />
     <ClCompile Include="src\EnemyOffensiveState.cpp" />
-    <ClCompile Include="src\EnemyPatrolIdlingState.cpp" />
+    <ClCompile Include="src\EnemyPatrollingState.cpp" />
     <ClCompile Include="src\EnemyPatrolState.cpp" />
     <ClCompile Include="src\EnemySeekState.cpp" />
     <ClCompile Include="src\EnemyStrafeState.cpp" />
@@ -306,7 +306,7 @@
     <ClInclude Include="includes\EnemyLookAroundState.h" />
     <ClInclude Include="includes\EnemyNextPatrolState.h" />
     <ClInclude Include="includes\EnemyOffensiveState.h" />
-    <ClInclude Include="includes\EnemyPatrolIdlingState.h" />
+    <ClInclude Include="includes\EnemyPatrollingState.h" />
     <ClInclude Include="includes\EnemyPatrolState.h" />
     <ClInclude Include="includes\EnemySeekState.h" />
     <ClInclude Include="includes\EnemyStrafeState.h" />

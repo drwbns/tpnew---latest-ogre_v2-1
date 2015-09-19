@@ -22,7 +22,6 @@ THE SOFTWARE.
 
 
 #include "EnemyFallbackState.h"
-using namespace Ogre;
 
 EnemyFallbackState::EnemyFallbackState(int id) : AIState(id)
 {
