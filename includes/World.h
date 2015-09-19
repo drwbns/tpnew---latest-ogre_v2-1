@@ -35,7 +35,11 @@ THE SOFTWARE.
 #include "PtfNode.h"
 #include "AIUtility.h"
 
-class World
+#include "OgreSingleton.h"
+
+#define WORLD World::getSingletonPtr()
+
+class World : public Ogre::Singleton<World>
 {
 public:
 	World();

@@ -24,6 +24,8 @@ THE SOFTWARE.
 #define AlliedAIController_H_
 
 #include "BaseController.h"
+
+class Agent;
 class AIStateMachine;
 
 class AlliedAIController : public BaseController

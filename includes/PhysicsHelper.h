@@ -1,8 +1,8 @@
 #ifndef PhysicsHelper_H_
 #define PhysicsHelper_H_
 
-#include "NxCharacter.h"
-#include "NxController.h"
+#include "PxCharacter.h"
+#include "PxController.h"
 #include "PxCapsuleController.h"
 #include "NxUserAllocator.h"
 #include "PxShape.h"
@@ -31,7 +31,7 @@ public:
 class ControllerHitReport : public NxUserControllerHitReport
 {
 	public:
-	virtual NxControllerAction onShapeHit(const NxControllerShapeHit& hit)
+	virtual PxControllerAction onShapeHit(const PxControllerShapeHit& hit)
 	{
 		if (1 && hit.shape)
 		{
@@ -55,7 +55,7 @@ class ControllerHitReport : public NxUserControllerHitReport
 		return NX_ACTION_NONE;
 	}
 
-	virtual NxControllerAction onControllerHit(const NxControllersHit& hit)
+	virtual PxControllerAction onControllerHit(const PxControllersHit& hit)
 	{
 		return NX_ACTION_NONE;
 	}

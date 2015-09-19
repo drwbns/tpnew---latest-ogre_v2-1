@@ -57,7 +57,7 @@ void AlliedKeepCloseState::Exit(Agent* agent)
 bool AlliedKeepCloseState::isReady(Agent* agent)
 {
 	//waiting and far to player
-	float dist2player = agent->GetPosition().distance(BASE->getCharacter()->getPlayerNode()->getPosition());
+	float dist2player = agent->GetPosition().distance(WORLD->getPlayerAgent()->GetPosition());
 	return agent->getKnowledge()->totalVisibleEnemy() == 0 &&
 		   dist2player > AIConsts::PlayerTrackDistance;
 }

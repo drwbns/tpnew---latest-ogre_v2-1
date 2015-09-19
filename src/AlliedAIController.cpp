@@ -25,6 +25,9 @@ THE SOFTWARE.
 #include "GameState.h"
 #include "StateSystem.h"
 #include "AIStateMachine.h"
+#include "Agent.h"
+
+
 using namespace Ogre;
 
 AlliedAIController::AlliedAIController() : BaseController()

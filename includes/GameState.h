@@ -27,12 +27,15 @@ THE SOFTWARE.
 
 #include <vector>
 #include "OgreString.h"
+#include "OgreSingleton.h"
 
 class CamController;
 class World;
 class Level;
 
-class GameState : public State
+#define GAMESTATE World::getSingletonPtr()
+
+class GameState : public Ogre::Singleton<GameState>, public State
 {
 public:
 	GameState();

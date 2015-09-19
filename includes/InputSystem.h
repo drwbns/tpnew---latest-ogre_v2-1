@@ -25,6 +25,9 @@ THE SOFTWARE.
 
 #define ISYS InputSystem::getSingletonPtr()
 
+#include "OgreSingleton.h"
+#include "OgreMemoryAllocatorConfig.h"
+
 #include "OIS\OISKeyboard.h"
 #include "OIS\OISMouse.h"
 

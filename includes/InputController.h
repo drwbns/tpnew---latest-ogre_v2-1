@@ -24,6 +24,7 @@ THE SOFTWARE.
 #define InputController_H_
 
 #include "BaseController.h"
+class OIS::Keyboard;
 
 class InputController : public BaseController
 {

@@ -72,9 +72,11 @@
 #include "tinyxml.h"
 #include "SharedData.h"
 
-#include "NxCharacter.h"
-#include "NxController.h"
-#include "PxCapsuleController.h"
+#include "characterkinematic\PxCharacter.h"
+#include "characterkinematic\PxController.h"
+#include "characterkinematic\PxCapsuleController.h"
+#include "foundation\PxVec3.h"
+#include "foundation\PxQuat.h"
 
 class TemplateUtils
 {

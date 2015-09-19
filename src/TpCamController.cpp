@@ -64,12 +64,12 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	Vector3 targetPosition = Vector3::ZERO;
 	Quaternion targetRotation = Quaternion::IDENTITY;
 
-	if (PLAYERID > -1)
+	if (WORLD->getPlayerAgent()ID > -1)
 	{
-		targetPosition = BASE->getCharacter()->getPlayerNode()->getPosition();
+		targetPosition = WORLD->getPlayerAgent()->GetPosition();
 		if (aim)
 		{
-			targetRotation = PLAYER->GetRotation();
+			targetRotation = WORLD->getPlayerAgent()->GetRotation();
 		}
 		else
 		{
@@ -131,15 +131,15 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 
 void TpCamController::UpdateRotation(float mPitch, float mYaw)
 {
-	if (PLAYERID > -1)
+	if (WORLD->getPlayerAgent()ID > -1)
 	{
 		yaw += mYaw * mSensivity;
 		Quaternion q;
 		q.FromAngleAxis(Radian(yaw), Vector3::UNIT_Y);
-		if (aim)PLAYER->SetDirection(q);
-		else if (PLAYER->GetVelocity().length() > Moving::MINSPD)
+		if (aim)WORLD->getPlayerAgent()->SetDirection(q);
+		else if (WORLD->getPlayerAgent()->GetVelocity().length() > Moving::MINSPD)
 		{
-			PLAYER->SetDirection(PLAYER->GetVelocity().getRotationTo(Vector3::UNIT_Z).Inverse());
+			WORLD->getPlayerAgent()->SetDirection(WORLD->getPlayerAgent()->GetVelocity().getRotationTo(Vector3::UNIT_Z).Inverse());
 		}
 
 		pitch -= mPitch * mSensivity * 0.5;

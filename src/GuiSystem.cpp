@@ -176,13 +176,13 @@ void GuiSystem::UpdateDebuggers()
 
 		name = "bhv_txt";
 		text = "Behavior:";
-		if (PLAYER->isActive(Moving::brake))text += "Brake,";
-		if (PLAYER->isActive(Moving::seek))text += "Seek,";
-		if (PLAYER->isActive(Moving::arrive))text += "Arrive,";
-		if (PLAYER->isActive(Moving::avoid1))text += "Avoid1,";
-		if (PLAYER->isActive(Moving::avoid2))text += "Avoid2,";
-		if (PLAYER->isActive(Moving::path))text += "Path,";
-		if (PLAYER->isActive(Moving::seperate))text += "Seperate,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::brake))text += "Brake,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::seek))text += "Seek,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::arrive))text += "Arrive,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::avoid1))text += "Avoid1,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::avoid2))text += "Avoid2,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::path))text += "Path,";
+		if (WORLD->getPlayerAgent()->isActive(Moving::seperate))text += "Seperate,";
 		text.substr(0, text.length()-1);
 		mTxt->setText(name,text);
 

@@ -33,6 +33,8 @@ THE SOFTWARE.
 
 */
 #include "Agent.h"
+#include "World.h"
+
 #include "AIKnowledge.h"
 #include "BaseController.h"
 #include "AIPerceptor.h"
@@ -44,6 +46,7 @@ THE SOFTWARE.
 #include "OgreMaterialManager.h"
 #include "OgreManualObject.h"
 #include "OgreStringConverter.h"
+#include "OgreTechnique.h"
 
 #include "GraphicsSystem.h"
 
@@ -247,7 +250,7 @@ void Agent::add2Hp(int i)
 	{
 		Die();
 	}
-	if (this == PLAYER)
+	if (this == WORLD->getPlayerAgent())
 	{
 		headText->setCaption(Ogre::StringConverter::toString(hp));
 	}

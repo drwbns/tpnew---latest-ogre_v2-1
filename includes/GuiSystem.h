@@ -24,6 +24,7 @@ THE SOFTWARE.
 #define GuiSystem_H_
 
 #include "OgreWindowEventUtilities.h"
+#include "OgreSingleton.h"
 
 class TextRenderer;
 class Ogre::ManualObject;

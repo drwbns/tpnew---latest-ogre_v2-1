@@ -283,7 +283,7 @@ Vector3 Gign::GetFirePosition()
 
 Vector3 Gign::GetFireDirection(Vector3 trg_pos)
 {
-	if (this == PLAYER)
+	if (this == WORLD->getPlayerAgent())
 	{
 		trg_pos = PHY->CastRay1(CAM->getPosition(), CAM->getDirection());
 	}

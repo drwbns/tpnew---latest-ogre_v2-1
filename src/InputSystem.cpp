@@ -110,7 +110,7 @@ bool InputSystem::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID i
 	
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)PLAYER->getController())->injectMousePress(id, true);
+		((InputController*)WORLD->getPlayerAgent()->getController())->injectMousePress(id, true);
 	}
 	return true;
 }
@@ -121,7 +121,7 @@ bool InputSystem::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID 
 	
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)PLAYER->getController())->injectMouseRelease(id);
+		((InputController*)WORLD->getPlayerAgent()->getController())->injectMouseRelease(id);
 	}
 	return true;
 }
@@ -137,7 +137,7 @@ bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)PLAYER->getController())->injectKeyPress(arg.key);
+		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyPress(arg.key);
 
 		if (arg.key == KC_C)
 		{
@@ -166,7 +166,7 @@ bool InputSystem::keyReleased( const OIS::KeyEvent &arg )
 
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)PLAYER->getController())->injectKeyRelease(arg.key);
+		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyRelease(arg.key);
 	}
 
 	return true;
@@ -178,7 +178,7 @@ bool InputSystem::processUnbufferedKeyInput(const Ogre::FrameEvent& evt)
 {
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)PLAYER->getController())->injectKeyboardState(mKeyboard);
+		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyboardState(mKeyboard);
 	}
 
 	if (mKeyboard->isKeyDown(KC_U))GlobalVars::test1 += 0.01;
@@ -209,7 +209,7 @@ bool InputSystem::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
 
 		if (ms.buttonDown(MB_Left))
 		{
-			((InputController*)PLAYER->getController())->injectMousePress(OIS::MB_Left, false);
+			((InputController*)WORLD->getPlayerAgent()->getController())->injectMousePress(OIS::MB_Left, false);
 		}
 	}
 	return true;

@@ -86,7 +86,8 @@ void GameState::Initialize()
 	//mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(-2,0.1,-30), new InputController());
 	//mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(2,0.1,30), NULL);
 	//mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(-5,0.1,30), NULL);
-	mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(0,0.1,-28), new InputController());
+	Agent * player = mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(0,0.1,-28), new InputController());
+
 	for (int i=-1;i<=1;i++)
 	{
 		if (i != 0)

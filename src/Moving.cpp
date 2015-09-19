@@ -342,7 +342,7 @@ Vector3 Moving::CalculateAgentAvoidance()
 		}
 	}
 
-	if (Position == BASE->getCharacter()->getPlayerNode()->getPosition())
+	if (Position == WORLD->getPlayerAgent()->GetPosition())
 	{
 		GlobalVars::test1 = ret.length();
 	}

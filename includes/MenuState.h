@@ -37,8 +37,8 @@ public:
 	Ogre::String GetName() { return "menu"; }
 
 	//callbacks
-	void OnPlay(MyGUI::WidgetPtr _sender);
-	void OnExit(MyGUI::WidgetPtr _sender);
+	void OnPlay();
+	void OnExit();
 };
 
 #endif

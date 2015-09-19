@@ -50,11 +50,11 @@ void InputController::injectMousePress(int id, bool buffered)
 	{
 		TPCAM->SetAimMode(true);
 		UISYS->SetCrossHair(true);
-		PLAYER->SetAimMode(true);
+		WORLD->getPlayerAgent()->SetAimMode(true);
 	}
 	else if (id == OIS::MB_Left)
 	{
-		PLAYER->Shoot(buffered);
+		WORLD->getPlayerAgent()->Shoot(buffered);
 	}
 }
 
@@ -64,7 +64,7 @@ void InputController::injectMouseRelease(int id)
 	{
 		TPCAM->SetAimMode(false);
 		UISYS->SetCrossHair(false);
-		PLAYER->SetAimMode(false);
+		WORLD->getPlayerAgent()->SetAimMode(false);
 	}
 }
 
@@ -76,7 +76,7 @@ void InputController::injectKeyRelease(int key)
 {
 	if (key == OIS::KC_UP || key == OIS::KC_DOWN || key == OIS::KC_LEFT || key == OIS::KC_RIGHT || key == OIS::KC_RSHIFT || key == OIS::KC_LSHIFT || key == OIS::KC_A || key == OIS::KC_S || key == OIS::KC_D || key == OIS::KC_W)
 	{
-		PLAYER->orderBrake();
+		WORLD->getPlayerAgent()->orderBrake();
 	}
 }
 
@@ -117,9 +117,9 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 
 	//Sprint if SHIFT is held
 	if ((mKeyboard->isKeyDown(OIS::KC_LSHIFT) || mKeyboard->isKeyDown(OIS::KC_RSHIFT)) && (mKeyboard->isKeyDown(OIS::KC_UP) || mKeyboard->isKeyDown(OIS::KC_DOWN) || mKeyboard->isKeyDown(OIS::KC_LEFT) || mKeyboard->isKeyDown(OIS::KC_RIGHT) || mKeyboard->isKeyDown(OIS::KC_A) || mKeyboard->isKeyDown(OIS::KC_S) || mKeyboard->isKeyDown(OIS::KC_D) || mKeyboard->isKeyDown(OIS::KC_W))) {
-		PLAYER->SetMaxSpeed(10);
+		WORLD->getPlayerAgent()->SetMaxSpeed(10);
 	}
-	else if(!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)) { PLAYER->SetMaxSpeed(6); } // Run if not Sprinting
+	else if(!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)) { WORLD->getPlayerAgent()->SetMaxSpeed(6); } // Run if not Sprinting
 
 	if (mKeyboard->isKeyDown(OIS::KC_UP) || mKeyboard->isKeyDown(OIS::KC_W) && (!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)))
 	{
@@ -143,6 +143,6 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 		Quaternion q = TPCAM->GetRotation().Inverse();
 		Ogre::Vector3 send(walk,0,strafe);
 		send = q * send;
-		PLAYER->orderMove(send.x,send.z);
+		WORLD->getPlayerAgent()->orderMove(send.x,send.z);
 	}
 }

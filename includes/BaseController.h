@@ -24,6 +24,7 @@ THE SOFTWARE.
 #define BaseController_H_
 
 //#include "World.h"
+#include "Agent.h"
 
 class BaseController
 {

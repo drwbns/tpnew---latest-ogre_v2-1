@@ -42,10 +42,10 @@ void MenuState::Initialize()
 	UISYS->SetCursor(true);
 	UISYS->SetCrossHair(true);
 	//button callbacks
-	MyGUI::ButtonPtr btnPlay = UISYS->GetGUI()->findWidget<MyGUI::Button>("btnPlay");
-	MyGUI::ButtonPtr btnExit = UISYS->GetGUI()->findWidget<MyGUI::Button>("btnExit");
-	btnPlay->eventMouseButtonClick = MyGUI::newDelegate(this, &MenuState::OnPlay);
-	btnExit->eventMouseButtonClick = MyGUI::newDelegate(this, &MenuState::OnExit);
+	//MyGUI::ButtonPtr btnPlay = UISYS->GetGUI()->findWidget<MyGUI::Button>("btnPlay");
+	//MyGUI::ButtonPtr btnExit = UISYS->GetGUI()->findWidget<MyGUI::Button>("btnExit");
+	//btnPlay->eventMouseButtonClick = MyGUI::newDelegate(this, &MenuState::OnPlay);
+	//btnExit->eventMouseButtonClick = MyGUI::newDelegate(this, &MenuState::OnExit);
 	//SSYS->LoadState("game");
 }
 
@@ -58,13 +58,13 @@ void MenuState::Update()
 {
 }
 
-void MenuState::OnPlay(MyGUI::WidgetPtr _sender)
+void MenuState::OnPlay()
 {
 	SND->PlaySound("tick");
 	SSYS->LoadState("game");
 }
 
-void MenuState::OnExit(MyGUI::WidgetPtr _sender)
+void MenuState::OnExit()
 {
 	SND->PlaySound("tick");
 	GlobalVars::ShutDown = true;

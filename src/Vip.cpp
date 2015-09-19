@@ -302,7 +302,7 @@ Vector3 Vip::GetFirePosition()
 
 Vector3 Vip::GetFireDirection(Vector3 trg_pos)
 {
-	if (this == PLAYER)
+	if (this == WORLD->getPlayerAgent())
 	{
 		trg_pos = PHY->CastRay1(CAM->getPosition(), CAM->getDirection());
 	}

@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef State_H_
 #define State_H_
 
+#include "OgreMemoryAllocatorConfig.h"
+#include "OgreString.h"
+
 class State : public Ogre::GeneralAllocatedObject
 {
 public:

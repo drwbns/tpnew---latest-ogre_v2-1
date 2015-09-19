@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #define SSYS StateSystem::getSingletonPtr()
 
-class StateSystem : Ogre::Singleton<StateSystem>, public Ogre::GeneralAllocatedObject
+class StateSystem : Ogre::Singleton<StateSystem>
 {
 public:
 	StateSystem();

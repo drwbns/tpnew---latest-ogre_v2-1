@@ -46,7 +46,7 @@ AlliedGetCloseState::~AlliedGetCloseState()
 void AlliedGetCloseState::Enter(Agent* agent)
 {
 	//assumes that 0 is player, allies start with 1 and so on, also max 3 allies
-	Vector3 dest = BASE->getCharacter()->getPlayerNode()->getPosition();
+	Vector3 dest = WORLD->getPlayerAgent()->GetPosition();
 	int ally_id = agent->getID();
 	if (ally_id == 1)
 	{
@@ -81,7 +81,7 @@ void AlliedGetCloseState::Execute(Agent* agent)
 	//checks continiously
 	if (GlobalVars::Tick_4 == 0)
 	{
-		float dist2player = agent->GetPosition().distance(BASE->getCharacter()->getPlayerNode()->getPosition());
+		float dist2player = agent->GetPosition().distance(WORLD->getPlayerAgent()->GetPosition());
 		if (dist2player > 3)
 		{
 			this->Enter(agent);

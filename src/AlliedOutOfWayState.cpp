@@ -24,9 +24,9 @@ THE SOFTWARE.
 #include "AlliedOutOfWayState.h"
 #include "BaseApplication.h"
 #include "Agent.h"
-
-/*
 #include "World.h"
+/*
+
 #include "AIKnowledge.h"
 #include "StateSystem.h"
 #include "GameState.h"
@@ -45,21 +45,22 @@ AlliedOutOfWayState::~AlliedOutOfWayState()
 void AlliedOutOfWayState::Enter(Agent* agent)
 {
 	Vector3 dest = agent->GetPosition();
-	Vector3 delta = dest - BASE->getCharacter()->getPlayerNode()->getPosition();delta.y = 0;
+	Vector3 delta = dest - WORLD->getPlayerAgent()->GetPosition();
+	delta.y = 0;
 	delta.normalise();
 
 	Quaternion q;
 	q.FromAngleAxis(Radian(Math::PI / 2), Vector3::UNIT_Y);
-	float dist = PLAYER->GetRadius() * AIConsts::PlayerOutOfWayDistance;
+	float dist = WORLD->getPlayerAgent()->GetRadius() * AIConsts::PlayerOutOfWayDistance;
 	
-	float angle = delta.getRotationTo(PLAYER->GetDirection() * Vector3::UNIT_Z).getYaw().valueDegrees();
+	float angle = delta.getRotationTo(WORLD->getPlayerAgent()->GetDirection() * Vector3::UNIT_Z).getYaw().valueDegrees();
 	if (angle < 0)
 	{
-		dest += PLAYER->GetDirection() * q * Vector3::UNIT_Z * dist;
+		dest += WORLD->getPlayerAgent()->GetDirection() * q * Vector3::UNIT_Z * dist;
 	}
 	else
 	{
-		dest += PLAYER->GetDirection() * q * Vector3::NEGATIVE_UNIT_Z * dist;
+		dest += WORLD->getPlayerAgent()->GetDirection() * q * Vector3::NEGATIVE_UNIT_Z * dist;
 	}
 
 	agent->orderGoTo(dest);
@@ -76,6 +77,6 @@ void AlliedOutOfWayState::Exit(Agent* agent)
 bool AlliedOutOfWayState::isReady(Agent* agent)
 {
 	//stopped and touching player
-	float dist2player = agent->GetPosition().distance(BASE->getCharacter()->getPlayerNode()->getPosition()) - AIConsts::PlayerTouchDistance;
-	return agent->isOnDest() && dist2player < agent->GetRadius() + PLAYER->GetRadius();
+	float dist2player = agent->GetPosition().distance(WORLD->getPlayerAgent()->GetPosition()) - AIConsts::PlayerTouchDistance;
+	return agent->isOnDest() && dist2player < agent->GetRadius() + WORLD->getPlayerAgent()->GetRadius();
 }

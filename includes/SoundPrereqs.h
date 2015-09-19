@@ -5,7 +5,7 @@
 #include <al.h>
 #include <alc.h>
 #include <xram.h>
-#include <alut.h>
+//#include <alut.h>
 
 #include <map>
 
