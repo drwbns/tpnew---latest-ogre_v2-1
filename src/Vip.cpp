@@ -118,7 +118,7 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	//material for hit boxes
 	int index = PHY->addNewMaterial("vipbody");
 
-	NxScene * myScene = PHY->getScene();
+	PxScene * myScene = PHY->getScene();
 
 	//create hitboxes
 	PxActorDesc actorDesc;

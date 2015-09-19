@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef Application_H_
 #define Application_H_
 
+#include "OgreSingleton.h"
+#include "OgreFramelistener.h"
+
 class GraphicsSystem;
 class InputSystem;
 class StateSystem;

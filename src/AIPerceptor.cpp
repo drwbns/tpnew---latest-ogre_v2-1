@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include "StateSystem.h"
 #include "PhysicsSystem.h"
 #include "Sample_TileMesh.h"
+
 using namespace Ogre;
 
 template<> AIPerceptor* Ogre::Singleton<AIPerceptor>::ms_Singleton = 0;
@@ -82,7 +83,7 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 		//check delta y
 		float dy = Math::Abs(A.y - P.y);
 		//check ray cast
-		Vector3 add1 = agent1->GetRotation() * agent1->getEyePos();
+		Vector3 add1 = agent1->GetRotation() * *agent1->getEyePos();
 		Vector3 add2(-add1.x, add1.y, -add1.z);
 		//Vector3 add3 = agent1->GetFirePosition();
 		Vector3 result = PHY->CastRay3(agent1->GetPosition()+add1, agent2->GetPosition()+add2);

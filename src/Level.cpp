@@ -138,7 +138,7 @@ Level::Level()
 		fsDesc.points = &fsVerts[0];  // PxVec3*[] array
 		fsDesc.triangles = &fsFaces[0]; // NxU32*[] array
 		fsDesc.flags = 0;
-		fsDesc.materialIndexStride = sizeof(NxMaterialIndex);
+		fsDesc.materialIndexStride = sizeof(PxMaterialIndex);
 		if (INPT->getMesh()->getMaterials().size() > 0)
 			fsDesc.materialIndices = &INPT->getMesh()->getMaterials()[0];
 		

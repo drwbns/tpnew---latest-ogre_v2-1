@@ -66,7 +66,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 
 	if (PLAYERID > -1)
 	{
-		targetPosition = PLAYER->GetPosition();
+		targetPosition = BASE->getCharacter()->getPlayerNode()->getPosition();
 		if (aim)
 		{
 			targetRotation = PLAYER->GetRotation();

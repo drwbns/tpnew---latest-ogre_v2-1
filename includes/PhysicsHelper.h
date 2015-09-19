@@ -5,7 +5,7 @@
 #include "NxController.h"
 #include "PxCapsuleController.h"
 #include "NxUserAllocator.h"
-#include "NxShape.h"
+#include "PxShape.h"
 #include "PxActor.h"
 
 #define isnan( x ) (( x ) !=  ( x ))
@@ -35,7 +35,7 @@ class ControllerHitReport : public NxUserControllerHitReport
 	{
 		if (1 && hit.shape)
 		{
-			NxCollisionGroup group = hit.shape->getGroup();
+			PxCollisionGroup group = hit.shape->getGroup();
 			if (group == GROUP_COLLIDABLE_PUSHABLE)
 			{
 				PxActor& actor = hit.shape->getActor();

@@ -231,7 +231,7 @@ void TemplateUtils::getMeshInformationNx (Mesh* const mesh,
 										   float* & vertices,
 							   unsigned int &index_count,
 							   std::vector<Ogre::Vector3*> &normals,
-										 std::vector<NxMaterialIndex*> &mmaterials,
+										 std::vector<PxMaterialIndex*> &mmaterials,
 										     float* &min,
 										     float* &max,
 									    Vector3 position,
@@ -382,7 +382,7 @@ void TemplateUtils::getMeshInformationNx (Mesh* const mesh,
 		current_offset = next_offset;
 
 		//add material
-		NxMaterialIndex mat = PHY->addNewMaterial(mat_name);
+		PxMaterialIndex mat = PHY->addNewMaterial(mat_name);
 		//int tri_count = numTris;
 		mmaterials.push_back(&mat);
 		

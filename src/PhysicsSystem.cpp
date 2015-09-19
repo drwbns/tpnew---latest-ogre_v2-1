@@ -53,7 +53,7 @@ void PhysicsSystem::Initialize()
 	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
 	//scene
-	NxSceneDesc sceneDesc;
+	PxSceneDesc sceneDesc;
 	sceneDesc.gravity = PxVec3(0,-10,0);
 	sceneDesc.simType = NX_SIMULATION_SW;
 	sceneDesc.userContactReport = &gContactReport;
@@ -148,9 +148,9 @@ void PhysicsSystem::Update()
 	}
 }
 
-void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, NxCollisionGroup group)
+void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group)
 {
-    NxShape*const* shapes = actor->getShapes();
+    PxShape*const* shapes = actor->getShapes();
     NxU32 nShapes = actor->getNbShapes();
     while (nShapes--)
     {
@@ -183,7 +183,7 @@ Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
 	NxRay ray(org, ndir);
 	NxRaycastHit hit;
 	//Get the closest shape
-	NxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit);
+	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit);
 	if (closestShape)
 	{
 		const PxVec3& worldImpact = hit.worldImpact;
@@ -192,7 +192,7 @@ Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
 	return Vector3::ZERO;
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxShape** shape, NxMaterialIndex &mat)
+Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, PxShape** shape, PxMaterialIndex &mat)
 {
 	//ray cast
 	PxVec3 org = TemplateUtils::toNX(from);
@@ -202,7 +202,7 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxSh
 	NxRaycastHit hit;
 	mat = 0;
 	//Get the closest shape
-	NxShape* closestShape = gScene->raycastClosestShape(ray, NX_ALL_SHAPES, hit, -1, delta.length());
+	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_ALL_SHAPES, hit, -1, delta.length());
 	if (closestShape)
 	{
 		if (shape != NULL)*shape = closestShape;
@@ -223,7 +223,7 @@ Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 from, Ogre::Vector3 to)
 	NxRay ray(org, ndir);
 	NxRaycastHit hit;
 	//Get the closest shape
-	NxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit, -1, delta.length());
+	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit, -1, delta.length());
 	if (closestShape)
 	{
 		const PxVec3& worldImpact = hit.worldImpact;
@@ -239,14 +239,14 @@ bool PhysicsSystem::OverlapTest(Ogre::Vector3 min, Ogre::Vector3 max)
 	return gScene->checkOverlapAABB(worldBounds, NX_STATIC_SHAPES);
 }
 
-NxMaterialIndex PhysicsSystem::addNewMaterial(Ogre::String name)
+PxMaterialIndex PhysicsSystem::addNewMaterial(Ogre::String name)
 {
 	//check existance
 	for (size_t i = 0;i < materials.size();i++)
 	{
 		if (name == materials[i])
 		{
-			return (NxMaterialIndex)i;
+			return (PxMaterialIndex)i;
 		}
 	}
 	//else create new
@@ -256,18 +256,18 @@ NxMaterialIndex PhysicsSystem::addNewMaterial(Ogre::String name)
 	mdesc.staticFriction = 0.60;
 	mdesc.dynamicFriction = 0.40;
 	NxMaterial* mat = gScene->createMaterial(mdesc);
-	NxMaterialIndex index = mat->getMaterialIndex();
+	PxMaterialIndex index = mat->getMaterialIndex();
 	try {
 		materials.push_back(name);
 	}
 	catch(const std::bad_alloc & e )
 	{
-		return (NxMaterialIndex)999999;
+		return (PxMaterialIndex)999999;
 	}
-	return (NxMaterialIndex)materials.size();
+	return (PxMaterialIndex)materials.size();
 }
 
-Ogre::String PhysicsSystem::getMaterialName(NxMaterialIndex index)
+Ogre::String PhysicsSystem::getMaterialName(PxMaterialIndex index)
 {
 	if(index == materials.size()) return materials[(int)index - 1];
 	return materials[(int)index];

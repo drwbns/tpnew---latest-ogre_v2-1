@@ -25,10 +25,6 @@ THE SOFTWARE.
 
 #include "OgreWindowEventUtilities.h"
 
-class MyGUI::Gui;
-class MyGUI::OgrePlatform;
-class MyGUI::VectorWidgetPtr;
-
 class TextRenderer;
 class Ogre::ManualObject;
 
@@ -54,16 +50,13 @@ public:
 	void UpdateDebuggers();
 
 	//gets
-	MyGUI::Gui* GetGUI() { return mGUI; }
+	//Gui* GetGUI() { return mGUI; }
 
 	//sets
-	void SetCursor(bool show) { MyGUI::PointerManager::getInstance().setVisible(show); }
-	void SetCrossHair(bool show) { crossHair->setVisible(show); }
+	void SetCursor(bool show);
+	void SetCrossHair(bool show);
 
 private:
-	MyGUI::Gui* mGUI;
-	MyGUI::OgrePlatform* mPlatform;
-	MyGUI::VectorWidgetPtr mLayout;
 	TextRenderer* mTxt;
 	Ogre::ManualObject* crossHair;
 };

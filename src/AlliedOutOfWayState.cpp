@@ -39,7 +39,7 @@ AlliedOutOfWayState::~AlliedOutOfWayState()
 void AlliedOutOfWayState::Enter(Agent* agent)
 {
 	Vector3 dest = agent->GetPosition();
-	Vector3 delta = dest - PLAYER->GetPosition();delta.y = 0;
+	Vector3 delta = dest - BASE->getCharacter()->getPlayerNode()->getPosition();delta.y = 0;
 	delta.normalise();
 
 	Quaternion q;
@@ -70,6 +70,6 @@ void AlliedOutOfWayState::Exit(Agent* agent)
 bool AlliedOutOfWayState::isReady(Agent* agent)
 {
 	//stopped and touching player
-	float dist2player = agent->GetPosition().distance(PLAYER->GetPosition()) - AIConsts::PlayerTouchDistance;
+	float dist2player = agent->GetPosition().distance(BASE->getCharacter()->getPlayerNode()->getPosition()) - AIConsts::PlayerTouchDistance;
 	return agent->isOnDest() && dist2player < agent->GetRadius() + PLAYER->GetRadius();
 }

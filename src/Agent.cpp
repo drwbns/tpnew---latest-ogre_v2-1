@@ -20,17 +20,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
+/*
 #include "Level.h"
 #include "World.h"
-#include "AIPerceptor.h"
-#include "AIKnowledge.h"
+
+
 #include "GameState.h"
 #include "StateSystem.h"
-#include "GraphicsSystem.h"
+
 #include "CamController.h"
+
+
+*/
+#include "Agent.h"
+#include "AIKnowledge.h"
 #include "BaseController.h"
+#include "AIPerceptor.h"
+#include "GlobalVars.h"
 #include "Sample_TileMesh.h"
+
+#include "OgreVector3.h"
+#include "OgreSceneNode.h"
+#include "OgreMaterialManager.h"
+#include "OgreManualObject.h"
+#include "OgreStringConverter.h"
+
+#include "GraphicsSystem.h"
+
 
 using namespace Ogre;
 
@@ -74,7 +90,7 @@ Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc
 
 	//ais
 	knowledge = new AIKnowledge(this);
-	eyePos = Vector3::ZERO;
+	*eyePos = Vector3::ZERO;
 	mWaitTime = 4.0;
 	cWaitTime = 0.0;
 	viewRange = 60;//standard
@@ -193,7 +209,7 @@ void Agent::orderPathFollow()
 		float min = 999999;
 		for (int i=0;i<mPath->GetLength();i++)
 		{
-			Vector3 delta = Position - mPath->GetNode(i).getPos();
+			Vector3 delta = Position - *mPath->GetNode(i).getPos();
 			if (delta.length() < min)
 			{
 				min = delta.length();
@@ -219,8 +235,8 @@ void Agent::orderNextPathNode()
 	{
 		PatrolPathPosition++;
 		PatrolPathPosition %= pPath->GetLength();
-		Vector3 target = pPath->GetNode(PatrolPathPosition).getPos();
-		orderGoTo(target);
+		Vector3 * target = pPath->GetNode(PatrolPathPosition).getPos();
+		orderGoTo(*target);
 	}
 }
 

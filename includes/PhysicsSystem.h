@@ -23,12 +23,22 @@ THE SOFTWARE.
 #ifndef PhysicsSystem_H_
 #define PhysicsSystem_H_
 
-#include <NxCooking.h>
-#include "NxControllerManager.h"
+class PxShape;
+class PxMaterialIndex;
+class PxPhysicsSDK;
+class PxScene;
+class PxControllerManager;
+class PxCollisionGroup;
+class PhysicsContactReport;
+
+/*
+#include <Cooking\PxCooking.h>
+#include "characterkinematic\PxControllerManager.h"
 #include "PhysicsHelper.h"
 #include "Gutility.h"
 #include "PhysicsStream.h"
 #include "PhysicsContactReport.h"
+*/
 
 #define PHY PhysicsSystem::getSingletonPtr()
 
@@ -47,24 +57,24 @@ public:
 
 	//utility
 	Ogre::Vector3 CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir);
-	Ogre::Vector3 CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxShape** shape, NxMaterialIndex &mat);
+	Ogre::Vector3 CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, PxShape** shape, PxMaterialIndex &mat);
 	Ogre::Vector3 CastRay3(Ogre::Vector3 from, Ogre::Vector3 to);
 	bool OverlapTest(Ogre::Vector3 min, Ogre::Vector3 max);
 
 	//gets & sets
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
-	NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; }
-	NxScene*      getScene() const { return gScene; }
-	NxControllerManager* getCManager() const { return gManager; }
-	void SetActorCollisionGroup(PxActor* actor, NxCollisionGroup group);
-	NxMaterialIndex addNewMaterial(Ogre::String name);
-	Ogre::String getMaterialName(NxMaterialIndex index);
+	PxPhysicsSDK* getSDK()  const { return gPhysicsSDK; }
+	PxScene*      getScene() const { return gScene; }
+	PxControllerManager* getCManager() const { return gManager; }
+	void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group);
+	PxMaterialIndex addNewMaterial(Ogre::String name);
+	Ogre::String getMaterialName(PxMaterialIndex index);
 	
 private:
-	NxPhysicsSDK*        gPhysicsSDK;
-    NxScene*	         gScene;
-	NxControllerManager* gManager;
-	PhysicsContactReport gContactReport;
+	PxPhysicsSDK*        gPhysicsSDK;
+    PxScene*	         gScene;
+	PxControllerManager* gManager;
+	PhysicsContactReport * gContactReport;
 	std::vector<Ogre::String> materials;
 
 	//debugging

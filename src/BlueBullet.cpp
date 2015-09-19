@@ -47,8 +47,8 @@ void BlueBullet::Update()
 {
 	//check if it will hit sth.;
 	Vector3 toAdd = Direction * Speed * GlobalVars::Tick;
-	NxShape* shape = NULL;
-	NxMaterialIndex mat;
+	PxShape* shape = NULL;
+	PxMaterialIndex mat;
 	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape, mat);
 	if (normal == Vector3::ZERO)
 	{

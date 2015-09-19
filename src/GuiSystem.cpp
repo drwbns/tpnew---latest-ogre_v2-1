@@ -201,3 +201,9 @@ void GuiSystem::UpdateDebuggers()
 		mTxt->setText(name,text);
 	}
 }
+
+//sets
+
+inline void GuiSystem::SetCursor(bool show) { MyGUI::PointerManager::getInstance().setVisible(show); }
+
+inline void GuiSystem::SetCrossHair(bool show) { crossHair->setVisible(show); }

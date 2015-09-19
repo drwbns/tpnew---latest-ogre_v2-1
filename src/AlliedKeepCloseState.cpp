@@ -22,10 +22,16 @@ THE SOFTWARE.
 
 
 #include "AlliedKeepCloseState.h"
+/*
 #include "World.h"
 #include "AIKnowledge.h"
 #include "StateSystem.h"
 #include "GameState.h"
+*/
+#include "BaseApplication.h"
+#include "AIConsts.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 AlliedKeepCloseState::AlliedKeepCloseState(int id) : AIState(id)
@@ -51,7 +57,7 @@ void AlliedKeepCloseState::Exit(Agent* agent)
 bool AlliedKeepCloseState::isReady(Agent* agent)
 {
 	//waiting and far to player
-	float dist2player = agent->GetPosition().distance(PLAYER->GetPosition());
+	float dist2player = agent->GetPosition().distance(BASE->getCharacter()->getPlayerNode()->getPosition());
 	return agent->getKnowledge()->totalVisibleEnemy() == 0 &&
 		   dist2player > AIConsts::PlayerTrackDistance;
 }
