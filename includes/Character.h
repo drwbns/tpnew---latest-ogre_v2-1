@@ -3,6 +3,8 @@
 
 #include "OgrePrerequisites.h"
 
+#include "OgreSceneNode.h"
+
 using namespace Ogre;
 
 //Use this define to signify OIS will be used as a DLL

@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "Ogre/OgreVector3.h"
 #include "OGRE\OgreQuaternion.h"
 
-class Path;
+#include "prereqs.h"
 
 class Moving
 {

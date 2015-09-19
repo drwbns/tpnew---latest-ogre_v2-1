@@ -24,6 +24,11 @@ THE SOFTWARE.
 #include "BillboardSystem.h"
 #include "BillboardNodeSet.h"
 #include "GraphicsSystem.h"
+
+#include "GlobalVars.h"
+
+#include "OgreSceneNode.h"
+
 using namespace Ogre;
 
 BillboardNodeSet::BillboardNodeSet(int sz)

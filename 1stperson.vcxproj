@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A04615B7-30DE-4A1A-9AFB-018D12F2C39C}</ProjectGuid>
+    <RootNamespace>test1</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);D:\Graphics Code\v2-1-vc14\sdk\include\OGRE;</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\Graphics Code\libvorbis-1.3.5\include;D:\Graphics Code\libogg-1.3.2\include;F:\Program Files (x86)\OpenAL 1.1 SDK\include;D:\Graphics Code\tpnew - latest-ogre_v2-1\includes;D:\Graphics Code\v2-1-vc14\sdk\include\;D:\Graphics Code\v2-1-vc14\sdk\include\OGRE;D:\Graphics Code\boost_1_59_0;D:\Graphics Code\physx-sdk-3.3.2\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>OgrePaging_d.lib;OgreTerrain_d.lib;OgreMain_d.lib;OIS_d.lib;myguiengine_d.lib;libogg_static.lib;mygui.ogrePlatform_d.lib;libvorbis_static.lib;libvorbisfile_static.lib;recast.lib;detour.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(PHYSX_HOME)\lib\win32;C:\Program Files (x86)\Visual Leak Detector\lib;Dependencies\libvorbis-1.3.2\win32\VS2008\Win32\Debug;Dependencies\libogg-1.2.2\win32\VS2008\Win32\Debug;D:\Users\drwbns\Downloads\recast.vc9\Detour\Debug;D:\Users\drwbns\Downloads\recast.vc9\Recast\Debug;Dependencies\freealut-1-1-0\lib\Debug;D:\Users\drwbns\Downloads\OpenAL\libs\Win32;$(NVC9)\lib\debug;$(NVC9)\boost_1_44\lib;$(NVC9)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)test1.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>alut.lib;openal32.lib;OgreMain.lib;OIS.lib;OgrePaging.lib;OgreTerrain.lib;myguiengine.lib;libogg_static.lib;mygui.ogrePlatform.lib;libvorbis_static.lib;libvorbisfile_static.lib;recast.lib;detour.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerbose</ShowProgress>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>Dependencies\theora\win32\VS2008\Win32\Release;$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost_1_44\lib;C:\Program Files (x86)\Visual Leak Detector\lib;Dependencies\libvorbis-1.3.2\win32\VS2008\Win32\Release;Dependencies\libogg-1.2.2\win32\VS2008\Win32\Release;D:\Users\drwbns\Downloads\recast.vc9\Detour\Release;D:\Users\drwbns\Downloads\recast.vc9\Recast\Release;Dependencies\freealut-1-1-0\lib\Release;$(OPENALVC9)\release;Dependencies\MyGUI3.0\lib\Release;$(PHYSX_HOME)\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="includes\Character.cpp" />
+    <ClCompile Include="includes\Detour\DetourAlloc.cpp" />
+    <ClCompile Include="includes\Detour\DetourCommon.cpp" />
+    <ClCompile Include="includes\Detour\DetourNavMesh.cpp" />
+    <ClCompile Include="includes\Detour\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="includes\Detour\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="includes\Detour\DetourNode.cpp" />
+    <ClCompile Include="includes\Detour\DetourTileCache.cpp" />
+    <ClCompile Include="includes\Detour\DetourTileCacheBuilder.cpp" />
+    <ClCompile Include="includes\Recast\Recast.cpp" />
+    <ClCompile Include="includes\Recast\RecastAlloc.cpp" />
+    <ClCompile Include="includes\Recast\RecastArea.cpp" />
+    <ClCompile Include="includes\Recast\RecastContour.cpp" />
+    <ClCompile Include="includes\Recast\RecastDump.cpp" />
+    <ClCompile Include="includes\Recast\RecastFilter.cpp" />
+    <ClCompile Include="includes\Recast\RecastLayers.cpp" />
+    <ClCompile Include="includes\Recast\RecastLog.cpp" />
+    <ClCompile Include="includes\Recast\RecastMesh.cpp" />
+    <ClCompile Include="includes\Recast\RecastMeshDetail.cpp" />
+    <ClCompile Include="includes\Recast\RecastRasterization.cpp" />
+    <ClCompile Include="includes\Recast\RecastRegion.cpp" />
+    <ClCompile Include="src\Agent.cpp" />
+    <ClCompile Include="src\AgentInfo.cpp" />
+    <ClCompile Include="src\AIConsts.cpp" />
+    <ClCompile Include="src\AIKnowledge.cpp" />
+    <ClCompile Include="src\AIPerceptor.cpp" />
+    <ClCompile Include="src\AIState.cpp" />
+    <ClCompile Include="src\AIStateMachine.cpp" />
+    <ClCompile Include="src\AlliedAIController.cpp" />
+    <ClCompile Include="src\AlliedAttackState.cpp" />
+    <ClCompile Include="src\AlliedExploreState.cpp" />
+    <ClCompile Include="src\AlliedFireState.cpp" />
+    <ClCompile Include="src\AlliedGetCloseState.cpp" />
+    <ClCompile Include="src\AlliedIdleState.cpp" />
+    <ClCompile Include="src\AlliedInspectState.cpp" />
+    <ClCompile Include="src\AlliedKeepCloseState.cpp" />
+    <ClCompile Include="src\AlliedLookAroundState.cpp" />
+    <ClCompile Include="src\AlliedOffensiveState.cpp" />
+    <ClCompile Include="src\AlliedOutOfWayState.cpp" />
+    <ClCompile Include="src\AlliedSeekState.cpp" />
+    <ClCompile Include="src\AlliedStrafeState.cpp" />
+    <ClCompile Include="src\AlliedWaitIdlingState.cpp" />
+    <ClCompile Include="src\AlliedWaitState.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\BaseApplication.cpp" />
+    <ClCompile Include="src\BaseController.cpp" />
+    <ClCompile Include="src\BillboardNode.cpp" />
+    <ClCompile Include="src\BillboardNodeSet.cpp" />
+    <ClCompile Include="src\BillboardSystem.cpp" />
+    <ClCompile Include="src\BlueBullet.cpp" />
+    <ClCompile Include="src\BoxItem.cpp" />
+    <ClCompile Include="src\CamController.cpp" />
+    <ClCompile Include="src\ChunkyTriMesh.cpp" />
+    <ClCompile Include="src\DebugDrawOgre.cpp" />
+    <ClCompile Include="src\DotSceneLoader.cpp" />
+    <ClCompile Include="src\EnemyAIController.cpp" />
+    <ClCompile Include="src\EnemyAttackState.cpp" />
+    <ClCompile Include="src\EnemyDefenseState.cpp" />
+    <ClCompile Include="src\EnemyDefensiveState.cpp" />
+    <ClCompile Include="src\EnemyExploreState.cpp" />
+    <ClCompile Include="src\EnemyFallbackState.cpp" />
+    <ClCompile Include="src\EnemyFireState.cpp" />
+    <ClCompile Include="src\EnemyIdleState.cpp" />
+    <ClCompile Include="src\EnemyInspectState.cpp" />
+    <ClCompile Include="src\EnemyLookAroundState.cpp" />
+    <ClCompile Include="src\EnemyNextPatrolState.cpp" />
+    <ClCompile Include="src\EnemyOffensiveState.cpp" />
+    <ClCompile Include="src\EnemyPatrolIdlingState.cpp" />
+    <ClCompile Include="src\EnemyPatrolState.cpp" />
+    <ClCompile Include="src\EnemySeekState.cpp" />
+    <ClCompile Include="src\EnemyStrafeState.cpp" />
+    <ClCompile Include="src\EnemyWaitIdlingState.cpp" />
+    <ClCompile Include="src\EnemyWaitState.cpp" />
+    <ClCompile Include="src\Filelist.cpp" />
+    <ClCompile Include="src\FreeCamController.cpp" />
+    <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\Gign.cpp" />
+    <ClCompile Include="src\GlobalVars.cpp" />
+    <ClCompile Include="src\GraphicsSystem.cpp" />
+    <ClCompile Include="src\GuiSystem.cpp" />
+    <ClCompile Include="src\GUtility.cpp" />
+    <ClCompile Include="src\InputController.cpp" />
+    <ClCompile Include="src\InputGeom.cpp" />
+    <ClCompile Include="src\InputSystem.cpp" />
+    <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MenuState.cpp" />
+    <ClCompile Include="src\MeshLoaderObj.cpp" />
+    <ClCompile Include="src\MovableText.cpp" />
+    <ClCompile Include="src\Moving.cpp" />
+    <ClCompile Include="src\NavMesher.cpp" />
+    <ClCompile Include="src\NavMeshTesterTool.cpp" />
+    <ClCompile Include="src\Obstacle.cpp" />
+    <ClCompile Include="src\ParticleManager.cpp" />
+    <ClCompile Include="src\Path.cpp" />
+    <ClCompile Include="src\PerfTimer.cpp" />
+    <ClCompile Include="src\PhysicsContactReport.cpp" />
+    <ClCompile Include="src\PhysicsStream.cpp" />
+    <ClCompile Include="src\PhysicsSystem.cpp" />
+    <ClCompile Include="src\PositionalInfo.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
+    <ClCompile Include="src\ProjectileManager.cpp" />
+    <ClCompile Include="src\PtfNode.cpp" />
+    <ClCompile Include="src\RtsCamController.cpp" />
+    <ClCompile Include="src\Sample.cpp" />
+    <ClCompile Include="src\SampleInterfaces.cpp" />
+    <ClCompile Include="src\SampleListener.cpp" />
+    <ClCompile Include="src\Sample_TileMesh.cpp" />
+    <ClCompile Include="src\SoundBuffer.cpp" />
+    <ClCompile Include="src\SoundDevices.cpp" />
+    <ClCompile Include="src\SoundListener.cpp" />
+    <ClCompile Include="src\SoundSource.cpp" />
+    <ClCompile Include="src\SoundStreamingBuffer.cpp" />
+    <ClCompile Include="src\SoundSystem.cpp" />
+    <ClCompile Include="src\SoundTimer.cpp" />
+    <ClCompile Include="src\State.cpp" />
+    <ClCompile Include="src\StateSystem.cpp" />
+    <ClCompile Include="src\TextRenderer.cpp" />
+    <ClCompile Include="src\tinystr.cpp" />
+    <ClCompile Include="src\tinyxml.cpp" />
+    <ClCompile Include="src\tinyxmlerror.cpp" />
+    <ClCompile Include="src\tinyxmlparser.cpp" />
+    <ClCompile Include="src\TpCamController.cpp" />
+    <ClCompile Include="src\Vip.cpp" />
+    <ClCompile Include="src\Wall.cpp" />
+    <ClCompile Include="src\World.cpp" />
+    <ClCompile Include="src\zzzSndSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\Agent.h" />
+    <ClInclude Include="includes\AgentInfo.h" />
+    <ClInclude Include="includes\AIConsts.h" />
+    <ClInclude Include="includes\AIKnowledge.h" />
+    <ClInclude Include="includes\AIPerceptor.h" />
+    <ClInclude Include="includes\AIState.h" />
+    <ClInclude Include="includes\AIStateMachine.h" />
+    <ClInclude Include="includes\AIUtility.h" />
+    <ClInclude Include="includes\AlliedAIController.h" />
+    <ClInclude Include="includes\AlliedAttackState.h" />
+    <ClInclude Include="includes\AlliedExploreState.h" />
+    <ClInclude Include="includes\AlliedFireState.h" />
+    <ClInclude Include="includes\AlliedGetCloseState.h" />
+    <ClInclude Include="includes\AlliedIdleState.h" />
+    <ClInclude Include="includes\AlliedInspectState.h" />
+    <ClInclude Include="includes\AlliedKeepCloseState.h" />
+    <ClInclude Include="includes\AlliedLookAroundState.h" />
+    <ClInclude Include="includes\AlliedOffensiveState.h" />
+    <ClInclude Include="includes\AlliedOutOfWayState.h" />
+    <ClInclude Include="includes\AlliedSeekState.h" />
+    <ClInclude Include="includes\AlliedStrafeState.h" />
+    <ClInclude Include="includes\AlliedWaitIdlingState.h" />
+    <ClInclude Include="includes\AlliedWaitState.h" />
+    <ClInclude Include="includes\Application.h" />
+    <ClInclude Include="includes\BaseApplication.h" />
+    <ClInclude Include="includes\BaseController.h" />
+    <ClInclude Include="includes\BillboardNode.h" />
+    <ClInclude Include="includes\BillboardNodeSet.h" />
+    <ClInclude Include="includes\BillboardSystem.h" />
+    <ClInclude Include="includes\BlueBullet.h" />
+    <ClInclude Include="includes\BoxItem.h" />
+    <ClInclude Include="includes\CamController.h" />
+    <ClInclude Include="includes\Character.h" />
+    <ClInclude Include="includes\ChunkyTriMesh.h" />
+    <ClInclude Include="includes\DebugDrawOgre.h" />
+    <ClInclude Include="includes\Detour\DetourAlloc.h" />
+    <ClInclude Include="includes\Detour\DetourAssert.h" />
+    <ClInclude Include="includes\Detour\DetourCommon.h" />
+    <ClInclude Include="includes\Detour\DetourNavMesh.h" />
+    <ClInclude Include="includes\Detour\DetourNavMeshBuilder.h" />
+    <ClInclude Include="includes\Detour\DetourNavMeshQuery.h" />
+    <ClInclude Include="includes\Detour\DetourNode.h" />
+    <ClInclude Include="includes\Detour\DetourStatus.h" />
+    <ClInclude Include="includes\Detour\DetourTileCache.h" />
+    <ClInclude Include="includes\Detour\DetourTileCacheBuilder.h" />
+    <ClInclude Include="includes\DotSceneLoader.hpp" />
+    <ClInclude Include="includes\EnemyAIController.h" />
+    <ClInclude Include="includes\EnemyAttackState.h" />
+    <ClInclude Include="includes\EnemyDefenseState.h" />
+    <ClInclude Include="includes\EnemyDefensiveState.h" />
+    <ClInclude Include="includes\EnemyExploreState.h" />
+    <ClInclude Include="includes\EnemyFallbackState.h" />
+    <ClInclude Include="includes\EnemyFireState.h" />
+    <ClInclude Include="includes\EnemyIdleState.h" />
+    <ClInclude Include="includes\EnemyInspectState.h" />
+    <ClInclude Include="includes\EnemyLookAroundState.h" />
+    <ClInclude Include="includes\EnemyNextPatrolState.h" />
+    <ClInclude Include="includes\EnemyOffensiveState.h" />
+    <ClInclude Include="includes\EnemyPatrolIdlingState.h" />
+    <ClInclude Include="includes\EnemyPatrolState.h" />
+    <ClInclude Include="includes\EnemySeekState.h" />
+    <ClInclude Include="includes\EnemyStrafeState.h" />
+    <ClInclude Include="includes\EnemyWaitIdlingState.h" />
+    <ClInclude Include="includes\EnemyWaitState.h" />
+    <ClInclude Include="includes\Euler.h" />
+    <ClInclude Include="includes\extendedCamera.h" />
+    <ClInclude Include="includes\Filelist.h" />
+    <ClInclude Include="includes\FreeCamController.h" />
+    <ClInclude Include="includes\GameState.h" />
+    <ClInclude Include="includes\Gign.h" />
+    <ClInclude Include="includes\GlobalVars.h" />
+    <ClInclude Include="includes\GraphicsSystem.h" />
+    <ClInclude Include="includes\GuiSystem.h" />
+    <ClInclude Include="includes\GUtility.h" />
+    <ClInclude Include="includes\InputController.h" />
+    <ClInclude Include="includes\InputGeom.h" />
+    <ClInclude Include="includes\InputSystem.h" />
+    <ClInclude Include="includes\Level.h" />
+    <ClInclude Include="includes\main.h" />
+    <ClInclude Include="includes\MenuState.h" />
+    <ClInclude Include="includes\MeshLoaderObj.h" />
+    <ClInclude Include="includes\MovableText.h" />
+    <ClInclude Include="includes\Moving.h" />
+    <ClInclude Include="includes\NavMesher.h" />
+    <ClInclude Include="includes\NavMeshTesterTool.h" />
+    <ClInclude Include="includes\Obstacle.h" />
+    <ClInclude Include="includes\ParticleManager.h" />
+    <ClInclude Include="includes\Path.h" />
+    <ClInclude Include="includes\PerfTimer.h" />
+    <ClInclude Include="includes\PhysicsContactReport.h" />
+    <ClInclude Include="includes\PhysicsHelper.h" />
+    <ClInclude Include="includes\PhysicsStream.h" />
+    <ClInclude Include="includes\PhysicsSystem.h" />
+    <ClInclude Include="includes\physxPrereqs.h" />
+    <ClInclude Include="includes\PositionalInfo.h" />
+    <ClInclude Include="includes\prereqs.h" />
+    <ClInclude Include="includes\Projectile.h" />
+    <ClInclude Include="includes\ProjectileManager.h" />
+    <ClInclude Include="includes\PtfNode.h" />
+    <ClInclude Include="includes\rapidxml.hpp" />
+    <ClInclude Include="includes\Recast\Recast.h" />
+    <ClInclude Include="includes\Recast\RecastAlloc.h" />
+    <ClInclude Include="includes\Recast\RecastAssert.h" />
+    <ClInclude Include="includes\Recast\RecastDump.h" />
+    <ClInclude Include="includes\Recast\RecastLog.h" />
+    <ClInclude Include="includes\RtsCamController.h" />
+    <ClInclude Include="includes\Sample.h" />
+    <ClInclude Include="includes\SampleInterfaces.h" />
+    <ClInclude Include="includes\SampleListener.h" />
+    <ClInclude Include="includes\Sample_TileMesh.h" />
+    <ClInclude Include="includes\SharedData.h" />
+    <ClInclude Include="includes\SoundBuffer.h" />
+    <ClInclude Include="includes\SoundDevices.h" />
+    <ClInclude Include="includes\SoundListener.h" />
+    <ClInclude Include="includes\SoundPrereqs.h" />
+    <ClInclude Include="includes\SoundSource.h" />
+    <ClInclude Include="includes\SoundStreamingBuffer.h" />
+    <ClInclude Include="includes\SoundSystem.h" />
+    <ClInclude Include="includes\SoundTimer.h" />
+    <ClInclude Include="includes\State.h" />
+    <ClInclude Include="includes\StateSystem.h" />
+    <ClInclude Include="includes\TextRenderer.h" />
+    <ClInclude Include="includes\tinystr.h" />
+    <ClInclude Include="includes\tinyxml.h" />
+    <ClInclude Include="includes\TpCamController.h" />
+    <ClInclude Include="includes\Vip.h" />
+    <ClInclude Include="includes\Wall.h" />
+    <ClInclude Include="includes\World.h" />
+    <ClInclude Include="includes\zzzSndSystem.h" />
+    <ClInclude Include="MathConversions.h" />
+    <ClInclude Include="physxPrereqs.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

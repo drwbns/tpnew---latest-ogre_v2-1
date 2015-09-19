@@ -39,16 +39,16 @@ protected:
 	virtual void Update() = 0;
 	
 	void SetOwner(Agent* a) { Owner = a; }
-	void SetPosition(Ogre::Vector3 v) { Position = v; }
-	void SetDirection(Ogre::Vector3 v) { Direction = v; }
+	void SetPosition(Ogre::Vector3 *v) { Position = v; }
+	void SetDirection(Ogre::Vector3 *v) { Direction = v; }
 	void SetSpeed(float f) { Speed = f; }
 	void SetHitPoint(float f) { HitPoint = f; }
 
 protected:
 	Agent* Owner;
-	Ogre::Vector3 Start;
-	Ogre::Vector3 Position;
-	Ogre::Vector3 Direction;
+	Ogre::Vector3 *Start;
+	Ogre::Vector3 *Position;
+	Ogre::Vector3 *Direction;
 	float Speed;
 	float HitPoint;
 	bool Alive;

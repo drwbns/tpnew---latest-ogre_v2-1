@@ -23,7 +23,7 @@ THE SOFTWARE.
 #ifndef BlueBullet_H_
 #define BlueBullet_H_
 
-class Projectile;
+#include "Projectile.h"
 
 class BlueBullet : public Projectile
 {

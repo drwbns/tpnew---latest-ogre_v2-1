@@ -27,6 +27,15 @@ THE SOFTWARE.
 
 #include "SharedData.h"
 
+
+
+#include "OgreConfigFile.h"
+
+
+#include "OgreTextureManager.h"
+
+
+
 using namespace Ogre;
 
 template<> GraphicsSystem* Ogre::Singleton<GraphicsSystem>::msSingleton = 0;

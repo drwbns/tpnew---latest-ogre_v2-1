@@ -28,7 +28,13 @@ THE SOFTWARE.
 #include "PhysicsSystem.h"
 #include "BillboardSystem.h"
 #include "ParticleManager.h"
+
+#include "GlobalVars.h"
+
+#include "PxShape.h"
+
 using namespace Ogre;
+using namespace physx;
 
 BlueBullet::BlueBullet() : Projectile()
 {
@@ -46,10 +52,11 @@ BlueBullet::~BlueBullet()
 void BlueBullet::Update()
 {
 	//check if it will hit sth.;
-	Vector3 toAdd = Direction * Speed * GlobalVars::Tick;
+	Vector3 toAdd = *Direction * Speed * GlobalVars::Tick;
 	PxShape* shape = NULL;
-	PxMaterialIndex mat;
-	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape, mat);
+	/*
+	PxMaterial mat;
+	Vector3 normal = PHY->CastRay2(Position, &(*Position+toAdd), &shape, mat);
 	if (normal == Vector3::ZERO)
 	{
 		//show source
@@ -57,19 +64,19 @@ void BlueBullet::Update()
 		{
 			
 			if(PTM) {
-				PTM->ShowParticle("spark2", Position, normal);
+				PTM->ShowParticle("spark2", *Position, normal);
 			}
 			else {
-				sbill = BBS->ShowBillboard("BulletSource", Position, SBLUETIME);
+				sbill = BBS->ShowBillboard("BulletSource", *Position, SBLUETIME);
 				sbill = 0;
 			}
 		}
 
 		//move it
-		Position += toAdd;
-		BBS->UpdateBillboard("Bullet", bill, Position);
-		PTM->ShowParticle("spark2", Position, Direction);
-		if (Position.distance(Start) > 100.0)
+		*Position += toAdd;
+		BBS->UpdateBillboard("Bullet", bill, *Position);
+		PTM->ShowParticle("spark2", *Position, *Direction);
+		if (Position->distance(*Start) > 100.0)
 		{
 			Alive = false;
 			BBS->HideBillboard("Bullet", bill);
@@ -87,25 +94,25 @@ void BlueBullet::Update()
 		if (ebill == -1)
 		{
 			//show impact
-			ebill = BBS->ShowBillboard("BulletSource", Position, EBLUETIME);
-			String mat_name = PHY->getMaterialName(mat);
+			ebill = BBS->ShowBillboard("BulletSource", *Position, EBLUETIME);
+			String mat_name = PHY->getMaterialName(&mat);
 			if (mat_name.length() > 0)
 			{
 				if (mat_name == "cube")
 				{
-					PTM->ShowParticle("hit2", Position, normal);
+					PTM->ShowParticle("hit2", *Position, normal);
 				}
 				else if (mat_name == "taban" || mat_name == "tavan" || mat_name == "duvar")
 				{
-					PTM->ShowParticle("spark", Position, normal);
+					PTM->ShowParticle("spark", *Position, normal);
 				}
 				else if (mat_name == "engel")
 				{
-					PTM->ShowParticle("spark2", Position, normal);
+					PTM->ShowParticle("spark2", *Position, normal);
 				}
 				else if (mat_name == "vipbody")
 				{
-					PTM->ShowParticle("blood", Position, normal);
+					PTM->ShowParticle("blood", *Position, normal);
 				}
 			}
 
@@ -114,7 +121,7 @@ void BlueBullet::Update()
 			{
 				if (shape->getActor().isDynamic())
 				{
-					shape->getActor().addForceAtPos(TemplateUtils::toNX(Direction * Speed * 0.25), TemplateUtils::toNX(Position), NX_IMPULSE);
+					shape->getActor().addForceAtPos(TemplateUtils::toPX(*Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
 				}
 				else if (shape->getActor().userData != NULL)
 				{
@@ -136,4 +143,5 @@ void BlueBullet::Update()
 			}
 		}
 	}
+	*/
 }

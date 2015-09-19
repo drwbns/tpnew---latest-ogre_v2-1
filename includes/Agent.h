@@ -23,10 +23,7 @@ THE SOFTWARE.
 #ifndef Agent_H_
 #define Agent_H_
 
-class BaseController;
-class AIKnowledge;
-
-class PxActor;
+#include "prereqs.h"
 
 #include "MovableText.h"
 #include "Moving.h"

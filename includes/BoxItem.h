@@ -25,8 +25,7 @@ THE SOFTWARE.
 
 #include "OgrePrerequisites.h"
 
-class PxActor;
-
+#include "physxPrereqs.h"
 
 
 class BoxItem : public Ogre::GeneralAllocatedObject
@@ -36,7 +35,7 @@ public:
 	~BoxItem();
 	void Update();
 
-	PxActor* actor;
+	physx::PxActor* actor;
 	Ogre::Entity* ent;
 	Ogre::SceneNode* node;
 	int obstacle;

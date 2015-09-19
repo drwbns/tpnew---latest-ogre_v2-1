@@ -23,6 +23,10 @@ THE SOFTWARE.
 #ifndef _SOUNDLISTENER_H
 #define _SOUNDLISTENER_H
 
+#include "OgreMovableObject.h"
+#include "OgreSingleton.h"
+#include "OgrePrerequisites.h"
+
 class SoundListener : public Ogre::MovableObject, protected Ogre::Singleton<SoundListener>
 {
 protected:
@@ -72,10 +76,10 @@ protected:
 	mutable Ogre::Vector3 mLastParentPosition;
 
 	Ogre::Real mGain;
-	Ogre::Vector3 mPosition;
-	Ogre::Vector3 mDirection;
-	Ogre::Vector3 mVelocity;
-	Ogre::Vector3 mUp;
+	Ogre::Vector3 * mPosition;
+	Ogre::Vector3 * mDirection;
+	Ogre::Vector3 * mVelocity;
+	Ogre::Vector3 * mUp;
 	ALfloat mOrientation[6];
 
 	mutable bool mLocalTransformDirty;

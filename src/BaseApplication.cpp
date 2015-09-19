@@ -16,7 +16,22 @@ This source file is part of the
 */
 #include "BaseApplication.h"
 
+#include "OgreCommon.h"
+#include "OgreRoot.h"
 
+#include "OgreCamera.h"
+
+#include "OgreLogManager.h"
+#include "OgreRenderWindow.h"
+
+#include "OIS\OISInputManager.h"
+
+#include "OgreViewport.h"
+#include "OgreConfigFile.h"
+#include "OgreTextureManager.h"
+#include "OgreMaterialManager.h"
+
+#include "Character.h"
 
 
 template<> BaseApplication* Ogre::Singleton<BaseApplication>::msSingleton = 0;
@@ -37,10 +52,10 @@ BaseApplication::BaseApplication(void)
     mCamera(0),
     mSceneMgr(0),
     mWindow(0),
-    mResourcesCfg(Ogre::StringUtil::BLANK),
-    mPluginsCfg(Ogre::StringUtil::BLANK),
-    mTrayMgr(0),
-    mDetailsPanel(0),
+    mResourcesCfg(Ogre::BLANKSTRING),
+    mPluginsCfg(Ogre::BLANKSTRING),
+    //mTrayMgr(0),
+    //mDetailsPanel(0),
     mCursorWasVisible(false),
     mShutDown(false),
     mInputManager(0),
@@ -55,7 +70,7 @@ BaseApplication::BaseApplication(void)
 //-------------------------------------------------------------------------------------
 BaseApplication::~BaseApplication(void)
 {
-    if (mTrayMgr) delete mTrayMgr;
+    //if (mTrayMgr) delete mTrayMgr;
 
     //Remove ourself as a Window listener
     Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
@@ -126,10 +141,12 @@ void BaseApplication::createFrameListener(void)
     //Register as a Window listener
     Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
 
+	/*
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mMouse, this);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
     mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
+	*/
 
     // create a params panel for displaying sample details
     Ogre::StringVector items;
@@ -145,10 +162,12 @@ void BaseApplication::createFrameListener(void)
     items.push_back("Filtering");
     items.push_back("Poly Mode");
 
+	/*
     mDetailsPanel = mTrayMgr->createParamsPanel(OgreBites::TL_NONE, "DetailsPanel", 200, items);
     mDetailsPanel->setParamValue(9, "Bilinear");
     mDetailsPanel->setParamValue(10, "Solid");
     mDetailsPanel->hide();
+	*/
 
     mRoot->addFrameListener(this);
 }
@@ -263,6 +282,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mKeyboard->capture();
     mMouse->capture();
 
+	/*
     mTrayMgr->frameRenderingQueued(evt);
 
     if (!mTrayMgr->isDialogVisible())
@@ -278,6 +298,7 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             mDetailsPanel->setParamValue(7, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().z));
         }
     }
+	*/
 
 	if(!mChar->getAnimState()->hasEnded())
 		mChar->getAnimState()->addTime(evt.timeSinceLastFrame);
@@ -521,11 +542,12 @@ bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 {
+	/*
     if (mTrayMgr->isDialogVisible()) return true;   // don't process any more keys if dialog is up
 
     if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
     {
-        mTrayMgr->toggleAdvancedFrameStats();
+       mTrayMgr->toggleAdvancedFrameStats();
     }
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
@@ -596,7 +618,8 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
         mCamera->setPolygonMode(pm);
         mDetailsPanel->setParamValue(10, newVal);
     }
-    else if(arg.key == OIS::KC_F5)   // refresh all textures
+	*/
+    if(arg.key == OIS::KC_F5)   // refresh all textures
     {
         Ogre::TextureManager::getSingleton().reloadAll();
     }
@@ -621,19 +644,19 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
-    if (mTrayMgr->injectMouseMove(arg)) return true;
+//    if (mTrayMgr->injectMouseMove(arg)) return true;
     return true;
 }
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-    if (mTrayMgr->injectMouseDown(arg, id)) return true;
+ //   if (mTrayMgr->injectMouseDown(arg, id)) return true;
     return true;
 }
 
 bool BaseApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-    if (mTrayMgr->injectMouseUp(arg, id)) return true;
+ //   if (mTrayMgr->injectMouseUp(arg, id)) return true;
     return true;
 }
 

@@ -31,6 +31,8 @@ class BlueBullet;
 #define SBLUETIME 0.1f
 #define EBLUETIME 0.1f
 
+#include "OgreSingleton.h"
+
 class ProjectileManager : Ogre::Singleton<ProjectileManager>, public Ogre::GeneralAllocatedObject
 {
 public:
