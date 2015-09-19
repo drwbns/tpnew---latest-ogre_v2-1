@@ -68,7 +68,7 @@
 
 #pragma once
 
-#include "Ogre.h"
+#include "OgrePrerequisites.h"
 #include "tinyxml.h"
 #include "SharedData.h"
 
@@ -99,7 +99,7 @@ class TemplateUtils
 	inline static PxQuat toNX(const Ogre::Quaternion &qt)
 	{
 		PxQuat nq;
-		nq.setXYZW(qt.x,qt.y,qt.z,qt.w);
+		//nq.setXYZW(qt.x,qt.y,qt.z,qt.w);
 		return nq;
 	}
 

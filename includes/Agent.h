@@ -24,11 +24,11 @@ THE SOFTWARE.
 #define Agent_H_
 
 #include "prereqs.h"
+#include "OGRE\OgrePrerequisites.h"
+#include "physxPrereqs.h"
 
 #include "MovableText.h"
 #include "Moving.h"
-
-#include "OGRE\OgrePrerequisites.h"
 
 
 
@@ -93,7 +93,7 @@ public:
 	int getShotsHit() { return shotsHit; }
 
 	//pure
-	virtual PxActor* getHitBox(int i) = 0;
+	virtual physx::PxActor* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
 	virtual void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO) = 0;
 

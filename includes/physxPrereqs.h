@@ -7,6 +7,8 @@ namespace physx {
 	class PxShape;
 	class PxPhysics;
 	class PxScene;
+	class PxCapsuleController;
+	class PxVec3;
 
 }
 

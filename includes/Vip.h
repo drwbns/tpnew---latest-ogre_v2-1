@@ -24,11 +24,11 @@ THE SOFTWARE.
 #define Vip_H_
 
 #include "OGRE\OgrePrerequisites.h"
+#include "physxPrereqs.h"
+#include "prereqs.h"
 
-class Agent;
+#include "Agent.h"
 
-class PxActor;
-class PxCapsuleController;
 
 class Vip : public Agent
 {
@@ -55,7 +55,7 @@ public:
 	Ogre::Quaternion GetHeadRotation();
 	Ogre::Vector3 GetBodyPosition();
 	Ogre::Quaternion GetBodyRotation();
-	PxActor* getHitBox(int i) { return hitboxes[i]; }
+	physx::PxActor* getHitBox(int i) { return hitboxes[i]; }
 
 private:
 	Ogre::Entity* mEnt;
@@ -67,8 +67,8 @@ private:
 	bool aimMode;
 
 	//phy
-	std::vector<PxActor*> hitboxes;
-	PxCapsuleController* phycontrol;
+	std::vector<physx::PxActor*> hitboxes;
+	physx::PxCapsuleController* phycontrol;
 	bool flying;
 };
 
