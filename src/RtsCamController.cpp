@@ -21,7 +21,7 @@ THE SOFTWARE.
 */
 
 
-#include "CamController.h"
+
 #include "RtsCamController.h"
 using namespace Ogre;
 

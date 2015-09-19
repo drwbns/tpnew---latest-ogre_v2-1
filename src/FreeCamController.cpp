@@ -21,7 +21,7 @@ THE SOFTWARE.
 */
 
 
-#include "CamController.h"
+
 #include "FreeCamController.h"
 using namespace Ogre;
 

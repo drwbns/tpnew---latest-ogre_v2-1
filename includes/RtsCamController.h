@@ -23,7 +23,12 @@ THE SOFTWARE.
 #ifndef RtsCamController_H_
 #define RtsCamController_H_
 
-class RtsCamController : public CamController
+#include "CamController.h"
+#include "OgreSingleton.h"
+
+#define RTSCAM TpCamController::getSingletonPtr()
+
+class RtsCamController : public Ogre::Singleton<RtsCamController>, public CamController
 {
 public:
 	RtsCamController();

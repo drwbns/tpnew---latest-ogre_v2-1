@@ -22,10 +22,16 @@ THE SOFTWARE.
 
 
 #include "AlliedOutOfWayState.h"
+#include "BaseApplication.h"
+#include "Agent.h"
+
+/*
 #include "World.h"
 #include "AIKnowledge.h"
 #include "StateSystem.h"
 #include "GameState.h"
+*/
+
 using namespace Ogre;
 
 AlliedOutOfWayState::AlliedOutOfWayState(int id) : AIState(id)

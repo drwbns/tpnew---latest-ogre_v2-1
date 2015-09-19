@@ -23,7 +23,7 @@ THE SOFTWARE.
 #ifndef BaseController_H_
 #define BaseController_H_
 
-#include "World.h"
+//#include "World.h"
 
 class BaseController
 {

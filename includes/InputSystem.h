@@ -25,6 +25,9 @@ THE SOFTWARE.
 
 #define ISYS InputSystem::getSingletonPtr()
 
+#include "OIS\OISKeyboard.h"
+#include "OIS\OISMouse.h"
+
 class InputSystem : Ogre::Singleton<InputSystem>, public Ogre::GeneralAllocatedObject, public OIS::KeyListener, public OIS::MouseListener
 {
 public:

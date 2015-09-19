@@ -23,7 +23,10 @@ THE SOFTWARE.
 #ifndef FreeCamController_H_
 #define FreeCamController_H_
 
-class FreeCamController : public CamController
+#include "CamController.h"
+#include "OgreSingleton.h"
+
+class FreeCamController : public Ogre::Singleton<FreeCamController>, public CamController
 {
 public:
 	FreeCamController();

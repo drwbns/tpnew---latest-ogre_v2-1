@@ -27,6 +27,9 @@ THE SOFTWARE.
 #include "TpCamController.h"
 #include "StateSystem.h"
 #include "GameState.h"
+
+#include "OIS\OISMouse.h"
+
 using namespace Ogre;
 
 InputController::InputController() : BaseController()

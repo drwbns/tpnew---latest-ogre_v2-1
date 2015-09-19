@@ -23,7 +23,12 @@ THE SOFTWARE.
 #ifndef TpCamController_H_
 #define TpCamController_H_
 
-class TpCamController : public CamController
+#include "CamController.h"
+#include "OgreSingleton.h"
+
+#define TPCAM TpCamController::getSingletonPtr()
+
+class TpCamController : public Ogre::Singleton<TpCamController>, public CamController
 {
 public:
 	TpCamController();

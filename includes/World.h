@@ -42,7 +42,7 @@ public:
 	~World();
 	void Update();
 
-	void addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 position, BaseController* ct = NULL);
+	Agent * addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 position, BaseController* ct = NULL);
 	Agent* getAgent(int i) { return agents[i]; }
 	int getAgentTotal() { return agents.size(); }
 	void setAgentController(int i, BaseController* ct) { agents[i]->ChangeController(ct); }

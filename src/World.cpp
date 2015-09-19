@@ -86,19 +86,21 @@ void World::Update()
 	
 }
 
-void World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 position, BaseController* ct)
+Agent * World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 position, BaseController* ct)
 {
 	if (type == Agent::AT_VIP)
 	{
 		Vip* a = new Vip(agents.size(), race, position);
 		a->ChangeController(ct);
 		agents.push_back(a);
+		return a;
 	}
 	else if (type == Agent::AT_GIGN)
 	{
 		Gign* a = new Gign(agents.size(), race, position);
 		a->ChangeController(ct);
 		agents.push_back(a);
+		return a;
 	}
 }
 

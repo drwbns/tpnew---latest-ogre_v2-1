@@ -37,6 +37,10 @@ THE SOFTWARE.
 #include "InputController.h"
 #include "AlliedAIController.h"
 #include "EnemyAIController.h"
+#include "GlobalVars.h"
+
+#include "OgreTimer.h"
+
 using namespace Ogre;
 
 GameState::GameState()
@@ -66,11 +70,11 @@ void GameState::Initialize()
 
 	CamController* cam3 = new TpCamController();
 	cam3->Initialize(GSYS->GetCamera());
-	((TpCamController*)cam3)->SetFarCamOffset(   Vector3(0.0,  2.0, -4.0));
-	((TpCamController*)cam3)->SetFarDestOffset(  Vector3(0.0,  1.5,  1.0));
-	((TpCamController*)cam3)->SetCloseCamOffset( Vector3(-0.8, 1.5, -1.75));
-	((TpCamController*)cam3)->SetCloseDestOffset(Vector3(-0.8, 1.75,  1.0));
-	((TpCamController*)cam3)->SetCloseSpeed(8);
+	TPCAM->SetFarCamOffset(   Vector3(0.0,  2.0, -4.0));
+	TPCAM->SetFarDestOffset(  Vector3(0.0,  1.5,  1.0));
+	TPCAM->SetCloseCamOffset( Vector3(-0.8, 1.5, -1.75));
+	TPCAM->SetCloseDestOffset(Vector3(-0.8, 1.75,  1.0));
+	TPCAM->SetCloseSpeed(8);
 	cams.push_back(cam3);
 
 	//order is important here on

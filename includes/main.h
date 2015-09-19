@@ -23,6 +23,8 @@ This source file is part of the
 #include "NavMesher.h"
 #include "Sample_TileMesh.h"
 #include "Character.h"
+#include "OgreMeshManager.h"
+#include "OgreCamera.h"
 
 
 
