@@ -25,16 +25,16 @@ THE SOFTWARE.
 #include "tinyxml.h"
 using namespace Ogre;
 
-template<> zzzSndSystem* Ogre::Singleton<zzzSndSystem>::ms_Singleton = 0;
+template<> zzzSndSystem* Ogre::Singleton<zzzSndSystem>::msSingleton = 0;
 
 zzzSndSystem* zzzSndSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 zzzSndSystem& zzzSndSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 zzzSndSystem::zzzSndSystem()

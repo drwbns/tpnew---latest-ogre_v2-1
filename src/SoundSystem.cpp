@@ -27,18 +27,18 @@ THE SOFTWARE.
 #include "SoundSystem.h"
 #include "SoundStreamingBuffer.h"
 
-template<> SoundSystem* Ogre::Singleton<SoundSystem>::ms_Singleton = NULL;
+template<> SoundSystem* Ogre::Singleton<SoundSystem>::msSingleton = NULL;
 
 
 //----------------------------------------------------------------------------//
 SoundSystem& SoundSystem::getSingleton(void)
 {
-	return *ms_Singleton;
+	return *msSingleton;
 }
 //----------------------------------------------------------------------------//
 SoundSystem* SoundSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 //----------------------------------------------------------------------------//
 SoundSystem::SoundSystem()

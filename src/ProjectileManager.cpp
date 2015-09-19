@@ -29,16 +29,16 @@ THE SOFTWARE.
 #include "BillboardSystem.h"
 using namespace Ogre;
 
-template<> ProjectileManager* Ogre::Singleton<ProjectileManager>::ms_Singleton = 0;
+template<> ProjectileManager* Ogre::Singleton<ProjectileManager>::msSingleton = 0;
 
 ProjectileManager* ProjectileManager::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 ProjectileManager& ProjectileManager::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 ProjectileManager::ProjectileManager()

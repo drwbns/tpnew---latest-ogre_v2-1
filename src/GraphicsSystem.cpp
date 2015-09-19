@@ -29,16 +29,16 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-template<> GraphicsSystem* Ogre::Singleton<GraphicsSystem>::ms_Singleton = 0;
+template<> GraphicsSystem* Ogre::Singleton<GraphicsSystem>::msSingleton = 0;
 
 GraphicsSystem* GraphicsSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 GraphicsSystem& GraphicsSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 GraphicsSystem::GraphicsSystem() : mRoot(NULL), mWindow(NULL), mSceneMgr(NULL), mCamera(NULL)

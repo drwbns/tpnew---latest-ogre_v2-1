@@ -26,16 +26,19 @@
 #include "InputGeom.h"
 #include "Sample.h"
 #include "Sample_TileMesh.h"
-#include "Recast.h"
 
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
-#include "DetourNavMeshBuilder.h"
+#include "Recast/Recast.h"
+
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshQuery.h"
+#include "Detour/DetourNavMeshBuilder.h"
+
 //#include "DetourDebugDraw.h"
 //#include "NavMeshTesterTool.h"
 //#include "OffMeshConnectionTool.h"
 //#include "ConvexVolumeTool.h"
 //#include "CrowdTool.h"
+
 #include "Path.h"
 #include "DebugDrawOgre.h"
 
@@ -416,16 +419,16 @@ public:
 	virtual void reset() {}
 };
 
-template<> Sample_TileMesh* Ogre::Singleton<Sample_TileMesh>::ms_Singleton = 0;
+template<> Sample_TileMesh* Ogre::Singleton<Sample_TileMesh>::msSingleton = 0;
 
 Sample_TileMesh* Sample_TileMesh::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 Sample_TileMesh& Sample_TileMesh::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 

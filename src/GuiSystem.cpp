@@ -28,16 +28,16 @@ THE SOFTWARE.
 #include "World.h"
 using namespace Ogre;
 
-template<> GuiSystem* Ogre::Singleton<GuiSystem>::ms_Singleton = 0;
+template<> GuiSystem* Ogre::Singleton<GuiSystem>::msSingleton = 0;
 
 GuiSystem* GuiSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 GuiSystem& GuiSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 GuiSystem::GuiSystem() : mGUI(NULL), mPlatform(NULL), mTxt(NULL)

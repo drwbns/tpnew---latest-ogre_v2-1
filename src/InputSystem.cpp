@@ -34,16 +34,16 @@ THE SOFTWARE.
 using namespace Ogre;
 using namespace OIS;
 
-template<> InputSystem* Ogre::Singleton<InputSystem>::ms_Singleton = 0;
+template<> InputSystem* Ogre::Singleton<InputSystem>::msSingleton = 0;
 
 InputSystem* InputSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 InputSystem& InputSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 InputSystem::InputSystem() : mInputManager(NULL), mKeyboard(NULL), mMouse(NULL)

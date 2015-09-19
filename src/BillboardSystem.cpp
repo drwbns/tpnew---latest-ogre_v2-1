@@ -26,16 +26,16 @@ THE SOFTWARE.
 #include "tinyxml.h"
 using namespace Ogre;
 
-template<> BillboardSystem* Ogre::Singleton<BillboardSystem>::ms_Singleton = 0;
+template<> BillboardSystem* Ogre::Singleton<BillboardSystem>::msSingleton = 0;
 
 BillboardSystem* BillboardSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 BillboardSystem& BillboardSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 BillboardSystem::BillboardSystem()

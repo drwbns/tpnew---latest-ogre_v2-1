@@ -34,16 +34,16 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-template<> AIPerceptor* Ogre::Singleton<AIPerceptor>::ms_Singleton = 0;
+template<> AIPerceptor* Ogre::Singleton<AIPerceptor>::msSingleton = 0;
 
 AIPerceptor* AIPerceptor::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 AIPerceptor& AIPerceptor::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert(msSingleton);  return ( *msSingleton);
 }
 
 AIPerceptor::AIPerceptor()
@@ -74,7 +74,8 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 	{
 		//prepare line of sight triangle
 		//60 degrees left & right, total 120 degrees of sight
-		Quaternion q;q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+		Quaternion q;
+		q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
 		Vector3 direction = agent1->GetRotation() * Vector3::UNIT_Z;
 		Vector3 A = agent1->GetPosition();
 		Vector3 B = agent1->GetPosition() + q * (direction * maxrange);
@@ -126,13 +127,13 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	std::vector<int> visible_enemy;
 	for (int i=0;i<WORLD->getAgentTotal();i++)
 	{
-		if (agent->getID() != AGENT(i)->getID() && !AGENT(i)->isDead())
+		if (agent->getID() != WORLD->getAgent(i)->getID() && !WORLD->getAgent(i)->isDead())
 		{
 			//check visibility
-			if (CanSee(agent, AGENT(i)))
+			if (CanSee(agent, WORLD->getAgent(i)))
 			{
 				//ally
-				if (agent->getRace() == AGENT(i)->getRace())
+				if (agent->getRace() == WORLD->getAgent(i)->getRace())
 				{
 					visible_ally.push_back(i);
 				}
@@ -170,7 +171,7 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	//check existance, add if not, update if so
 	for (size_t i=0;i<visible_ally.size();i++)
 	{
-		Agent* a = AGENT(visible_ally[i]);
+		Agent* a = WORLD->getAgent(visible_ally[i]);
 		int pos = ledge->allyExists(a->getID());
 		if (pos == -1)
 		{
@@ -218,7 +219,7 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	//check existance, add if not, update if so
 	for (size_t i=0;i<visible_enemy.size();i++)
 	{
-		Agent* a = AGENT(visible_enemy[i]);
+		Agent* a = WORLD->getAgent(visible_enemy[i]);
 		int pos = ledge->enemyExists(a->getID());
 		if (pos == -1)
 		{
@@ -271,7 +272,7 @@ void AIPerceptor::FindCovers(Agent* agent)
 	std::vector<Vector3>::iterator it = tposs.begin();
 	while (it != tposs.end())
 	{
-		bool ok = SMPL->CanBeWalkedTo(*it, Vector3(0.05,agent->getEyePos().y/2,0.05));
+		bool ok = SMPL->CanBeWalkedTo(*it, Vector3(0.05,agent->getEyePos()->y/2,0.05));
 		if (!ok)
 		{
 			it = tposs.erase(it);

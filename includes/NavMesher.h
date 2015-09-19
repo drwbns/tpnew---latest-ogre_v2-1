@@ -24,6 +24,7 @@ THE SOFTWARE.
 #define NavMesher_H_
 
 #include "Path.h"
+
 #include "Recast/Recast.h"
 #include "Recast/RecastDebugDraw.h"
 //#include "Recast/RecastLog.h"
@@ -33,9 +34,14 @@ THE SOFTWARE.
 #include "Detour/DetourNavMesh.h"
 #include "Detour/DetourNavMeshQuery.h"
 #include "Detour/DetourNavMeshBuilder.h"
+
 #include "InputGeom.h"
 
-class NavMesher
+#include "OgreSingleton.h"
+
+#define NAV NavMesher::getSingletonPtr()
+
+class NavMesher : public Ogre::Singleton<NavMesher>
 {
 public:
 	NavMesher();

@@ -63,20 +63,20 @@
 
 #include "SharedData.h"
 
-template<> SharedData* Ogre::Singleton<SharedData>::ms_Singleton = 0;
+template<> SharedData* Ogre::Singleton<SharedData>::msSingleton = 0;
 
-template<> InputGeom* Ogre::Singleton<InputGeom>::ms_Singleton = 0;
+template<> InputGeom* Ogre::Singleton<InputGeom>::msSingleton = 0;
 
 InputGeom* InputGeom::getSingletonPtr(void)
 {
-	if(ms_Singleton == NULL)
-		ms_Singleton = new InputGeom();
-	return ms_Singleton;
+	if(msSingleton == NULL)
+		msSingleton = new InputGeom();
+	return msSingleton;
 }
 
 InputGeom& InputGeom::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 

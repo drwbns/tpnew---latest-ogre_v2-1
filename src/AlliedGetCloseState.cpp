@@ -22,9 +22,11 @@ THE SOFTWARE.
 
 
 #include "AlliedGetCloseState.h"
+#include "GlobalVars.h"
+/*
 #include "AIConsts.h"
 #include "Agent.h"
-#include "GlobalVars.h"
+
 
 #include "OgreQuaternion.h"
 #include "OgreVector3.h"
@@ -32,6 +34,9 @@ THE SOFTWARE.
 #include "BaseApplication.h"
 #include "Character.h"
 #include "OgreSceneNode.h"
+*/
+
+#include "World.h"
 
 using namespace Ogre;
 
@@ -52,19 +57,19 @@ void AlliedGetCloseState::Enter(Agent* agent)
 	{
 		Quaternion q;
 		q.FromAngleAxis(Radian(Math::PI / 2), Vector3::UNIT_Y);
-		dest += BASE->getCharacter()->getPlayerNode()->getOrientation() * q * Vector3::UNIT_Z * AIConsts::PlayerCloseDistance;
+		dest += WORLD->getPlayerAgent()->GetDirection() * q * Vector3::UNIT_Z * AIConsts::PlayerCloseDistance;
 	}
 	else if (ally_id == 2)
 	{
 		Quaternion q;
 		q.FromAngleAxis(Radian(Math::PI / 2), Vector3::UNIT_Y);
-		dest += BASE->getCharacter()->getPlayerNode()->getOrientation() * q * Vector3::NEGATIVE_UNIT_Z * AIConsts::PlayerCloseDistance;
+		dest += WORLD->getPlayerAgent()->GetDirection() * q * Vector3::NEGATIVE_UNIT_Z * AIConsts::PlayerCloseDistance;
 	}
 	else if (ally_id == 3)
 	{
 		Quaternion q;
 		q.FromAngleAxis(Radian(Math::PI / 1), Vector3::UNIT_Y);
-		dest += BASE->getCharacter()->getPlayerNode()->getOrientation() * q * Vector3::UNIT_Z * AIConsts::PlayerCloseDistance;
+		dest += WORLD->getPlayerAgent()->GetDirection() * q * Vector3::UNIT_Z * AIConsts::PlayerCloseDistance;
 	}
 
 	agent->orderGoTo(dest);

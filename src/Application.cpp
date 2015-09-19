@@ -32,16 +32,16 @@ THE SOFTWARE.
 #include "BillboardSystem.h"
 #include "ParticleManager.h"
 
-template<> Application* Ogre::Singleton<Application>::ms_Singleton = 0;
+template<> Application* Ogre::Singleton<Application>::msSingleton = 0;
 
 Application* Application::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 Application& Application::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 Application::Application() : GS(NULL), IS(NULL), SS(NULL)

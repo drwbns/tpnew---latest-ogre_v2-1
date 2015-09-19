@@ -25,16 +25,16 @@ THE SOFTWARE.
 #include "GraphicsSystem.h"
 using namespace Ogre;
 
-template<> PhysicsSystem* Ogre::Singleton<PhysicsSystem>::ms_Singleton = 0;
+template<> PhysicsSystem* Ogre::Singleton<PhysicsSystem>::msSingleton = 0;
 
 PhysicsSystem* PhysicsSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 PhysicsSystem& PhysicsSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 PhysicsSystem::PhysicsSystem() : gPhysicsSDK(NULL), gScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)

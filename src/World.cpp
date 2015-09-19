@@ -86,50 +86,50 @@ void World::Update()
 	
 }
 
-Agent * World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 position, BaseController* ct)
+Agent * World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 * position, BaseController* ct)
 {
 	if (type == Agent::AT_VIP)
 	{
-		Vip* a = new Vip(agents.size(), race, position);
+		Vip* a = new Vip(agents.size(), race, *position);
 		a->ChangeController(ct);
 		agents.push_back(a);
 		return a;
 	}
 	else if (type == Agent::AT_GIGN)
 	{
-		Gign* a = new Gign(agents.size(), race, position);
+		Gign* a = new Gign(agents.size(), race, *position);
 		a->ChangeController(ct);
 		agents.push_back(a);
 		return a;
 	}
 }
 
-void World::addPath(std::vector<Ogre::Vector3> list)
+void World::addPath(std::vector<Ogre::Vector3*> list)
 {
 	Path* p = new Path();
 	paths.push_back(p);
 	//populate path
 	for (size_t i=0;i<list.size();i++)
 	{
-		p->AddNode(list[i]);
+		p->AddNode(*list[i]);
 	}
 }
 
-int World::addObstacle(Ogre::Vector3 position, float radius)
+int World::addObstacle(Ogre::Vector3 *position, float radius)
 {
-	Obstacle* o = new Obstacle(position, radius);
+	Obstacle* o = new Obstacle(*position, radius);
 	obstacles.push_back(o);
 	return obstacles.size()-1;
 }
 
-void World::updateObstacle(int i, Ogre::Vector3 position)
+void World::updateObstacle(int i, Ogre::Vector3 *position)
 {
 	getObstacle(i)->SetPos(position);
 	getObstacle(i)->resetDebug();
 }
 
-void World::addWall(Ogre::Vector3 from, Ogre::Vector3 to, bool leftnormal)
+void World::addWall(Ogre::Vector3 *from, Ogre::Vector3 *to, bool leftnormal)
 {
-	Wall* w = new Wall(from, to, leftnormal);
+	Wall* w = new Wall(*from, *to, leftnormal);
 	walls.push_back(w);
 }

@@ -26,16 +26,16 @@ THE SOFTWARE.
 #include "StateSystem.h"
 #include "GraphicsSystem.h"
 
-template<> StateSystem* Ogre::Singleton<StateSystem>::ms_Singleton = 0;
+template<> StateSystem* Ogre::Singleton<StateSystem>::msSingleton = 0;
 
 StateSystem* StateSystem::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 StateSystem& StateSystem::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 StateSystem::StateSystem() : mState(NULL)

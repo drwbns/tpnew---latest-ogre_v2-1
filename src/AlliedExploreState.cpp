@@ -22,11 +22,20 @@ THE SOFTWARE.
 
 
 #include "AlliedExploreState.h"
+#include "Path.h"
+#include "NavMesher.h"
+#include "Agent.h"
+
+
+#include "OgreVector3.h"
+
+/*
 #include "Level.h"
 #include "World.h"
 #include "AIKnowledge.h"
 #include "StateSystem.h"
 #include "GameState.h"
+*/
 
 
 using namespace Ogre;
@@ -48,11 +57,11 @@ void AlliedExploreState::Execute(Agent* agent)
 	if (!agent->isActive(Moving::path))
 	{
 		//select a random target node
-		int rnd = rand() % PTF->GetTotalPos();
-		Vector3 target = PTF->GetPos(rnd);
+		int rnd = rand() % NAV->GetTotalPos();
+		Vector3 target = NAV->GetPos(rnd);
 		//find path
 		Path* path = agent->GetPath();
-		PTF->GetPath(agent->GetPosition(), target, path);
+		NAV->GetPath(agent->GetPosition(), target, path);
 		//show path
 		path->ShowDebug(true);
 		//order

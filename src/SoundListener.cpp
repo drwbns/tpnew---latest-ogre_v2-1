@@ -24,7 +24,7 @@ THE SOFTWARE.
 /************************************************************************/ 
 #include "SoundListener.h"
 /************************************************************************/ 
-template<> SoundListener* Ogre::Singleton<SoundListener>::ms_Singleton = 0;
+template<> SoundListener* Ogre::Singleton<SoundListener>::msSingleton = 0;
 Ogre::String SoundListenerFactory::FACTORY_TYPE_NAME = "SoundListener";
 /************************************************************************/ 
 SoundListener::SoundListener() :
@@ -61,12 +61,12 @@ SoundListener::~SoundListener()
 /************************************************************************/ 
 SoundListener* SoundListener::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 /************************************************************************/ 
 SoundListener& SoundListener::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );  
+	assert( msSingleton );  return ( *msSingleton );  
 }
 /************************************************************************/ 
 void SoundListener::setGain(Ogre::Real gain)

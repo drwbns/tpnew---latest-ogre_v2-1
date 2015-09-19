@@ -385,9 +385,9 @@ Vector3 Moving::CalculateSeperate()
 
 	for (int i=0;i<WORLD->getAgentTotal();i++)
 	{
-		Ogre::Vector3 delta = Position - AGENT(i)->GetPosition();
+		Ogre::Vector3 delta = Position - agent(i)->GetPosition();
 		float dist = delta.length();
-		float mindist = Radius + AGENT(i)->GetRadius();
+		float mindist = Radius + agent(i)->GetRadius();
 		if (dist < mindist)
 		{
 			float power = mindist - dist;

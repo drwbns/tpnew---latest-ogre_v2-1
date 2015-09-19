@@ -26,16 +26,16 @@ THE SOFTWARE.
 #include "tinyxml.h"
 using namespace Ogre;
 
-template<> ParticleManager* Ogre::Singleton<ParticleManager>::ms_Singleton = 0;
+template<> ParticleManager* Ogre::Singleton<ParticleManager>::msSingleton = 0;
 
 ParticleManager* ParticleManager::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 ParticleManager& ParticleManager::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 ParticleManager::ParticleManager()

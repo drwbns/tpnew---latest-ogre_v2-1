@@ -19,16 +19,16 @@ This source file is part of the
 
 
 
-template<> BaseApplication* Ogre::Singleton<BaseApplication>::ms_Singleton = 0;
+template<> BaseApplication* Ogre::Singleton<BaseApplication>::msSingleton = 0;
 
 BaseApplication* BaseApplication::getSingletonPtr(void)
 {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 BaseApplication& BaseApplication::getSingleton(void)
 {  
-	assert( ms_Singleton );  return ( *ms_Singleton );
+	assert( msSingleton );  return ( *msSingleton );
 }
 
 //-------------------------------------------------------------------------------------
