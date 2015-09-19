@@ -20,8 +20,8 @@
 #define NAVMESHTESTERTOOL_H
 
 #include "Sample.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshQuery.h"
 
 #include "Sample_TileMesh.h"
 #include "DebugDrawOgre.h"

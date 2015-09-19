@@ -20,11 +20,10 @@
 #define RECASTSAMPLETILEMESH_H
 
 #include "Sample.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
-#include "Recast.h"
 #include "ChunkyTriMesh.h"
 #include "Path.h"
+
+#include "boost\thread\mutex.hpp"
 
 #define SMPL Sample_TileMesh::getSingletonPtr()
 

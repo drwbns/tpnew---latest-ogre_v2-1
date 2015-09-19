@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "BoxItem.h"
 #include "GraphicsSystem.h"
 #include "PhysicsSystem.h"
@@ -41,7 +41,7 @@ BoxItem::BoxItem(int id, String mat, Vector3 pos, Vector3 scl, float mass)
 	node->setScale(scl);
 
 	//phy
-	NxActorDesc actorDesc;
+	PxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
 	NxBoxShapeDesc boxDesc;
 	Ogre::AxisAlignedBox b1 = ent->getMesh()->getBounds();
@@ -91,8 +91,8 @@ void BoxItem::Update()
 {
 	if (actor->isDynamic())
 	{
-		NxVec3 pos = actor->getGlobalPosition();
-		NxQuat rot = actor->getGlobalOrientationQuat();
+		PxVec3 pos = actor->getGlobalPosition();
+		PxQuat rot = actor->getGlobalOrientationQuat();
 		node->setPosition(pos.x,pos.y,pos.z);
 		node->setOrientation(rot.w,rot.x,rot.y,rot.z);
 		if (!actor->isSleeping())

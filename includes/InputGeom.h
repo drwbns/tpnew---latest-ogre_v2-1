@@ -50,7 +50,7 @@
 #ifndef INPUTGEOM_H
 #define INPUTGEOM_H
 
-#include "Ogre.h"
+//#include "Ogre.h"
 #include "ChunkyTriMesh.h"
 #include "MeshLoaderObj.h"
 

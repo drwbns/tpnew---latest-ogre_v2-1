@@ -26,7 +26,15 @@ THE SOFTWARE.
 class Moving;
 class BaseController;
 class AIKnowledge;
+
+class PxActor;
+
 #include "MovableText.h"
+#include "Moving.h"
+
+#include "OGRE\OgrePrerequisites.h"
+
+
 
 class Agent : public Moving
 {
@@ -89,7 +97,7 @@ public:
 	int getShotsHit() { return shotsHit; }
 
 	//pure
-	virtual NxActor* getHitBox(int i) = 0;
+	virtual PxActor* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
 	virtual void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO) = 0;
 

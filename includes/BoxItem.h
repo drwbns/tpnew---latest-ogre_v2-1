@@ -23,6 +23,12 @@ THE SOFTWARE.
 #ifndef BoxItem_H_
 #define BoxItem_H_
 
+#include "OgrePrerequisites.h"
+
+class PxActor;
+
+
+
 class BoxItem : public Ogre::GeneralAllocatedObject
 {
 public:
@@ -30,7 +36,7 @@ public:
 	~BoxItem();
 	void Update();
 
-	NxActor* actor;
+	PxActor* actor;
 	Ogre::Entity* ent;
 	Ogre::SceneNode* node;
 	int obstacle;

@@ -24,6 +24,10 @@ THE SOFTWARE.
 #define GameState_H_
 
 #include "State.h"
+
+#include <vector>
+#include "OgreString.h"
+
 class CamController;
 class World;
 class Level;

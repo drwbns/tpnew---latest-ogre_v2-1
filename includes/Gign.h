@@ -25,9 +25,10 @@ THE SOFTWARE.
 
 class Agent;
 
-#include "NxCharacter.h"
-#include "NxController.h"
-#include "NxCapsuleController.h"
+class PxActor;
+class PxCapsuleController;
+
+#include "OGRE\OgrePrerequisites.h"
 
 class Gign : public Agent
 {
@@ -54,7 +55,7 @@ public:
 	Ogre::Quaternion GetHeadRotation();
 	Ogre::Vector3 GetBodyPosition();
 	Ogre::Quaternion GetBodyRotation();
-	NxActor* getHitBox(int i) { return hitboxes[i]; }
+	PxActor* getHitBox(int i) { return hitboxes[i]; }
 
 private:
 	Ogre::Entity* mEnt;
@@ -66,8 +67,8 @@ private:
 	bool aimMode;
 
 	//phy
-	std::vector<NxActor*> hitboxes;
-	NxCapsuleController* phycontrol;
+	std::vector<PxActor*> hitboxes;
+	PxCapsuleController* phycontrol;
 	bool flying;
 };
 

@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef CamController_H_
 #define CamController_H_
 
+#include "OGRE\OgreMemoryAllocatorConfig.h"
+#include "OGRE\OgreCamera.h"
+
 class CamController : public Ogre::GeneralAllocatedObject
 {
 public:

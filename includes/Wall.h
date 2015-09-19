@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef Wall_H_
 #define Wall_H_
 
+#include "OGRE\OgrePrerequisites.h"
+
 class Wall
 {
 	friend class World;
@@ -32,14 +34,14 @@ private:
 	~Wall();
 	
 public:
-	Ogre::Vector3 GetFrom() { return From; }
-	Ogre::Vector3 GetTo() { return To; }
-	Ogre::Vector3 GetNormal() { return Normal; }
+	Ogre::Vector3 * GetFrom() { return From; }
+	Ogre::Vector3 * GetTo() { return To; }
+	Ogre::Vector3 * GetNormal() { return Normal; }
 
 private:
-	Ogre::Vector3 From;
-	Ogre::Vector3 To;
-	Ogre::Vector3 Normal;
+	Ogre::Vector3 * From;
+	Ogre::Vector3 * To;
+	Ogre::Vector3 * Normal;
 	Ogre::ManualObject* mark;
 };
 

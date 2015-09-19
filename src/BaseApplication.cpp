@@ -17,6 +17,8 @@ This source file is part of the
 #include "BaseApplication.h"
 
 
+
+
 template<> BaseApplication* Ogre::Singleton<BaseApplication>::ms_Singleton = 0;
 
 BaseApplication* BaseApplication::getSingletonPtr(void)

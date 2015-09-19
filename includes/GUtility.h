@@ -74,29 +74,29 @@
 
 #include "NxCharacter.h"
 #include "NxController.h"
-#include "NxCapsuleController.h"
+#include "PxCapsuleController.h"
 
 class TemplateUtils
 {
     public:
-        inline static Ogre::Vector3 toOgre(const NxVec3 &vec)
+        inline static Ogre::Vector3 toOgre(const PxVec3 &vec)
 	{
 		return Ogre::Vector3(vec.x, vec.y, vec.z);
 	}
 
-	inline static Ogre::Quaternion toOgre(const NxQuat &qt)
+	inline static Ogre::Quaternion toOgre(const PxQuat &qt)
 	{
 		return Ogre::Quaternion(qt.w, qt.x, qt.y, qt.z);
 	}
 
-	inline static NxVec3 toNX(const Ogre::Vector3 &vec)
+	inline static PxVec3 toNX(const Ogre::Vector3 &vec)
 	{
-		return NxVec3(vec.x, vec.y, vec.z);
+		return PxVec3(vec.x, vec.y, vec.z);
 	}
 
-	inline static NxQuat toNX(const Ogre::Quaternion &qt)
+	inline static PxQuat toNX(const Ogre::Quaternion &qt)
 	{
-		NxQuat nq;
+		PxQuat nq;
 		nq.setXYZW(qt.x,qt.y,qt.z,qt.w);
 		return nq;
 	}

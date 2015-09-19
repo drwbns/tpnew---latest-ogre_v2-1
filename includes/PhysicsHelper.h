@@ -3,10 +3,10 @@
 
 #include "NxCharacter.h"
 #include "NxController.h"
-#include "NxCapsuleController.h"
+#include "PxCapsuleController.h"
 #include "NxUserAllocator.h"
 #include "NxShape.h"
-#include "NxActor.h"
+#include "PxActor.h"
 
 #define isnan( x ) (( x ) !=  ( x ))
 
@@ -38,13 +38,13 @@ class ControllerHitReport : public NxUserControllerHitReport
 			NxCollisionGroup group = hit.shape->getGroup();
 			if (group == GROUP_COLLIDABLE_PUSHABLE)
 			{
-				NxActor& actor = hit.shape->getActor();
+				PxActor& actor = hit.shape->getActor();
 				if(actor.isDynamic())
 				{
 					if(hit.dir.y==0.0f)
 					{
 						NxF32 coeff = hit.length * 64.0f;
-						actor.addForceAtLocalPos(hit.dir*coeff, NxVec3(0,0,0), NX_IMPULSE);
+						actor.addForceAtLocalPos(hit.dir*coeff, PxVec3(0,0,0), NX_IMPULSE);
 					}
 				}
 			}

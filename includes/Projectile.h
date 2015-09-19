@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef Projectile_H_
 #define Projectile_H_
 
+#include "OGRE\OgrePrerequisites.h"
+#include "OGRE\OgreMemoryAllocatorConfig.h"
+
 class Agent;
 class ProjectileManager;
 

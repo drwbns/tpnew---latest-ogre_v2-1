@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef BillboardNode_H_
 #define BillboardNode_H_
 
+#include "OGRE/OgreBillboard.h"
+
 class BillboardNode
 {
 	friend class BillboardSystem;

@@ -17,7 +17,7 @@ This source file is part of the
 #ifndef __mainApplication_h_
 #define __mainApplication_h_
 
-#include "stdafx.h"
+
 
 #include "BaseApplication.h"
 #include "NavMesher.h"

@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "stdafx.h"
+
 #include "World.h"
 #include "GameState.h"
 #include "StateSystem.h"
@@ -99,7 +99,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	deadAnimState->setWeight(1.0);
 
 	//phy controller
-	NxCapsuleControllerDesc desc;
+	PxCapsuleControllerDesc desc;
 	desc.position.x		= position.x;
 	desc.position.y		= position.y + 2.0;
 	desc.position.z		= position.z;
@@ -110,7 +110,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	desc.skinWidth		= 0.10;
 	desc.stepOffset		= 0.25;
 	desc.callback		= &GignChrHitReport;
-	phycontrol = (NxCapsuleController*)PHY->getCManager()->createController(PHY->getScene(), desc);
+	phycontrol = (PxCapsuleController*)PHY->getCManager()->createController(PHY->getScene(), desc);
 	phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	flying = false;
 
@@ -118,7 +118,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	int index = PHY->addNewMaterial("gignbody");
 
 	//create hitboxes
-	NxActorDesc actorDesc;
+	PxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions.set(0.10,0.15,0.10);
@@ -126,9 +126,9 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	actorDesc.shapes.pushBack(&boxDesc);
 	actorDesc.globalPose.t = TemplateUtils::toNX(position);
 	actorDesc.flags = NX_AF_DISABLE_COLLISION;
-	NxActor* actor = PHY->getScene()->createActor(actorDesc);
+	PxActor* actor = PHY->getScene()->createActor(actorDesc);
 	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(NxVec3(0.05,0.075,0.05));
+	actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
 	hitboxes.push_back(actor);
 	actor->userData = this;
 
@@ -138,7 +138,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	actorDesc.globalPose.t = TemplateUtils::toNX(position);
 	actor = PHY->getScene()->createActor(actorDesc);
 	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(NxVec3(0.125,0.40,0.125));
+	actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
 	hitboxes.push_back(actor);
 	actor->userData = this;
 
@@ -193,7 +193,7 @@ void Gign::Update()
 	}
 
 	//move phy controller
-	NxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
+	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	NxU32 collisionFlag;
 	phycontrol->move(disp,COLLIDABLE_MASK,0.001,collisionFlag);

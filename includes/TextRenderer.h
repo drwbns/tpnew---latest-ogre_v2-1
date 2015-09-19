@@ -1,8 +1,8 @@
 #ifndef TextRendererH
 #define TextRendererH
 
-#include <OgreOverlayContainer.h>
-#include <OgreOverlayManager.h>
+#include <Overlay/OgreOverlayContainer.h>
+#include <Overlay/OgreOverlayManager.h>
 
 class TextRenderer : public Ogre::GeneralAllocatedObject
 {

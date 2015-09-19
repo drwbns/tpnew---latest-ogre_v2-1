@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef AIPerceptor_H_
 #define AIPerceptor_H_
 
+#include "OGRE/OgreVector3.h"
+#include "OGRE\OgreSingleton.h"
+
 class Agent;
 #define PRC AIPerceptor::getSingletonPtr()
 

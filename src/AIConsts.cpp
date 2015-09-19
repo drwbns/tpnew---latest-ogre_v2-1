@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "AIConsts.h"
 
 const float AIConsts::PlayerTrackDistance  = 4.0f;

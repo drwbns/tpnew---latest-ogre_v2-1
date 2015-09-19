@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+
 #include "PhysicsContactReport.h"
 #include "PhysicsHelper.h"
 #include "zzzSndSystem.h"
@@ -7,7 +7,7 @@
 void PhysicsContactReport::onContactNotify(NxContactPair& pair, NxU32 events)
 {
 	NxContactStreamIterator j(pair.stream);
-	NxVec3 cp(0,0,0);
+	PxVec3 cp(0,0,0);
 	while(j.goNextPair())
     {
 		while(j.goNextPatch())

@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "stdafx.h"
+
 #include "GUtility.h"
 #include "Level.h"
 #include "GraphicsSystem.h"
@@ -114,12 +114,12 @@ Level::Level()
 			fsFaces.push_back(*myIter);
 		}
 
-		// Convert verts (points) to Nx friendly array (NxVec3*)
+		// Convert verts (points) to Nx friendly array (PxVec3*)
 
 		std::vector<float>::const_iterator myVertsIter = INPT->getMesh()->getVerts().begin();
 
-		std::vector<NxVec3> fsVerts;
-		NxVec3 tempVec3;
+		std::vector<PxVec3> fsVerts;
+		PxVec3 tempVec3;
 		int vertsIndex = 0;
 		for (size_t i = 0; i < INPT->getMesh()->getVerts().size()/3; i++){
 			tempVec3.x = INPT->getMesh()->getVerts()[vertsIndex];
@@ -133,9 +133,9 @@ Level::Level()
 		NxTriangleMeshDesc fsDesc;
 		fsDesc.numVertices = (NxU32)INPT->getMesh()->getVertCount();
 		fsDesc.numTriangles = (NxU32)INPT->getMesh()->getTriCount();
-		fsDesc.pointStrideBytes = sizeof(NxVec3);
+		fsDesc.pointStrideBytes = sizeof(PxVec3);
 		fsDesc.triangleStrideBytes = 3*sizeof(NxU32);
-		fsDesc.points = &fsVerts[0];  // NxVec3*[] array
+		fsDesc.points = &fsVerts[0];  // PxVec3*[] array
 		fsDesc.triangles = &fsFaces[0]; // NxU32*[] array
 		fsDesc.flags = 0;
 		fsDesc.materialIndexStride = sizeof(NxMaterialIndex);
@@ -154,7 +154,7 @@ Level::Level()
 
 		if (fsShapeDesc.meshData)
 		{
-			NxActorDesc actorDesc;
+			PxActorDesc actorDesc;
 			NxBodyDesc bodyDesc;
 			actorDesc.shapes.pushBack(&fsShapeDesc);
 			actorDesc.body	= NULL;

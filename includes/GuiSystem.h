@@ -23,7 +23,15 @@ THE SOFTWARE.
 #ifndef GuiSystem_H_
 #define GuiSystem_H_
 
-#include "TextRenderer.h"
+#include "OgreWindowEventUtilities.h"
+
+class MyGUI::Gui;
+class MyGUI::OgrePlatform;
+class MyGUI::VectorWidgetPtr;
+
+class TextRenderer;
+class Ogre::ManualObject;
+
 #define UISYS GuiSystem::getSingletonPtr()
 
 class GuiSystem : public Ogre::Singleton<GuiSystem>, public Ogre::GeneralAllocatedObject, public Ogre::WindowEventListener

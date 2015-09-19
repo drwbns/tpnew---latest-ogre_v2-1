@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+
 #include "NxPhysics.h"
 #include "PhysicsStream.h"
 

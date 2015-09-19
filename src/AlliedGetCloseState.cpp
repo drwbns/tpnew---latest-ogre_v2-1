@@ -20,12 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "AlliedGetCloseState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "AIConsts.h"
+#include "Agent.h"
+#include "GlobalVars.h"
+
+#include "OgreQuaternion.h"
+#include "OgreVector3.h"
+
+#include "BaseApplication.h"
+#include "Character.h"
+
 using namespace Ogre;
 
 AlliedGetCloseState::AlliedGetCloseState(int id) : AIState(id)
@@ -39,7 +45,7 @@ AlliedGetCloseState::~AlliedGetCloseState()
 void AlliedGetCloseState::Enter(Agent* agent)
 {
 	//assumes that 0 is player, allies start with 1 and so on, also max 3 allies
-	Vector3 dest = PLAYER->GetPosition();
+	Vector3 dest = BASE->getCharacter()->getPlayerNode()->GetPosition();
 	int ally_id = agent->getID();
 	if (ally_id == 1)
 	{

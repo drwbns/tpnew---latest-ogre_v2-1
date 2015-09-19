@@ -50,12 +50,17 @@
 
 #ifndef MESHLOADER_OBJ
 #define MESHLOADER_OBJ
+#include <vector>
 
-#include "Ogre.h"
-#include "OIS.h"
+#include "OIS/OIS.h"
 
 #include "SharedData.h"
-#include "NxPhysics.h"
+#include "PxPhysics.h"
+#include "PxMaterial.h"
+
+#include "OGRE\OgreEntity.h"
+#include "OGRE\OgreSceneNode.h"
+#include "OGRE\OgreSceneManager.h"
 
 
 using namespace Ogre;
@@ -75,7 +80,7 @@ public:
 	const std::vector<size_t>& getTris() const{ return tris; }
 	inline size_t getVertCount() const { return nverts; }
 	inline int getTriCount() const { return ntris; }
-	inline std::vector<NxMaterialIndex*> getMaterials() const { return m_materials; }
+	//inline std::vector<PxMaterial*> getMaterials() const { return m_materials; }
 
 	inline Ogre::Entity* getEntity() const { return ent; }
 	inline Ogre::SceneNode* getSceneNode() const { return lvlNode; }
@@ -99,7 +104,7 @@ protected:
 	std::vector<size_t> tris;		// triangle buffer array
 	int numNodes;
 	
-	std::vector<NxMaterialIndex*> m_materials;
+	//std::vector<PxMaterial*> m_materials;
 	float* newverts;
 
 };

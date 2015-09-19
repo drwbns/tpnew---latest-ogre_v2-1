@@ -17,30 +17,23 @@ This source file is part of the
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
 
-#include <OgreCamera.h>
-#include <OgreEntity.h>
-#include <OgreLogManager.h>
-#include <OgreRoot.h>
-#include <OgreViewport.h>
-#include <OgreSceneManager.h>
-#include <OgreRenderWindow.h>
-#include <OgreConfigFile.h>
+#include "OgreSingleton.h"
+#include "OgreFrameListener.h"
+#include "OgreWindowEventUtilities.h"
 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
 
-#include <SdkTrays.h>
-#include <SdkCameraMan.h>
+#include "OIS\OISMouse.h"
+#include "OIS\OISKeyboard.h"
 
-#include "Character.h"
+class OgreCharacter;
+
+#include "Overlay\OgreOverlayElement.h"
 
 #define BASE BaseApplication::getSingletonPtr()
 
 using namespace Ogre;
 
-class BaseApplication : public Ogre::Singleton<BaseApplication>, public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener, OgreBites::SdkTrayListener
+class BaseApplication : public Ogre::Singleton<BaseApplication>, public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
 public:
     BaseApplication(void);
@@ -57,33 +50,11 @@ public:
 	Root* getRoot() { return mRoot; } 
 	OIS::InputManager* getInputMgr() { return mInputManager; } 
 
+	OgreCharacter * getCharacter() { return mChar; }
+
     virtual void go(void);
 
-		// References to the main character and the camera
-	OgreCharacter *mChar;
-
-	// Camera mode - Now supports 1st person, 3rd person (chasing) and 3rd person (fixed)
-	unsigned int mMode;
-
-	// Whether Cam is locked or not, true at initialization
-	int lockedCam;
-	float yaw;
-	float pitch;
-
-	Real moveScale;
-	Real camToPlayer;
-	int mMouseSpeed, mRotateSpeed, mZoomSpeed;
-	bool fixedCam, fixedYaw, fixedPitch;
-	bool camRotate;
-	bool yawHasBeenReset;
-	Real pitchAngle, yawAngle;
-	Quaternion qr;
-
-	OverlayElement* guiDbg;
-	float mTimeUntilNextToggle;
-	TextureFilterOptions mFiltering;
-	size_t mAniso;
-	int mSceneDetailIndex;
+		
 
 protected:
      bool setup();
@@ -122,9 +93,6 @@ protected:
     Ogre::String mResourcesCfg;
     Ogre::String mPluginsCfg;
 
-    // OgreBites
-    OgreBites::SdkTrayManager* mTrayMgr;
-    OgreBites::ParamsPanel* mDetailsPanel;     // sample details panel
     bool mCursorWasVisible;                    // was cursor visible before dialog appeared
     bool mShutDown;
 
@@ -132,6 +100,31 @@ protected:
     OIS::InputManager* mInputManager;
     OIS::Mouse*    mMouse;
     OIS::Keyboard* mKeyboard;
+
+	// References to the main character and the camera
+	OgreCharacter *mChar;
+
+	// Camera mode - Now supports 1st person, 3rd person (chasing) and 3rd person (fixed)
+	unsigned int mMode;
+
+	// Whether Cam is locked or not, true at initialization
+	int lockedCam;
+	float yaw;
+	float pitch;
+
+	Real moveScale;
+	Real camToPlayer;
+	int mMouseSpeed, mRotateSpeed, mZoomSpeed;
+	bool fixedCam, fixedYaw, fixedPitch;
+	bool camRotate;
+	bool yawHasBeenReset;
+	Real pitchAngle, yawAngle;
+
+	Ogre::OverlayElement* guiDbg;
+	float mTimeUntilNextToggle;
+	TextureFilterOptions mFiltering;
+	size_t mAniso;
+	int mSceneDetailIndex;
 };
 
 #endif // #ifndef __BaseApplication_h_

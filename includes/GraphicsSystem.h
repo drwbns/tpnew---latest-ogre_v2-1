@@ -23,7 +23,9 @@ THE SOFTWARE.
 #ifndef GraphicsSystem_H_
 #define GraphicsSystem_H_
 
-#include "TextRenderer.h"
+#include "OgreWindowEventUtilities.h"
+#include "OgreSingleton.h"
+
 #define GSYS GraphicsSystem::getSingletonPtr()
 
 class GraphicsSystem : public Ogre::Singleton<GraphicsSystem>, public Ogre::GeneralAllocatedObject, public Ogre::WindowEventListener

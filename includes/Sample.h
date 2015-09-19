@@ -19,10 +19,10 @@
 #ifndef RECASTSAMPLE_H
 #define RECASTSAMPLE_H
 
-#include "Recast.h"
+#include "Recast/Recast.h"
 #include "SampleInterfaces.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshQuery.h"
 #include "Path.h"
 
 /*

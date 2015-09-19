@@ -8,7 +8,7 @@
  * @update  2007 by independentCreations see independentCreations@gmail.com
  */
 
-#include "StdAfx.h"
+
 #include "MovableText.h"
 
 #define POS_TEX_BINDING    0

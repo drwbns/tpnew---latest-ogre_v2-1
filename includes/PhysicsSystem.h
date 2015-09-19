@@ -56,7 +56,7 @@ public:
 	NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; }
 	NxScene*      getScene() const { return gScene; }
 	NxControllerManager* getCManager() const { return gManager; }
-	void SetActorCollisionGroup(NxActor* actor, NxCollisionGroup group);
+	void SetActorCollisionGroup(PxActor* actor, NxCollisionGroup group);
 	NxMaterialIndex addNewMaterial(Ogre::String name);
 	Ogre::String getMaterialName(NxMaterialIndex index);
 	

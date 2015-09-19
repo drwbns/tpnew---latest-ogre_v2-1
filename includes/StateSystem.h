@@ -24,6 +24,10 @@ THE SOFTWARE.
 #define StateSystem_H_
 
 #include "State.h"
+
+#include "OgreSingleton.h"
+
+
 #define SSYS StateSystem::getSingletonPtr()
 
 class StateSystem : Ogre::Singleton<StateSystem>, public Ogre::GeneralAllocatedObject

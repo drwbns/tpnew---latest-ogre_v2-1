@@ -20,10 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "AIStateMachine.h"
 #include "World.h"
 #include "AIKnowledge.h"
+#include "GlobalVars.h"
+
+#include "OgreStringConverter.h"
+
 using namespace Ogre;
 
 AIStateMachine::AIStateMachine(Agent* owner, AIState* base, float lockTime) : owner(owner), baseState(base)

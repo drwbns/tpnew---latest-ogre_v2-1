@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "AlliedOutOfWayState.h"
 #include "World.h"
 #include "AIKnowledge.h"

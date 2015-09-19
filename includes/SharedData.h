@@ -38,11 +38,15 @@
 #define __H_SHAREDDATA_H__
 
 #include <assert.h>
-#include "Ogre.h"
-#include "OIS.h"
-#include "RecastLog.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
+
+#include "OGRE\OgrePrerequisites.h"
+#include "OGRE\OgreUTFString.h"
+#include "OGRE\OgreSingleton.h"
+
+#include "OIS/OIS.h"
+#include "Recast\RecastLog.h"
+#include "Detour\DetourNavMesh.h"
+#include "Detour\DetourNavMeshQuery.h"
 
 #define g_time Time::GetSingleton()
 #define g_database Database::GetSingleton()

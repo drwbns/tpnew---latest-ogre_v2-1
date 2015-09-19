@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef AIState_h_
 #define AIState_h_
 
+#include <vector>
+
 class Agent;
 class AIStateMachine;
 

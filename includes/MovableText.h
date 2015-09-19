@@ -11,7 +11,26 @@
 #ifndef __MovableText_H__
 #define __MovableText_H__
 
-#include <OgreFontManager.h>
+#include "OGRE\OgrePrerequisites.h"
+
+/*
+#include <Ogre/Overlay/OgreFontManager.h>
+
+#include "OGRE\OgreString.h"
+#include "OGRE\OgreColourValue.h"
+
+#include "OGRE\OgreAxisAlignedBox.h"
+#include "OGRE\OgreCommon.h"
+#include "OGRE\OgreCamera.h"
+#include "OGRE\OgreRenderWindow.h"
+
+*/
+
+#include "OGRE\OgreRenderable.h"
+#include <OGRE/OgreUTFString.h>
+#include "OGRE\OgreMovableObject.h"
+#include "OGRE\OgreRenderOperation.h"
+#include "OGRE\Overlay\OgreFont.h"
 
 class MovableText : public Ogre::MovableObject, public Ogre::Renderable
 {
@@ -29,7 +48,7 @@ protected:
 
 	Ogre::ColourValue		mColor;
 	Ogre::RenderOperation	mRenderOp;
-	Ogre::AxisAlignedBox	mAABB;
+	Ogre::AxisAlignedBox	*mAABB;
 	Ogre::LightList			mLList;
 
 	unsigned int			mCharHeight;
@@ -80,7 +99,7 @@ public:
     float						getAdditionalHeight() const {return mAdditionalHeight;}
 	float                       getRadius() const { return mRadius; }
     bool						getShowOnTop() const {return mOnTop;}
-    Ogre::AxisAlignedBox		GetAABB(void) { return mAABB; }
+    Ogre::AxisAlignedBox		* GetAABB(void) { return mAABB; }
 
 	virtual void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables = false) {}
 
@@ -99,7 +118,7 @@ protected:
 	float   getSquaredViewDepth(const Ogre::Camera *cam) const {return 0;};
     const   Ogre::Quaternion        & getWorldOrientation(void) const;
     const   Ogre::Vector3           & getWorldPosition(void) const;
-	const   Ogre::AxisAlignedBox    & getBoundingBox(void) const {return mAABB;};
+	const   Ogre::AxisAlignedBox    & getBoundingBox(void) const {return *mAABB;};
 	const   Ogre::String            & getName(void) const {return mName;};
 	const   Ogre::String            & getMovableType(void) const {static Ogre::String movType = "MovableText"; return movType;};
 

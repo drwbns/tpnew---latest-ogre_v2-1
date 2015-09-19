@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "StdAfx.h"
+
 #include "PhysicsSystem.h"
 #include "GraphicsSystem.h"
 using namespace Ogre;
@@ -54,7 +54,7 @@ void PhysicsSystem::Initialize()
 
 	//scene
 	NxSceneDesc sceneDesc;
-	sceneDesc.gravity = NxVec3(0,-10,0);
+	sceneDesc.gravity = PxVec3(0,-10,0);
 	sceneDesc.simType = NX_SIMULATION_SW;
 	sceneDesc.userContactReport = &gContactReport;
 	gPhysicsSDK->getFoundationSDK();
@@ -148,7 +148,7 @@ void PhysicsSystem::Update()
 	}
 }
 
-void PhysicsSystem::SetActorCollisionGroup(NxActor* actor, NxCollisionGroup group)
+void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, NxCollisionGroup group)
 {
     NxShape*const* shapes = actor->getShapes();
     NxU32 nShapes = actor->getNbShapes();
@@ -178,15 +178,15 @@ void PhysicsSystem::FlipDebug()
 Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
 {
 	//ray cast
-	NxVec3 org = TemplateUtils::toNX(from);
-	NxVec3 ndir = TemplateUtils::toNX(dir);
+	PxVec3 org = TemplateUtils::toNX(from);
+	PxVec3 ndir = TemplateUtils::toNX(dir);
 	NxRay ray(org, ndir);
 	NxRaycastHit hit;
 	//Get the closest shape
 	NxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit);
 	if (closestShape)
 	{
-		const NxVec3& worldImpact = hit.worldImpact;
+		const PxVec3& worldImpact = hit.worldImpact;
 		return TemplateUtils::toOgre(worldImpact);
 	}
 	return Vector3::ZERO;
@@ -195,9 +195,9 @@ Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
 Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxShape** shape, NxMaterialIndex &mat)
 {
 	//ray cast
-	NxVec3 org = TemplateUtils::toNX(from);
+	PxVec3 org = TemplateUtils::toNX(from);
 	Vector3 delta = to - from;
-	NxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
 	NxRay ray(org, ndir);
 	NxRaycastHit hit;
 	mat = 0;
@@ -207,7 +207,7 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxSh
 	{
 		if (shape != NULL)*shape = closestShape;
 		mat = hit.materialIndex;
-		const NxVec3& worldImpact = hit.worldNormal;
+		const PxVec3& worldImpact = hit.worldNormal;
 		return TemplateUtils::toOgre(worldImpact);
 	}
 	if (shape != NULL)*shape = NULL;
@@ -217,16 +217,16 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 from, Ogre::Vector3 to, NxSh
 Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 from, Ogre::Vector3 to)
 {
 	//ray cast
-	NxVec3 org = TemplateUtils::toNX(from);
+	PxVec3 org = TemplateUtils::toNX(from);
 	Vector3 delta = to - from;
-	NxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
 	NxRay ray(org, ndir);
 	NxRaycastHit hit;
 	//Get the closest shape
 	NxShape* closestShape = gScene->raycastClosestShape(ray, NX_STATIC_SHAPES, hit, -1, delta.length());
 	if (closestShape)
 	{
-		const NxVec3& worldImpact = hit.worldImpact;
+		const PxVec3& worldImpact = hit.worldImpact;
 		return TemplateUtils::toOgre(worldImpact);
 	}
 	return Vector3::ZERO;
@@ -234,7 +234,7 @@ Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 from, Ogre::Vector3 to)
 
 bool PhysicsSystem::OverlapTest(Ogre::Vector3 min, Ogre::Vector3 max)
 {
-	NxBounds3 worldBounds;
+	PxBounds3 worldBounds;
 	worldBounds.set(TemplateUtils::toNX(min), TemplateUtils::toNX(max));
 	return gScene->checkOverlapAABB(worldBounds, NX_STATIC_SHAPES);
 }

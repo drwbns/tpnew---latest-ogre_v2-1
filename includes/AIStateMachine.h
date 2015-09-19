@@ -58,6 +58,8 @@ THE SOFTWARE.
 #include "AlliedExploreState.h"
 #include "AlliedSeekState.h"
 
+#include "OGRE\OgreMemoryAllocatorConfig.h"
+
 
 class AIStateMachine : public Ogre::GeneralAllocatedObject
 {

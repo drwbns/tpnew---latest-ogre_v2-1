@@ -3,9 +3,9 @@
 
 
 #include "InputGeom.h"
-#include "Ogre.h"
-#include "DetourTileCacheBuilder.h"
-#include "Recast.h"
+#include "OGRE\OgreManualObject.h"
+#include "Detour\DetourTileCacheBuilder.h"
+#include "Recast\Recast.h"
 
 // Some math headers don't have PI defined.
 static const float DU_PI = 3.14159265f;

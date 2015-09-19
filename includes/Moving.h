@@ -23,6 +23,9 @@ THE SOFTWARE.
 #ifndef Moving_H_
 #define Moving_H_
 
+#include "Ogre/OgreVector3.h"
+#include "OGRE\OgreQuaternion.h"
+
 class Path;
 
 class Moving
