@@ -37,7 +37,7 @@ PhysicsSystem& PhysicsSystem::getSingleton(void)
 	assert( msSingleton );  return ( *msSingleton );
 }
 
-PhysicsSystem::PhysicsSystem() : gPhysicsSDK(NULL), gScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)
+PhysicsSystem::PhysicsSystem() : /*gPhysicsSDK(NULL),*/ gScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)
 {
 	mDebuggerView = false;
 }
@@ -50,6 +50,7 @@ PhysicsSystem::~PhysicsSystem()
 void PhysicsSystem::Initialize()
 {
 	//sdk
+	/*
 	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
 	//scene
@@ -100,11 +101,13 @@ void PhysicsSystem::Initialize()
 	AxisAlignedBox aabInf;
 	aabInf.setInfinite();
 	mVisualDebugger->setBoundingBox(aabInf);
+	*/
 }
 
 void PhysicsSystem::Finalize()
 {
 	//debugger
+	/*
 	mVisualDebuggerNode->detachAllObjects();
 	mVisualDebuggerNode->getParentSceneNode()->removeAndDestroyChild(mVisualDebuggerNode->getName());
 	mVisualDebuggerNode = NULL;
@@ -117,10 +120,12 @@ void PhysicsSystem::Finalize()
 	gScene->fetchResults(NX_RIGID_BODY_FINISHED,true);
 	gPhysicsSDK->releaseScene(*gScene);
 	gPhysicsSDK->release();
+	*/
 }
 
 void PhysicsSystem::Update()
 {
+	/*
 	gScene->simulate(GlobalVars::Tick);
 	gScene->flushStream();
 	while(!gScene->fetchResults(NX_RIGID_BODY_FINISHED, true)){}
@@ -146,10 +151,12 @@ void PhysicsSystem::Update()
 		}
 		mVisualDebugger->end();
 	}
+	*/
 }
-
+/*
 void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group)
 {
+
     PxShape*const* shapes = actor->getShapes();
     PxU32 nShapes = actor->getNbShapes();
     while (nShapes--)
@@ -157,10 +164,12 @@ void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup grou
         shapes[nShapes]->setGroup(group);
 	}
 }
+*/
 
 void PhysicsSystem::FlipDebug()
 {
 	mDebuggerView = !mDebuggerView;
+	/*
 	if (!mDebuggerView)
 	{
 		mVisualDebugger->clear();
@@ -173,7 +182,10 @@ void PhysicsSystem::FlipDebug()
 		mVisualDebugger->position(Vector3(0,1.8,2));
 		mVisualDebugger->end();
 	}
+	*/
 }
+
+/*
 
 Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
 {
@@ -272,3 +284,5 @@ Ogre::String PhysicsSystem::getMaterialName(PxMaterialIndex index)
 	if(index == materials.size()) return materials[(int)index - 1];
 	return materials[(int)index];
 }
+
+*/

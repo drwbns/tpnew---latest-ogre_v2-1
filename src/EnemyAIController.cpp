@@ -22,7 +22,8 @@ THE SOFTWARE.
 
 
 #include "EnemyAIController.h"
-#include "GameState.h"
+
+#include "AIState.h"
 #include "StateSystem.h"
 #include "AIStateMachine.h"
 using namespace Ogre;

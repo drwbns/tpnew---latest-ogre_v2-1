@@ -78,6 +78,9 @@
 #include "foundation\PxVec3.h"
 #include "foundation\PxQuat.h"
 
+#include "OgreVector3.h"
+#include "OgreQuaternion.h"
+
 using namespace physx;
 
 class TemplateUtils

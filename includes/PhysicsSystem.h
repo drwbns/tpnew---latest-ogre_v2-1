@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include "OgreSingleton.h"
 #include "OgreMemoryAllocatorConfig.h"
 
+#include "PxScene.h"
+
 using namespace physx;
 
 #define PHY PhysicsSystem::getSingletonPtr()

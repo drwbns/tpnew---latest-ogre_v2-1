@@ -1,10 +1,10 @@
 #ifndef PhysicsHelper_H_
 #define PhysicsHelper_H_
 
-#include "PxCharacter.h"
-#include "PxController.h"
-#include "PxCapsuleController.h"
-#include "NxUserAllocator.h"
+#include "characterkinematic/PxCharacter.h"
+#include "characterkinematic/PxController.h"
+#include "characterkinematic/PxCapsuleController.h"
+#include "characterkinematic\PxController.h"
 #include "PxShape.h"
 #include "PxActor.h"
 
@@ -18,8 +18,8 @@ enum CollGroup
 };
 
 #define COLLIDABLE_MASK	(1<<GROUP_COLLIDABLE_NON_PUSHABLE) | (1<<GROUP_COLLIDABLE_PUSHABLE)
-
-class ControllerAllocator : public NxUserAllocator 
+/*
+class ControllerAllocator : public PxUserAllocator 
 {
 public:
 	virtual void*   mallocDEBUG(size_t size, const char* fileName, int line)    { return ::malloc(size); }
@@ -61,5 +61,5 @@ class ControllerHitReport : public NxUserControllerHitReport
 	}
 
 };
-
+*/
 #endif

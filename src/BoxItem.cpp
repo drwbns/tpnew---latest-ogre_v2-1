@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "OgreEntity.h"
 #include "OgreSceneNode.h"
+#include "OgreMesh.h"
 
 #include "PxActor.h"
 

@@ -32,13 +32,17 @@ THE SOFTWARE.
 #include "Sample_TileMesh.h"
 
 #include "Detour/DetourNavMesh.h"
+
 #include "OgreDistanceLodStrategy.h"
 #include <OgrePixelCountLodStrategy.h>
+
 //#include "NavMesher.h"
 #include "DotSceneLoader.hpp"
+
 #include "OgreVector3.h"
 #include "OgreQuaternion.h"
 #include "OgreLodStrategyManager.h"
+#include "OgreStringVector.h"
 
 #include "foundation\PxSimpleTypes.h"
 using namespace Ogre;
@@ -133,7 +137,7 @@ Level::Level()
 			vertsIndex+=3;
 			fsVerts.push_back(tempVec3);
 		}
-		
+		/*
 
 		NxTriangleMeshDesc fsDesc;
 		fsDesc.numVertices = (PxU32)INPT->getMesh()->getVertCount();
@@ -176,6 +180,7 @@ Level::Level()
 				throw Ogre::Exception(Ogre::Exception::ERR_INTERNAL_ERROR, "Actor Create Error #6", __FUNCTION__);
 			}
 		}
+		*/
 
 		//add box items
 		for (int i=0;i<4;i++)

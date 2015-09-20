@@ -23,9 +23,12 @@ THE SOFTWARE.
 #ifndef _SOUNDLISTENER_H
 #define _SOUNDLISTENER_H
 
+#include "OgrePrerequisites.h"
+
 #include "OgreMovableObject.h"
 #include "OgreSingleton.h"
-#include "OgrePrerequisites.h"
+
+#include "al.h"
 
 class SoundListener : public Ogre::MovableObject, protected Ogre::Singleton<SoundListener>
 {

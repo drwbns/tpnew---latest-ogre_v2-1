@@ -19,11 +19,7 @@
 #ifndef RECASTSAMPLE_H
 #define RECASTSAMPLE_H
 
-#include "Recast/Recast.h"
-#include "SampleInterfaces.h"
-#include "Detour/DetourNavMesh.h"
-#include "Detour/DetourNavMeshQuery.h"
-#include "Path.h"
+#include "prereqs.h"
 
 /*
 /// Tool types.
@@ -79,8 +75,8 @@ struct SampleTool
 class Sample
 {
 protected:
-	class dtNavMesh* m_navMesh;
-	class dtNavMeshQuery* m_navQuery;
+	dtNavMesh* m_navMesh;
+	dtNavMeshQuery* m_navQuery;
 	//class dtCrowd* m_crowd;
 
 	unsigned char m_navMeshDrawFlags;
@@ -102,7 +98,7 @@ protected:
 	
 	SampleTool* m_tool;
 	
-	class BuildContext* m_ctx;
+	BuildContext* m_ctx;
 	
 public:
 	Sample();
@@ -124,8 +120,8 @@ public:
 	virtual bool handleBuild();
 	virtual void handleUpdate(const float dt);
 
-	virtual class dtNavMesh* getNavMesh() { return m_navMesh; }
-	virtual class dtNavMeshQuery* getNavMeshQuery() { return m_navQuery; }
+	virtual dtNavMesh* getNavMesh() { return m_navMesh; }
+	virtual dtNavMeshQuery* getNavMeshQuery() { return m_navQuery; }
 //	virtual class dtCrowd* getCrowd() { return m_crowd; }
 	virtual float getAgentRadius() { return m_agentRadius; }
 	virtual float getAgentHeight() { return m_agentHeight; }

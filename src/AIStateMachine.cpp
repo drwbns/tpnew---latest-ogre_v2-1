@@ -24,8 +24,10 @@ THE SOFTWARE.
 #include "AIStateMachine.h"
 
 #include "GlobalVars.h"
+#include "Agent.h"
 
 #include "OgreStringConverter.h"
+
 
 using namespace Ogre;
 

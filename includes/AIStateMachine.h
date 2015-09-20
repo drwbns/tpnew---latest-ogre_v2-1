@@ -23,7 +23,7 @@ THE SOFTWARE.
 #ifndef AIStateMachine_h_
 #define AIStateMachine_h_
 
-#include "AIState.h"
+#include "prereqs.h"
 
 #include "OGRE\OgreMemoryAllocatorConfig.h"
 

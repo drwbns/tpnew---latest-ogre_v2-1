@@ -23,7 +23,8 @@ THE SOFTWARE.
 #ifndef ParticleManager_H_
 #define ParticleManager_H_
 
-//#include "ParticleUniversePlugin.h"
+#include "OgreSingleton.h"
+#include "OgreMemoryAllocatorConfig.h"
 
 #define PTM ParticleManager::getSingletonPtr()
 

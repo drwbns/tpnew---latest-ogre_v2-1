@@ -18,6 +18,12 @@ class Wall;
 class AIStateMachine;
 class AgentInfo;
 class PositionalInfo;
+class AIState;
+
+class dtNavMesh;
+class dtNavMeshQuery;
+class SampleTool;
+class BuildContext;
 
 #endif // !prereqs_h
 

@@ -93,7 +93,7 @@ Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc
 
 	//ais
 	knowledge = new AIKnowledge(this);
-	*eyePos = Vector3::ZERO;
+	eyePos = Vector3::ZERO;
 	mWaitTime = 4.0;
 	cWaitTime = 0.0;
 	viewRange = 60;//standard
