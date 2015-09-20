@@ -24,13 +24,6 @@ THE SOFTWARE.
 #include "AlliedKeepCloseState.h"
 #include "World.h"
 #include "AIKnowledge.h"
-/*
-
-
-#include "StateSystem.h"
-#include "GameState.h"
-*/
-#include "BaseApplication.h"
 #include "AIConsts.h"
 #include "Agent.h"
 

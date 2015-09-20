@@ -22,10 +22,8 @@ THE SOFTWARE.
 
 
 #include "AlliedWaitState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 AlliedWaitState::AlliedWaitState(int id) : AIState(id)

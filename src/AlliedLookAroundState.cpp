@@ -22,10 +22,8 @@ THE SOFTWARE.
 
 
 #include "AlliedLookAroundState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 AlliedLookAroundState::AlliedLookAroundState(int id) : AIState(id)

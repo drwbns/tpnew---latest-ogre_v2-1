@@ -22,8 +22,9 @@ THE SOFTWARE.
 
 
 #include "AlliedOffensiveState.h"
-#include "World.h"
 #include "AIKnowledge.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 AlliedOffensiveState::AlliedOffensiveState(int id) : AIState(id)

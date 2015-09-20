@@ -27,6 +27,9 @@ THE SOFTWARE.
 #include "World.h"
 #include "AIConsts.h"
 
+#include "OgreVector3.h"
+#include "OgreMath.h"
+
 using namespace Ogre;
 
 AlliedGetCloseState::AlliedGetCloseState(int id) : AIState(id)

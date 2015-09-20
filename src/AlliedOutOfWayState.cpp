@@ -22,15 +22,9 @@ THE SOFTWARE.
 
 
 #include "AlliedOutOfWayState.h"
-#include "BaseApplication.h"
 #include "Agent.h"
 #include "World.h"
-/*
-
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
-*/
+#include "AIConsts.h"
 
 using namespace Ogre;
 

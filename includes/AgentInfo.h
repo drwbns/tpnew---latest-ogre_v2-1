@@ -23,7 +23,7 @@ THE SOFTWARE.
 #ifndef AgentInfo_H_
 #define AgentInfo_H_
 
-class Agent;
+#include "Agent.h"
 
 class AgentInfo
 {

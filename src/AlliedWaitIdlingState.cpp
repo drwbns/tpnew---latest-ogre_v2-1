@@ -25,12 +25,6 @@ THE SOFTWARE.
 #include "GlobalVars.h"
 #include "Agent.h"
 
-/*
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
-*/
 
 using namespace Ogre;
 

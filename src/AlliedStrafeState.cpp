@@ -22,8 +22,8 @@ THE SOFTWARE.
 
 
 #include "AlliedStrafeState.h"
-#include "World.h"
 #include "AIKnowledge.h"
+
 using namespace Ogre;
 
 AlliedStrafeState::AlliedStrafeState(int id) : AIState(id)

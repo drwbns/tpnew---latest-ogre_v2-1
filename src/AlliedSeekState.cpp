@@ -22,10 +22,8 @@ THE SOFTWARE.
 
 
 #include "AlliedSeekState.h"
-#include "World.h"
 #include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+
 using namespace Ogre;
 
 AlliedSeekState::AlliedSeekState(int id) : AIState(id)
