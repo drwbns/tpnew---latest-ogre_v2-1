@@ -26,6 +26,8 @@ THE SOFTWARE.
 #include "tinyxml.h"
 #include "BillboardNodeSet.h"
 #include "BillboardNode.h"
+
+#include "OgreBillboardSet.h"
 #include "OgreSceneNode.h"
 
 

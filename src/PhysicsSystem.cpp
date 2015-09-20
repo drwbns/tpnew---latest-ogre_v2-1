@@ -129,7 +129,7 @@ void PhysicsSystem::Update()
 	if (mDebuggerView)
 	{
 		const NxDebugRenderable* data = gScene->getDebugRenderable();
-		NxU32 NbLines = NULL;
+		PxU32 NbLines = NULL;
 		if (data)NbLines = data->getNbLines();
 		const NxDebugLine* Lines;
 		if (data)Lines = data->getLines();
@@ -151,7 +151,7 @@ void PhysicsSystem::Update()
 void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group)
 {
     PxShape*const* shapes = actor->getShapes();
-    NxU32 nShapes = actor->getNbShapes();
+    PxU32 nShapes = actor->getNbShapes();
     while (nShapes--)
     {
         shapes[nShapes]->setGroup(group);

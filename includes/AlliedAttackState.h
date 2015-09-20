@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef AlliedAttackState_h_
 #define AlliedAttackState_h_
 
+#include "prereqs.h"
+
 #include "AIState.h"
 
 class AlliedAttackState : public AIState

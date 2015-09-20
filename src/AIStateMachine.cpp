@@ -22,8 +22,7 @@ THE SOFTWARE.
 
 
 #include "AIStateMachine.h"
-#include "World.h"
-#include "AIKnowledge.h"
+
 #include "GlobalVars.h"
 
 #include "OgreStringConverter.h"

@@ -23,7 +23,8 @@ THE SOFTWARE.
 #ifndef BillboardNodeSet_H_
 #define BillboardNodeSet_H_
 
-#include "OGRE\OgreBillboardSet.h"
+#include "prereqs.h"
+#include "OgrePrerequisites.h"
 
 class BillboardNodeSet
 {

@@ -25,6 +25,7 @@ This source file is part of the
 #include "Character.h"
 #include "OgreMeshManager.h"
 #include "OgreCamera.h"
+#include "OgreRoot.h"
 
 
 

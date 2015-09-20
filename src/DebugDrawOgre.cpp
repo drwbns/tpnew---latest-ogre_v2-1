@@ -1,7 +1,7 @@
 #include "DebugDrawOgre.h"
-#include "Recast.h"
+#include "Recast/Recast.h"
 #include "string.h"
-#include "DetourNode.h"
+#include "Detour/DetourNode.h"
 
 inline void evalArc(const float x0, const float y0, const float z0,
 					const float dx, const float dy, const float dz,

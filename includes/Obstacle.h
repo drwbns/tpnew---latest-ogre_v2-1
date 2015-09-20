@@ -25,6 +25,8 @@ THE SOFTWARE.
 
 #include "OGRE\OgrePrerequisites.h"
 
+#include "OgreVector3.h"
+
 class Obstacle
 {
 	friend class World;
@@ -35,12 +37,12 @@ private:
 	void resetDebug();
 
 public:
-	Ogre::Vector3 * GetPos() { return Position; }
-	void SetPos(Ogre::Vector3 * p) { Position = p; }
+	Ogre::Vector3 GetPos() { return Position; }
+	void SetPos(Ogre::Vector3 & p) { Position = p; }
 	float GetRadius() { return Radius; }
 
 private:
-	Ogre::Vector3 *  Position;
+	Ogre::Vector3 Position;
 	float Radius;
 	Ogre::ManualObject* mark;
 };

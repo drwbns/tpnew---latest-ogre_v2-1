@@ -22,10 +22,11 @@ THE SOFTWARE.
 
 
 #include "AlliedInspectState.h"
-#include "World.h"
 #include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+
+#include "OgreVector3.h"
+
 using namespace Ogre;
 
 AlliedInspectState::AlliedInspectState(int id) : AIState(id)

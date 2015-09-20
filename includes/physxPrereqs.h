@@ -11,6 +11,9 @@ namespace physx {
 	class PxVec3;
 	class PxControllerManager;
 	class PxMaterial;
+	//class PxActorDesc;
+	//class PxBodyDesc;
+	//class PxBoxShapeDesc;
 
 }
 

@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef PositionalInfo_H_
 #define PositionalInfo_H_
 
+#include "OgreVector3.h"
+
 class PositionalInfo
 {
 public:

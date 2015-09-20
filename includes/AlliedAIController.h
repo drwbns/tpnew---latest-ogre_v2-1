@@ -23,10 +23,10 @@ THE SOFTWARE.
 #ifndef AlliedAIController_H_
 #define AlliedAIController_H_
 
+#include "prereqs.h"
+
 #include "BaseController.h"
 
-class Agent;
-class AIStateMachine;
 
 class AlliedAIController : public BaseController
 {

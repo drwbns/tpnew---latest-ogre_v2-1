@@ -74,7 +74,7 @@ public:
 	bool isDead() { return dead; }
 	void ShowHeadText(bool b) { headText->setVisible(b); }
 	AIKnowledge* getKnowledge() { return knowledge; }
-	Ogre::Vector3 * getEyePos() { return eyePos; }
+	Ogre::Vector3 getEyePos() { return eyePos; }
 	Agent* getAttacker() { return attacker; }
 	void setAttacker(Agent* a) { attacker = a; }
 	void setHeadText(Ogre::String s) { headText->setCaption(s); }
@@ -116,7 +116,7 @@ protected:
 
 	//ai helper
 	Agent* attacker;
-	Ogre::Vector3 * eyePos;
+	Ogre::Vector3 eyePos;
 	float mWaitTime;
 	float cWaitTime;
 	float viewRange;

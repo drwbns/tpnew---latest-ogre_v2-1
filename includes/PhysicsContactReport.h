@@ -6,7 +6,7 @@
 class PhysicsContactReport : public NxUserContactReport
 {
 public:
-    virtual void onContactNotify(NxContactPair& pair, NxU32 events);
+    virtual void onContactNotify(NxContactPair& pair, PxU32 events);
 };
 
 #endif

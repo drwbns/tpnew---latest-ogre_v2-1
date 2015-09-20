@@ -23,10 +23,9 @@ THE SOFTWARE.
 #ifndef AIState_h_
 #define AIState_h_
 
-#include <vector>
+#include "prereqs.h"
 
-class Agent;
-class AIStateMachine;
+#include <vector>
 
 class AIState
 {

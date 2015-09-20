@@ -23,6 +23,8 @@ THE SOFTWARE.
 
 #include "EnemyFireState.h"
 #include "Agent.h"
+#include "AIKnowledge.h"
+
 
 using namespace Ogre;
 

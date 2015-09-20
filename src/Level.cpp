@@ -31,11 +31,16 @@ THE SOFTWARE.
 #include "BoxItem.h"
 #include "Sample_TileMesh.h"
 
-#include "DetourNavMesh.h"
+#include "Detour/DetourNavMesh.h"
 #include "OgreDistanceLodStrategy.h"
 #include <OgrePixelCountLodStrategy.h>
 //#include "NavMesher.h"
 #include "DotSceneLoader.hpp"
+#include "OgreVector3.h"
+#include "OgreQuaternion.h"
+#include "OgreLodStrategyManager.h"
+
+#include "foundation\PxSimpleTypes.h"
 using namespace Ogre;
 
 
@@ -105,11 +110,11 @@ Level::Level()
 	// Quick check for valid mesh data
  	if(INPT->getMesh()->getVerts().size() > 0) {
 
-		// Convert Tris to Nx friendly array (NxU32* )
+		// Convert Tris to Nx friendly array (PxU32* )
 
 		std::vector<size_t>::const_iterator myIter = INPT->getMesh()->getTris().begin();
 
-		std::vector<NxU32> fsFaces;
+		std::vector<PxU32> fsFaces;
 		for (myIter; myIter != INPT->getMesh()->getTris().end(); ++myIter ){
 			fsFaces.push_back(*myIter);
 		}
@@ -131,12 +136,12 @@ Level::Level()
 		
 
 		NxTriangleMeshDesc fsDesc;
-		fsDesc.numVertices = (NxU32)INPT->getMesh()->getVertCount();
-		fsDesc.numTriangles = (NxU32)INPT->getMesh()->getTriCount();
+		fsDesc.numVertices = (PxU32)INPT->getMesh()->getVertCount();
+		fsDesc.numTriangles = (PxU32)INPT->getMesh()->getTriCount();
 		fsDesc.pointStrideBytes = sizeof(PxVec3);
-		fsDesc.triangleStrideBytes = 3*sizeof(NxU32);
+		fsDesc.triangleStrideBytes = 3*sizeof(PxU32);
 		fsDesc.points = &fsVerts[0];  // PxVec3*[] array
-		fsDesc.triangles = &fsFaces[0]; // NxU32*[] array
+		fsDesc.triangles = &fsFaces[0]; // PxU32*[] array
 		fsDesc.flags = 0;
 		fsDesc.materialIndexStride = sizeof(PxMaterialIndex);
 		if (INPT->getMesh()->getMaterials().size() > 0)

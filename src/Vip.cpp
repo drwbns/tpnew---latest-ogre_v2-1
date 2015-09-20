@@ -198,7 +198,7 @@ void Vip::Update()
 	//move phy controller
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
-	NxU32 collisionFlag;
+	PxU32 collisionFlag;
 	phycontrol->move(disp,COLLIDABLE_MASK,0.001,collisionFlag);
 	flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 

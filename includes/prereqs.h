@@ -11,6 +11,13 @@ class BoxItem;
 class Moving;
 class MovableText;
 class BillboardNodeSet;
+class BillboardNode;
+class BillboardSystem;
+class Obstacle;
+class Wall;
+class AIStateMachine;
+class AgentInfo;
+class PositionalInfo;
 
 #endif // !prereqs_h
 

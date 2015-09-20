@@ -23,8 +23,8 @@ THE SOFTWARE.
 #ifndef AIKnowledge_H_
 #define AIKnowledge_H_
 
-#include "Moving.h"
-#include "Agent.h"
+#include "prereqs.h"
+
 #include "AgentInfo.h"
 #include "PositionalInfo.h"
 

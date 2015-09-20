@@ -22,10 +22,9 @@ THE SOFTWARE.
 
 
 #include "AlliedIdleState.h"
-#include "World.h"
 #include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+
 using namespace Ogre;
 
 AlliedIdleState::AlliedIdleState(int id) : AIState(id)

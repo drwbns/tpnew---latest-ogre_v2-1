@@ -19,14 +19,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+#include "AIStateMachine.h"
 
 #include "AlliedAIController.h"
-#include "GameState.h"
-#include "StateSystem.h"
-#include "AIStateMachine.h"
-#include "Agent.h"
-
+#include "AIState.h"
+#include "AlliedIdleState.h"
+#include "AlliedKeepCloseState.h"
+#include "AlliedLookAroundState.h"
+#include "AlliedWaitState.h"
+#include "AlliedGetCloseState.h"
+#include "AlliedWaitIdlingState.h"
+#include "AlliedOutOfWayState.h"
+#include "AlliedOffensiveState.h"
+#include "AlliedAttackState.h"
+#include "AlliedStrafeState.h"
+#include "AlliedFireState.h"
+#include "AlliedInspectState.h"
+#include "AlliedExploreState.h"
+#include "AlliedSeekState.h"
 
 using namespace Ogre;
 

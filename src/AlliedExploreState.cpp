@@ -29,14 +29,6 @@ THE SOFTWARE.
 
 #include "OgreVector3.h"
 
-/*
-#include "Level.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
-*/
-
 
 using namespace Ogre;
 

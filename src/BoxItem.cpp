@@ -24,9 +24,15 @@ THE SOFTWARE.
 #include "BoxItem.h"
 #include "GraphicsSystem.h"
 #include "PhysicsSystem.h"
-#include "GameState.h"
-#include "StateSystem.h"
 #include "World.h"
+
+#include "OgreEntity.h"
+#include "OgreSceneNode.h"
+
+#include "PxActor.h"
+
+
+using namespace physx;
 using namespace Ogre;
 
 BoxItem::BoxItem(int id, String mat, Vector3 pos, Vector3 scl, float mass)
@@ -41,13 +47,16 @@ BoxItem::BoxItem(int id, String mat, Vector3 pos, Vector3 scl, float mass)
 	node->setScale(scl);
 
 	//phy
+	/*
 	PxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
 	NxBoxShapeDesc boxDesc;
+	*/
 	Ogre::AxisAlignedBox b1 = ent->getMesh()->getBounds();
 	Ogre::Real szx1 = abs(b1.getMaximum().x-b1.getMinimum().x);
 	Ogre::Real szy1 = abs(b1.getMaximum().y-b1.getMinimum().y);
 	Ogre::Real szz1 = abs(b1.getMaximum().z-b1.getMinimum().z);
+	/*
 	boxDesc.dimensions.set((Ogre::Real)(scl.x*szx1/2),
 			               (Ogre::Real)(scl.y*szy1/2),
 			               (Ogre::Real)(scl.z*szz1/2));
@@ -68,7 +77,7 @@ BoxItem::BoxItem(int id, String mat, Vector3 pos, Vector3 scl, float mass)
 	//report contact
 	actor->setContactReportFlags(NX_NOTIFY_ON_START_TOUCH_FORCE_THRESHOLD | NX_NOTIFY_ON_TOUCH_FORCE_THRESHOLD | NX_NOTIFY_ON_END_TOUCH_FORCE_THRESHOLD);    
 	actor->setContactReportThreshold(10);
-
+	*/
 	//add obstacle
 	obstacle = WORLD->addObstacle(Vector3(pos.x,pos.y, pos.z), scl.x*szx1/2*Math::Sqrt(2));
 }
@@ -89,6 +98,7 @@ BoxItem::~BoxItem()
 
 void BoxItem::Update()
 {
+	/*
 	if (actor->isDynamic())
 	{
 		PxVec3 pos = actor->getGlobalPosition();
@@ -100,4 +110,5 @@ void BoxItem::Update()
 			WORLD->updateObstacle(obstacle, Vector3(pos.x,pos.y, pos.z));
 		}
 	}
+	*/
 }

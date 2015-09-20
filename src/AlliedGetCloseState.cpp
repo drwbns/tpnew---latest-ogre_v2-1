@@ -23,20 +23,9 @@ THE SOFTWARE.
 
 #include "AlliedGetCloseState.h"
 #include "GlobalVars.h"
-/*
-#include "AIConsts.h"
-#include "Agent.h"
-
-
-#include "OgreQuaternion.h"
-#include "OgreVector3.h"
-
-#include "BaseApplication.h"
-#include "Character.h"
-#include "OgreSceneNode.h"
-*/
 
 #include "World.h"
+#include "AIConsts.h"
 
 using namespace Ogre;
 

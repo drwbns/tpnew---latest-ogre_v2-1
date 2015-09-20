@@ -20,14 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
-#include "BillboardSystem.h"
 #include "BillboardNodeSet.h"
 #include "GraphicsSystem.h"
-
+#include "BillboardNode.h"
 #include "GlobalVars.h"
 
 #include "OgreSceneNode.h"
+#include "OgreBillboardSet.h"
 
 using namespace Ogre;
 
