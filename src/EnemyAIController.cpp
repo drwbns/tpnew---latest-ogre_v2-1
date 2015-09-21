@@ -26,7 +26,28 @@ THE SOFTWARE.
 #include "AIState.h"
 #include "StateSystem.h"
 #include "AIStateMachine.h"
+
+#include "EnemyIdleState.h"
+#include "EnemyPatrolState.h"
+#include "EnemyPatrollingState.h"
+#include "EnemyNextPatrolState.h"
+#include "EnemyWaitState.h"
+#include "EnemyLookAroundState.h"
+#include "EnemyWaitIdlingState.h"
+#include "EnemyOffensiveState.h"
+#include "EnemyAttackState.h"
+#include "EnemyFireState.h"
+#include "EnemyStrafeState.h"
+#include "EnemySeekState.h"
+#include "EnemyExploreState.h"
+#include "EnemyInspectState.h"
+#include "EnemyDefensiveState.h"
+#include "EnemyFallbackState.h"
+#include "EnemyDefenseState.h"
+
 using namespace Ogre;
+
+
 
 EnemyAIController::EnemyAIController() : BaseController()
 {

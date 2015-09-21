@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 #include "GlobalVars.h"
 #include "Agent.h"
+#include "AIState.h"
 
 #include "OgreStringConverter.h"
 

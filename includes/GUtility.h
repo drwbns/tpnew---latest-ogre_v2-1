@@ -80,6 +80,7 @@
 
 #include "OgreVector3.h"
 #include "OgreQuaternion.h"
+#include "OgreStringVector.h"
 
 using namespace physx;
 

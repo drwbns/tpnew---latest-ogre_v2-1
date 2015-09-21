@@ -93,7 +93,7 @@ BoxItem::~BoxItem()
 	GSYS->GetSceneMgr()->destroyEntity(ent);
 	ent = NULL;
 	//phy
-	PHY->getScene()->releaseActor(*actor);
+//	PHY->getScene()->releaseActor(*actor);
 	actor = NULL;
 }
 

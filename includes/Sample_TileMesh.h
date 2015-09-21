@@ -20,9 +20,9 @@
 #define RECASTSAMPLETILEMESH_H
 
 #include "Sample.h"
-#include "ChunkyTriMesh.h"
-#include "Path.h"
 
+#include "OgreSingleton.h"
+#include "DebugDrawOgre.h"
 #include "boost\thread\mutex.hpp"
 
 #define SMPL Sample_TileMesh::getSingletonPtr()

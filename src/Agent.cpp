@@ -40,6 +40,7 @@ THE SOFTWARE.
 #include "AIPerceptor.h"
 #include "GlobalVars.h"
 #include "Sample_TileMesh.h"
+#include "Path.h"
 
 #include "OgreVector3.h"
 #include "OgreSceneNode.h"

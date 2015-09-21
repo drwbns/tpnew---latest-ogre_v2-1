@@ -22,10 +22,10 @@ THE SOFTWARE.
 
 
 #include "EnemyWaitIdlingState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+
+#include "Agent.h"
+#include "GlobalVars.h"
+
 using namespace Ogre;
 
 EnemyWaitIdlingState::EnemyWaitIdlingState(int id) : AIState(id)

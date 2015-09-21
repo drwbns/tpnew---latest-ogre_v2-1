@@ -22,10 +22,9 @@ THE SOFTWARE.
 
 
 #include "EnemyPatrolState.h"
-#include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "Agent.h"
+#include "Path.h"
+
 using namespace Ogre;
 
 EnemyPatrolState::EnemyPatrolState(int id) : AIState(id)
