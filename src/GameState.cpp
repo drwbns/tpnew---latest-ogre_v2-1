@@ -106,9 +106,9 @@ void GameState::Initialize()
 		PtfNode node1(cpos);
 		cpos->z -= 30;
 		PtfNode node2(cpos);
-		cposs->x -= 10;
+		cpos->x -= 10;
 		PtfNode node3(cpos);
-		cposs->z += 30;
+		cpos->z += 30;
 		PtfNode node4(cpos);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node1);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node2);

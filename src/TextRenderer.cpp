@@ -1,6 +1,8 @@
 
 #include "TextRenderer.h"
 
+#include <Overlay/OgreOverlay.h>
+
 TextRenderer::TextRenderer()
 {
 	_overlayMgr = Ogre::OverlayManager::getSingletonPtr();

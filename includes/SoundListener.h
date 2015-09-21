@@ -79,10 +79,10 @@ protected:
 	mutable Ogre::Vector3 mLastParentPosition;
 
 	Ogre::Real mGain;
-	Ogre::Vector3 * mPosition;
-	Ogre::Vector3 * mDirection;
-	Ogre::Vector3 * mVelocity;
-	Ogre::Vector3 * mUp;
+	Ogre::Vector3 mPosition;
+	Ogre::Vector3 mDirection;
+	Ogre::Vector3 mVelocity;
+	Ogre::Vector3 mUp;
 	ALfloat mOrientation[6];
 
 	mutable bool mLocalTransformDirty;

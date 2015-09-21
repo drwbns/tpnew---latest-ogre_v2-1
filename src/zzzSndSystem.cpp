@@ -23,6 +23,11 @@ THE SOFTWARE.
 
 #include "zzzSndSystem.h"
 #include "tinyxml.h"
+
+#include "OgreSceneNode.h"
+#include "OgreResourceGroupManager.h"
+#include "OgreDataStream.h"
+
 using namespace Ogre;
 
 template<> zzzSndSystem* Ogre::Singleton<zzzSndSystem>::msSingleton = 0;

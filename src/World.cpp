@@ -23,6 +23,13 @@ THE SOFTWARE.
 
 #include "World.h"
 
+#include "Vip.h"
+#include "Gign.h"
+#include "Obstacle.h"
+#include "Wall.h"
+
+#include "OgreVector3.h"
+
 World::World()
 {
 	player = -1;
@@ -90,34 +97,34 @@ Agent * World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 &posit
 {
 	if (type == Agent::AT_VIP)
 	{
-		Vip* a = new Vip(agents.size(), race, *position);
+		Vip* a = new Vip(agents.size(), race, position);
 		a->ChangeController(ct);
 		agents.push_back(a);
 		return a;
 	}
 	else if (type == Agent::AT_GIGN)
 	{
-		Gign* a = new Gign(agents.size(), race, *position);
+		Gign* a = new Gign(agents.size(), race, position);
 		a->ChangeController(ct);
 		agents.push_back(a);
 		return a;
 	}
 }
 
-void World::addPath(std::vector<Ogre::Vector3> list)
+void World::addPath(std::vector<PtfNode> list)
 {
 	Path* p = new Path();
 	paths.push_back(p);
 	//populate path
 	for (size_t i=0;i<list.size();i++)
 	{
-		p->AddNode(*list[i]);
+		p->AddNode(list[i]);
 	}
 }
 
 int World::addObstacle(Ogre::Vector3 &position, float radius)
 {
-	Obstacle* o = new Obstacle(*position, radius);
+	Obstacle* o = new Obstacle(position, radius);
 	obstacles.push_back(o);
 	return obstacles.size()-1;
 }

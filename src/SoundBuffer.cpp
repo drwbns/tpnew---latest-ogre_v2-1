@@ -101,7 +101,7 @@ WavBuffer::WavBuffer(const Ogre::String &name)
 	Ogre::DataStreamPtr dstream = Ogre::ResourceGroupManager::getSingleton().openResource(name);
 	Ogre::MemoryDataStream stream(dstream);
 
-	mBuffers[0] = alutCreateBufferFromFileImage((ALbyte *)stream.getPtr(), static_cast<ALsizei>(stream.size()));
+//	mBuffers[0] = alutCreateBufferFromFileImage((ALbyte *)stream.getPtr(), static_cast<ALsizei>(stream.size()));
 	SoundSystem::checkError(__FUNCTION__);
 	updateInfo();
 }

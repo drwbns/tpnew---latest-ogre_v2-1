@@ -15,6 +15,17 @@
 //    misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 //
+#include "Sample_TileMesh.h"
+
+#include "SampleInterfaces.h"
+#include "Path.h"
+#include "DebugDrawOgre.h"
+#include "GraphicsSystem.h"
+#include "InputGeom.h"
+#include "Sample.h"
+
+#include "OgreMaterialManager.h"
+#include "OgreTechnique.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -23,9 +34,8 @@
 //#include "SDL.h"
 //#include "SDL_opengl.h"
 //#include "imgui.h"
-#include "InputGeom.h"
-#include "Sample.h"
-#include "Sample_TileMesh.h"
+
+
 
 #include "Recast/Recast.h"
 
@@ -39,13 +49,11 @@
 //#include "ConvexVolumeTool.h"
 //#include "CrowdTool.h"
 
-#include "Path.h"
-#include "DebugDrawOgre.h"
 
-#include "GraphicsSystem.h"
 
 #include <boost/thread/once.hpp> 
 #include <boost/thread/condition_variable.hpp> 
+#include <boost/thread/thread.hpp> 
 
 #ifdef WIN32
 #	define snprintf _snprintf
@@ -566,7 +574,7 @@ void Sample_TileMesh::GetPath(Ogre::Vector3 from, Ogre::Vector3 to, Path* &path)
 			for (int i = 0; i < path->numStraightPaths; ++i)
 			{
 				Vector3 cpos(m_straightPath[i*3], m_straightPath[i*3+1]+0.25, m_straightPath[i*3+2]);
-				PtfNode node(cpos);
+				PtfNode node(&cpos);
 				path->AddNode(node);
 			}
 		}

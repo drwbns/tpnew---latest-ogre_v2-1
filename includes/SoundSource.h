@@ -133,10 +133,10 @@ protected:
 	void updateDistanceAttenuation();
 	void updateEffectiveGain();
 
-	mutable Ogre::Vector3 *mDerivedPosition;
-	mutable Ogre::Vector3 *mDerivedDirection;
-	mutable Ogre::Quaternion *mLastParentOrientation;
-	mutable Ogre::Vector3 *mLastParentPosition;
+	mutable Ogre::Vector3 mDerivedPosition;
+	mutable Ogre::Vector3 mDerivedDirection;
+	mutable Ogre::Quaternion mLastParentOrientation;
+	mutable Ogre::Vector3 mLastParentPosition;
 	mutable bool mLocalTransformDirty;
 
 	Ogre::Real mPitch;

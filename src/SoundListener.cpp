@@ -23,7 +23,14 @@ THE SOFTWARE.
 
 /************************************************************************/ 
 #include "SoundListener.h"
+
+#include "OgreNode.h"
+
+
 /************************************************************************/ 
+
+
+
 template<> SoundListener* Ogre::Singleton<SoundListener>::msSingleton = 0;
 Ogre::String SoundListenerFactory::FACTORY_TYPE_NAME = "SoundListener";
 /************************************************************************/ 

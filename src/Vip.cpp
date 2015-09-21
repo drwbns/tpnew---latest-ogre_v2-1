@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+#include "Vip.h"
 
 #include "World.h"
 #include "AIKnowledge.h"
@@ -30,9 +30,24 @@ THE SOFTWARE.
 #include "zzzSndSystem.h"
 #include "ProjectileManager.h"
 #include "PhysicsSystem.h"
-using namespace Ogre;
 
-ControllerHitReport VipChrHitReport;
+#include "GlobalVars.h"
+#include "GUtility.h"
+
+#include "OgreStringConverter.h"
+#include "OgreEntity.h"
+#include "OgreSceneNode.h"
+#include "OgreManualObject.h"
+#include "OgreBone.h"
+#include "OgreSkeletonInstance.h"
+
+#include "characterkinematic\PxCapsuleController.h"
+#include "characterkinematic\PxControllerManager.h"
+
+using namespace Ogre;
+using namespace physx;
+
+//ControllerHitReport VipChrHitReport;
 
 Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40, 0.4)
 {
@@ -100,6 +115,7 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	deadAnimState->setWeight(1.0);
 
 	//phy controller
+	/*
 	PxCapsuleControllerDesc desc;
 	desc.position.x		= position.x;
 	desc.position.y		= position.y + 2.0;
@@ -145,6 +161,7 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	hitboxes.push_back(actor);
 	actor->userData = this;
 
+	*/
 	
 }
 
@@ -161,6 +178,7 @@ Vip::~Vip()
 	wEnt = NULL;
 
 	//phy
+	/*
 	PHY->getCManager()->releaseController(*phycontrol);
 	phycontrol = NULL;
 	for (size_t i=0;i<hitboxes.size();i++)
@@ -168,6 +186,7 @@ Vip::~Vip()
 		PHY->getScene()->releaseActor(*hitboxes[i]);
 		hitboxes[i] = NULL;
 	}
+	*/
 	hitboxes.clear();
 }
 
@@ -196,6 +215,7 @@ void Vip::Update()
 	}
 
 	//move phy controller
+	/*
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	PxU32 collisionFlag;
@@ -220,7 +240,7 @@ void Vip::Update()
 	//Quaternion bori = GetBodyRotation();
 	hitboxes[1]->setGlobalPosition(TemplateUtils::toNX(bpos));
 	//hitboxes[1]->setGlobalOrientationQuat(TemplateUtils::toNX(bori));
-
+	*/
 	//set anim acc. to speed
 	float speed = Velocity.length();
 
@@ -354,11 +374,14 @@ void Vip::Die()
 	Agent::Die();
 
 	//disable hitboxes
+
+	/*
 	hitboxes[0]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	hitboxes[1]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	//disable controller
 	phycontrol->setInteraction(NXIF_INTERACTION_EXCLUDE);
 	phycontrol->setCollision(false);
+	*/
 
 	headText->setVisible(false);
 	deadAnimState->setEnabled(true);

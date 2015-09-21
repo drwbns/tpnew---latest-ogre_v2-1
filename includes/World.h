@@ -44,7 +44,7 @@ public:
 	int getAgentTotal() { return agents.size(); }
 	void setAgentController(int i, BaseController* ct) { agents[i]->ChangeController(ct); }
 
-	void addPath(std::vector<Ogre::Vector3> list);
+	void addPath(std::vector<PtfNode> list);
 	Path* getPath(int i) { return paths[i]; }
 	int getPathTotal() { return paths.size(); }
 

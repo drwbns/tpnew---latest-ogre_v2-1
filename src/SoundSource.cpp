@@ -27,6 +27,9 @@ THE SOFTWARE.
 #include "SoundTimer.h"
 #include "SoundListener.h"
 #include "SoundSystem.h"
+
+#include "OgreNode.h"
+
 /************************************************************************/ 
 Ogre::String SoundSourceFactory::FACTORY_TYPE_NAME = "SoundSource";
 size_t SoundSource::mActiveCount = 0;

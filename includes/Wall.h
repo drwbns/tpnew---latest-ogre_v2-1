@@ -24,24 +24,25 @@ THE SOFTWARE.
 #define Wall_H_
 
 #include "OGRE\OgrePrerequisites.h"
+#include "OgreVector3.h"
 
 class Wall
 {
 	friend class World;
 
 private:
-	Wall(Ogre::Vector3 from, Ogre::Vector3 to, bool leftnormal);
+	Wall(Ogre::Vector3 & from, Ogre::Vector3 & to, bool leftnormal);
 	~Wall();
 	
 public:
-	Ogre::Vector3 * GetFrom() { return From; }
-	Ogre::Vector3 * GetTo() { return To; }
-	Ogre::Vector3 * GetNormal() { return Normal; }
+	Ogre::Vector3 & GetFrom();
+	Ogre::Vector3 & GetTo();
+	Ogre::Vector3 & GetNormal();
 
 private:
-	Ogre::Vector3 * From;
-	Ogre::Vector3 * To;
-	Ogre::Vector3 * Normal;
+	Ogre::Vector3 From;
+	Ogre::Vector3 To;
+	Ogre::Vector3 Normal;
 	Ogre::ManualObject* mark;
 };
 

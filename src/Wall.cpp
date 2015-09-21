@@ -22,16 +22,25 @@ THE SOFTWARE.
 
 
 #include "Wall.h"
+
 #include "GraphicsSystem.h"
+
+#include "OgreManualObject.h"
+#include "OgreMaterialManager.h"
+#include "OgreSceneManager.h"
+#include "OgreTechnique.h"
+#include "OgreSceneNode.h"
+
+
 using namespace Ogre;
 
-Wall::Wall(Ogre::Vector3 from, Ogre::Vector3 to, bool leftnormal)
+Wall::Wall(Ogre::Vector3 &from, Ogre::Vector3 &to, bool leftnormal)
 {
-	this->From = from;
-	this->To = to;
+	From = from;
+	To = to;
 
 	//find normal
-	this->Normal = (to - from);
+	Normal = to - from;
 	Quaternion q;
 	if (leftnormal)
 	{
@@ -41,9 +50,9 @@ Wall::Wall(Ogre::Vector3 from, Ogre::Vector3 to, bool leftnormal)
 	{
 		q.FromAngleAxis(Radian(Math::fDeg2Rad * -90), Vector3::UNIT_Y);
 	}
-	this->Normal = q * this->Normal;
-	this->Normal.y = 0;
-	this->Normal.normalise();
+	Normal = q * Normal;
+	Normal.y = 0;
+	Normal.normalise();
 
 	//mark
 	mark = GSYS->GetSceneMgr()->createManualObject();
@@ -72,3 +81,9 @@ Wall::~Wall()
 	GSYS->GetSceneMgr()->destroyManualObject(mark);
 	mark = NULL;
 }
+
+inline Ogre::Vector3 & Wall::GetFrom() { return From; }
+
+inline Ogre::Vector3 & Wall::GetTo() { return To; }
+
+inline Ogre::Vector3 & Wall::GetNormal() { return Normal; }

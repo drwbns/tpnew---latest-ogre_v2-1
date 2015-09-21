@@ -19,14 +19,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+#include "TpCamController.h"
 
 #include "CamController.h"
-#include "TpCamController.h"
-#include "GameState.h"
-#include "StateSystem.h"
 #include "World.h"
 #include "PhysicsSystem.h"
+#include "GlobalVars.h"
+
+
 using namespace Ogre;
 
 TpCamController::TpCamController() : CamController()
@@ -64,7 +64,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	Vector3 targetPosition = Vector3::ZERO;
 	Quaternion targetRotation = Quaternion::IDENTITY;
 
-	if (WORLD->getPlayerAgent()ID > -1)
+	if (WORLD->getPlayerAgent()->getID() > -1)
 	{
 		targetPosition = WORLD->getPlayerAgent()->GetPosition();
 		if (aim)
@@ -99,7 +99,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	Quaternion q;
 	q.FromAngleAxis(Radian(pitch), Vector3::UNIT_X);
 	Vector3 addPos = rotation * q * curCamOffset;
-	Vector3 castPos = PHY->CastRay1(mPos, addPos.normalisedCopy());
+	Vector3 castPos = PHY->CastRay1(&mPos, &addPos.normalisedCopy());
 	float dist = castPos.distance(mPos);
 	float skinWidth2 = 0.25;
 	if (dist - skinWidth2 < addPos.length())
@@ -131,7 +131,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 
 void TpCamController::UpdateRotation(float mPitch, float mYaw)
 {
-	if (WORLD->getPlayerAgent()ID > -1)
+	if (WORLD->getPlayerAgent()->getID() > -1)
 	{
 		yaw += mYaw * mSensivity;
 		Quaternion q;
