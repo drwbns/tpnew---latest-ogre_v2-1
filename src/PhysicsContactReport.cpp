@@ -21,7 +21,7 @@ void PhysicsContactReport::onContactNotify(NxContactPair& pair, PxU32 events)
 	
 	if (events & NX_NOTIFY_ON_START_TOUCH_FORCE_THRESHOLD)
 	{
-		SND->PlaySound("metal", TemplateUtils::toOgre(cp), 25 * fabs(j.getSeparation()));
+		ZSND->PlaySound("metal", TemplateUtils::toOgre(cp), 25 * fabs(j.getSeparation()));
 	}
 	if(events & NX_NOTIFY_ON_END_TOUCH_FORCE_THRESHOLD)
 	{

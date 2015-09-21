@@ -21,7 +21,15 @@ THE SOFTWARE.
 */
 
 #include "Path.h"
+
 #include "GraphicsSystem.h"
+
+#include "OgreSceneManager.h"
+#include "OgreSceneNode.h"
+#include "OgreTechnique.h"
+#include "OgreMaterialManager.h"
+#include "OgreManualObject.h"
+
 using namespace Ogre;
 
 Path::Path()
@@ -73,15 +81,15 @@ void Path::ShowDebug(bool b)
 		for (int i=0;i<GetLength()-1;i++)
 		{
 			//node to next node
-			mark->position(mNodes[i].getPos());
+			mark->position(*mNodes[i].getPos());
 			mark->colour(1,1,1);
-			mark->position(mNodes[i+1].getPos());
+			mark->position(*mNodes[i+1].getPos());
 			mark->colour(1,1,1);
 
 			//node to upper
-			mark->position(mNodes[i].getPos());
+			mark->position(*mNodes[i].getPos());
 			mark->colour(1,1,0);
-			mark->position(mNodes[i].getPos().x, mNodes[i].getPos().y+0.75, mNodes[i].getPos().z);
+			mark->position(mNodes[i].getPos()->x, mNodes[i].getPos()->y+0.75, mNodes[i].getPos()->z);
 			mark->colour(1,1,0);
 		}
 		mark->end();

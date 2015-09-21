@@ -47,16 +47,16 @@ protected:
 
 };
 
-class OggStream : public StreamingBuffer
+class OgGAMESTATEream : public StreamingBuffer
 {
 public:
-	OggStream(const Ogre::String& name, SoundSource* source, int bufferCount);
-	~OggStream();
+	OgGAMESTATEream(const Ogre::String& name, SoundSource* source, int bufferCount);
+	~OgGAMESTATEream();
 	void seek(ALuint source, float position);
 protected:
 	bool stream(ALuint buffer);
 
-    OggVorbis_File  mOggStream;
+    OggVorbis_File  mOgGAMESTATEream;
     vorbis_comment* mVorbisComment;
 	vorbis_info* mVorbisInfo;
 	ALenum mFormat;

@@ -625,7 +625,7 @@ dtPolyRef dtNavMesh::findNearestPolyInTile(const dtMeshTile* tile,
 	dtPolyRef polys[128];
 	int polyCount = queryPolygonsInTile(tile, bmin, bmax, polys, 128);
 	
-	// Find nearest polygon amongst the nearby polygons.
+	// Find nearest polygon amonGAMESTATE the nearby polygons.
 	dtPolyRef nearest = 0;
 	float nearestDistanceSqr = FLT_MAX;
 	for (int i = 0; i < polyCount; ++i)

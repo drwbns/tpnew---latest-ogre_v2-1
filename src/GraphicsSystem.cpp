@@ -22,17 +22,16 @@ THE SOFTWARE.
 
 
 #include "GraphicsSystem.h"
+
 #include "StateSystem.h"
 #include "GameState.h"
-
 #include "SharedData.h"
-
-
+#include "Application.h"
 
 #include "OgreConfigFile.h"
-
-
 #include "OgreTextureManager.h"
+#include "OgreViewport.h"
+#include "OgreLogManager.h"
 
 
 

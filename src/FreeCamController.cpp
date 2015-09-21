@@ -23,6 +23,9 @@ THE SOFTWARE.
 
 
 #include "FreeCamController.h"
+
+#include "GlobalVars.h"
+
 using namespace Ogre;
 
 FreeCamController::FreeCamController() : CamController()

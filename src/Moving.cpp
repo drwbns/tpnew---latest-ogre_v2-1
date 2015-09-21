@@ -19,12 +19,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+#include "Moving.h"
 
 #include "World.h"
 #include "PtfNode.h"
 #include "GameState.h"
 #include "StateSystem.h"
+#include "GlobalVars.h"
+
 using namespace Ogre;
 
 float Moving::MINSPD = 0.1f;
@@ -354,13 +356,13 @@ Vector3 Moving::CalculatePathFollow()
 {
 	if (mPath != NULL)
 	{
-		Ogre::Vector3 dest = mPath->GetNode(PathPosition).getPos();
+		Ogre::Vector3 dest = *mPath->GetNode(PathPosition).getPos();
 		float pathNextDist = 2*Radius;
 
 		if (Position.distance(dest) < pathNextDist && PathPosition < mPath->GetLength()-1)
 		{
 			PathPosition++;
-			dest = mPath->GetNode(PathPosition).getPos();
+			dest = *mPath->GetNode(PathPosition).getPos();
 		}
 		
 		SetDest(dest);
@@ -385,9 +387,9 @@ Vector3 Moving::CalculateSeperate()
 
 	for (int i=0;i<WORLD->getAgentTotal();i++)
 	{
-		Ogre::Vector3 delta = Position - agent(i)->GetPosition();
+		Ogre::Vector3 delta = Position - WORLD->getAgent(i)->GetPosition();
 		float dist = delta.length();
-		float mindist = Radius + agent(i)->GetRadius();
+		float mindist = Radius + WORLD->getAgent(i)->GetRadius();
 		if (dist < mindist)
 		{
 			float power = mindist - dist;

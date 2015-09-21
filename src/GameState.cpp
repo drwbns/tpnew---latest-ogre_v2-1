@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 
 #include "GameState.h"
+
 #include "StateSystem.h"
 #include "GraphicsSystem.h"
 #include "GuiSystem.h"
@@ -38,6 +39,7 @@ THE SOFTWARE.
 #include "AlliedAIController.h"
 #include "EnemyAIController.h"
 #include "GlobalVars.h"
+#include "PtfNode.h"
 
 #include "OgreTimer.h"
 

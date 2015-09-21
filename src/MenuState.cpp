@@ -22,10 +22,13 @@ THE SOFTWARE.
 
 
 #include "MenuState.h"
+
 #include "StateSystem.h"
 #include "GraphicsSystem.h"
 #include "GuiSystem.h"
 #include "zzzSndSystem.h"
+#include "GlobalVars.h"
+
 using namespace Ogre;
 
 MenuState::MenuState()
@@ -60,12 +63,12 @@ void MenuState::Update()
 
 void MenuState::OnPlay()
 {
-	SND->PlaySound("tick");
+	ZSND->PlaySound("tick");
 	SSYS->LoadState("game");
 }
 
 void MenuState::OnExit()
 {
-	SND->PlaySound("tick");
+	ZSND->PlaySound("tick");
 	GlobalVars::ShutDown = true;
 }

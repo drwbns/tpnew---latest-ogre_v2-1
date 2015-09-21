@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 
 #include "InputController.h"
+
 #include "GuiSystem.h"
 #include "CamController.h"
 #include "TpCamController.h"
@@ -29,6 +30,9 @@ THE SOFTWARE.
 #include "GameState.h"
 
 #include "OIS\OISMouse.h"
+#include "OIS\OISKeyboard.h"
+
+#include "World.h"
 
 using namespace Ogre;
 
@@ -46,7 +50,7 @@ void InputController::Update()
 
 void InputController::injectMousePress(int id, bool buffered)
 {
-	if (id == OIS::MB_Right && GST->GetCurrentCam()->GetType() == CamController::CT_TPS)
+	if (id == OIS::MB_Right && GAMESTATE->GetCurrentCam()->GetType() == CamController::CT_TPS)
 	{
 		TPCAM->SetAimMode(true);
 		UISYS->SetCrossHair(true);
@@ -60,7 +64,7 @@ void InputController::injectMousePress(int id, bool buffered)
 
 void InputController::injectMouseRelease(int id)
 {
-	if (id == OIS::MB_Right && GST->GetCurrentCam()->GetType() == CamController::CT_TPS)
+	if (id == OIS::MB_Right && GAMESTATE->GetCurrentCam()->GetType() == CamController::CT_TPS)
 	{
 		TPCAM->SetAimMode(false);
 		UISYS->SetCrossHair(false);
@@ -110,7 +114,7 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 		up = -1;
 	}
 	*/
-	GST->GetCurrentCam()->UpdateLocation(walk, strafe, up);
+	GAMESTATE->GetCurrentCam()->UpdateLocation(walk, strafe, up);
 
 	//player movement
 	walk = 0, strafe = 0;

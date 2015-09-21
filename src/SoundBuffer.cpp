@@ -114,7 +114,7 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 	char data[SOUND_BUFFER_SIZE];
 	std::vector<char> buffer;
 
-    OggVorbis_File  mOggStream;
+    OggVorbis_File  mOgGAMESTATEream;
 	ov_callbacks vorbisCallbacks;
 	vorbis_info* mVorbisInfo;
     vorbis_comment* mVorbisComment;
@@ -128,13 +128,13 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 	vorbisCallbacks.close_func = vorbisClose;
 	vorbisCallbacks.seek_func = vorbisSeek;
 	vorbisCallbacks.tell_func = vorbisTell;
-	if (ov_open_callbacks(&mStream, &mOggStream, NULL, 0, vorbisCallbacks) < 0)
+	if (ov_open_callbacks(&mStream, &mOgGAMESTATEream, NULL, 0, vorbisCallbacks) < 0)
 	{
 		throw Ogre::Exception(1, "Could not open Ogg stream.",__FUNCTION__);
 	}
 
-	mVorbisInfo = ov_info(&mOggStream, -1);
-	mVorbisComment = ov_comment(&mOggStream, -1);
+	mVorbisInfo = ov_info(&mOgGAMESTATEream, -1);
+	mVorbisComment = ov_comment(&mOgGAMESTATEream, -1);
 
 	if(mVorbisInfo->channels == 1)
 		mFormat = AL_FORMAT_MONO16;
@@ -143,14 +143,14 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 
 	do
 	{
-		size = ov_read(&mOggStream, data, sizeof(data), 0, 2, 1, &currSection);
+		size = ov_read(&mOgGAMESTATEream, data, sizeof(data), 0, 2, 1, &currSection);
 		buffer.insert(buffer.end(), data, data + size);
 	}while(size > 0);
 
 	alBufferData(mBuffers[0], mFormat, &buffer[0], static_cast<ALsizei>(buffer.size()), mVorbisInfo->rate);
 	SoundSystem::checkError(__FUNCTION__);
 
-	ov_clear(&mOggStream);
+	ov_clear(&mOgGAMESTATEream);
 	updateInfo();
 }
 //----------------------------------------------------------------------------//

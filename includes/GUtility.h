@@ -139,7 +139,7 @@ class TemplateUtils
 											float* &vertices,
 								unsigned int &index_count,
 								std::vector<Ogre::Vector3*> &normals,
-										  std::vector<unsigned short*> &materials,
+	//									  std::vector<unsigned short*> &materials,
 										      float* &min,
 										      float* &max,
 								   Ogre::Vector3 position = Ogre::Vector3::ZERO,

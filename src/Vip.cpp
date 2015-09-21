@@ -107,7 +107,7 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	desc.height         = 1.25;
 	desc.radius	        = Radius;
 	desc.upDirection	= NX_Y;
-	desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
+	desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
 	desc.skinWidth		= 0.10;
 	desc.stepOffset		= 0.25;
 	desc.callback		= &VipChrHitReport;
@@ -245,12 +245,12 @@ void Vip::Update()
 	if (scount == 0 && runAnimState->getTimePosition() >= 0.5 * runAnimState->getLength())
 	{
 		scount++;
-		SND->PlaySound("step");
+		ZSND->PlaySound("step");
 	}
 	else if (scount == 1 && runAnimState->getTimePosition() >= runAnimState->getLength() - 1.5 * time2add)
 	{
 		scount++;
-		SND->PlaySound("step");
+		ZSND->PlaySound("step");
 	}
 	else if (scount == 2)
 	{
@@ -343,7 +343,7 @@ void Vip::Shoot(bool first, Vector3 trg_pos)
 		{
 			PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), GetFireDirection(trg_pos));
 			shootAnimState->setTimePosition(0);
-			SND->PlaySound("fire");
+			ZSND->PlaySound("fire");
 			incShotsFired();
 		}
 	}

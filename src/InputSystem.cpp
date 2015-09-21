@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 
 #include "InputSystem.h"
+
 #include "GraphicsSystem.h"
 #include "GuiSystem.h"
 #include "StateSystem.h"
@@ -31,6 +32,8 @@ THE SOFTWARE.
 #include "PhysicsSystem.h"
 #include "World.h"
 #include "InputController.h"
+#include "GlobalVars.h"
+
 using namespace Ogre;
 using namespace OIS;
 
@@ -100,13 +103,13 @@ void InputSystem::Update(const Ogre::FrameEvent& evt)
 
 bool InputSystem::mouseMoved( const OIS::MouseEvent &arg )
 {
-	UISYS->GetGUI()->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
+	//UISYS->GetGUI()->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
 	return true;
 }
 
 bool InputSystem::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	UISYS->GetGUI()->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	//UISYS->GetGUI()->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 	
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
@@ -117,7 +120,7 @@ bool InputSystem::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
 bool InputSystem::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	UISYS->GetGUI()->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	//UISYS->GetGUI()->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 	
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
@@ -128,7 +131,7 @@ bool InputSystem::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID 
 
 bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 {
-	UISYS->GetGUI()->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
+	//UISYS->GetGUI()->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
 
 	if (arg.key == OIS::KC_ESCAPE)
 	{
@@ -141,7 +144,7 @@ bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 
 		if (arg.key == KC_C)
 		{
-			GST->NextCamera();
+			GAMESTATE->NextCamera();
 		}
 		else if (arg.key == KC_Q)
 		{
@@ -162,7 +165,7 @@ bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 
 bool InputSystem::keyReleased( const OIS::KeyEvent &arg )
 {
-	UISYS->GetGUI()->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
+	//UISYS->GetGUI()->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
 
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
@@ -196,15 +199,15 @@ bool InputSystem::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
 		const MouseState &ms = mMouse->getMouseState();
-		GST->GetCurrentCam()->UpdateRotation(-ms.Y.rel, -ms.X.rel);
+		GAMESTATE->GetCurrentCam()->UpdateRotation(-ms.Y.rel, -ms.X.rel);
 
 		if (ms.buttonDown(MB_Middle))
 		{
-			GST->GetCurrentCam()->SetSpeed(32);
+			GAMESTATE->GetCurrentCam()->SetSpeed(32);
 		}
 		else
 		{
-			GST->GetCurrentCam()->SetSpeed(8);
+			GAMESTATE->GetCurrentCam()->SetSpeed(8);
 		}
 
 		if (ms.buttonDown(MB_Left))

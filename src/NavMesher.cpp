@@ -21,6 +21,11 @@ THE SOFTWARE.
 */
 
 #include "NavMesher.h"
+
+#include "OgreManualObject.h"
+#include "OgreMaterialManager.h"
+#include "OgreMaterial.h"
+
 #include "FileList.h"
 #include "GraphicsSystem.h"
 

@@ -11,6 +11,14 @@
 
 #include "MovableText.h"
 
+#include "OgreMaterialManager.h"
+#include "Overlay\OgreFontManager.h"
+#include "OgreHardwareBufferManager.h"
+#include "OgreRoot.h"
+#include "OgreAxisAlignedBox.h"
+#include "OgreCamera.h"
+#include "OgreSceneNode.h"
+
 #define POS_TEX_BINDING    0
 #define COLOUR_BINDING     1
 
@@ -398,7 +406,7 @@ void MovableText::_setupGeometry()
     ptbuf->unlock();
 
     // update AABB/Sphere radius
-    mAABB = Ogre::AxisAlignedBox(min, max);
+    *mAABB = Ogre::AxisAlignedBox(min, max);
     mRadius = Ogre::Math::Sqrt(maxSquaredRadius);
 
     if (mUpdateColors)

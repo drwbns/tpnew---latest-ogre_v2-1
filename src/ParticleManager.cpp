@@ -22,8 +22,12 @@ THE SOFTWARE.
 
 
 #include "ParticleManager.h"
+
 #include "GraphicsSystem.h"
 #include "tinyxml.h"
+
+#include "OgreSceneNode.h"
+
 using namespace Ogre;
 
 template<> ParticleManager* Ogre::Singleton<ParticleManager>::msSingleton = 0;

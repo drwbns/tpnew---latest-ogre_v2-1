@@ -210,7 +210,7 @@ Level::~Level()
 	ent = NULL;
 	
 	//phy
-	PHY->getScene()->releaseActor(*actor);
+//	PHY->getScene()->releaseActor(*actor);
 	actor = NULL;
 	//items
 	for (size_t i=0;i<items.size();i++)

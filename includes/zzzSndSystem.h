@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include "SoundSource.h"
 #include "SoundListener.h"
 
-#define SND zzzSndSystem::getSingletonPtr()
+#define ZSND zzzSndSystem::getSingletonPtr()
 
 class zzzSndSystem : public Ogre::Singleton<zzzSndSystem>, public Ogre::GeneralAllocatedObject
 {

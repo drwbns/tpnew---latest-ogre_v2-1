@@ -151,7 +151,7 @@ void zzzSndSystem::LoadSounds()
 
 					if (name.length() > 0)
 					{
-						SND->LoadSound(name, file);
+						ZSND->LoadSound(name, file);
 					}
 				}
 			}

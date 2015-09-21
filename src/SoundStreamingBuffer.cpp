@@ -155,7 +155,7 @@ void StreamingBuffer::seek(ALuint source, float position)
 {
 }
 //----------------------------------------------------------------------------//
-OggStream::OggStream(const Ogre::String& name, SoundSource* source, int bufferCount) : 
+OgGAMESTATEream::OgGAMESTATEream(const Ogre::String& name, SoundSource* source, int bufferCount) : 
 	StreamingBuffer(name, source, bufferCount)
 {
 	ov_callbacks vorbisCallbacks;
@@ -168,17 +168,17 @@ OggStream::OggStream(const Ogre::String& name, SoundSource* source, int bufferCo
 	vorbisCallbacks.close_func = OggBuffer::vorbisClose;
 	vorbisCallbacks.seek_func = OggBuffer::vorbisSeek;
 	vorbisCallbacks.tell_func = OggBuffer::vorbisTell;
-	if (ov_open_callbacks(&mStream, &mOggStream, NULL, 0, vorbisCallbacks) < 0)
+	if (ov_open_callbacks(&mStream, &mOgGAMESTATEream, NULL, 0, vorbisCallbacks) < 0)
 	{
 		throw Ogre::Exception(1, "Could not open Ogg stream.",__FUNCTION__);
 	}
 
-	mVorbisInfo = ov_info(&mOggStream, -1);
-	mVorbisComment = ov_comment(&mOggStream, -1);
+	mVorbisInfo = ov_info(&mOgGAMESTATEream, -1);
+	mVorbisComment = ov_comment(&mOgGAMESTATEream, -1);
 	
 	mChannels = mVorbisInfo->channels;
 	mFrequency = mVorbisInfo->rate;
-	mDuration = ov_time_total(&mOggStream, -1);
+	mDuration = ov_time_total(&mOgGAMESTATEream, -1);
 	mBits = 16;
 
 	if(mChannels == 1)
@@ -188,12 +188,12 @@ OggStream::OggStream(const Ogre::String& name, SoundSource* source, int bufferCo
 	mSize = mDuration * (float)( mBits * mFrequency * mChannels) /  8.0f;
 }
 //----------------------------------------------------------------------------//
-OggStream::~OggStream()
+OgGAMESTATEream::~OgGAMESTATEream()
 {
 	mStream.setNull();
 }
 //----------------------------------------------------------------------------//
-void OggStream::seek(ALuint source, float position)
+void OgGAMESTATEream::seek(ALuint source, float position)
 {
 	ALint mState;
 	ALuint mBuffer;
@@ -213,7 +213,7 @@ void OggStream::seek(ALuint source, float position)
 		SoundSystem::checkError(__FUNCTION__);
 	}
 
-	ov_time_seek(&mOggStream, position);
+	ov_time_seek(&mOgGAMESTATEream, position);
 
 	for(int i = 0; i < mBufferCount; i++)
 		stream(mBuffers[i]);
@@ -232,7 +232,7 @@ void OggStream::seek(ALuint source, float position)
 	}
 }
 //----------------------------------------------------------------------------//
-bool OggStream::stream(ALuint buffer)
+bool OgGAMESTATEream::stream(ALuint buffer)
 {
 	char data[SOUND_BUFFER_SIZE];
 	int  size = 0;
@@ -241,7 +241,7 @@ bool OggStream::stream(ALuint buffer)
  
 	while(size < SOUND_BUFFER_SIZE)
 	{
-		result = ov_read(&mOggStream, data+size, SOUND_BUFFER_SIZE - size, 0, 2, 1, &section);
+		result = ov_read(&mOgGAMESTATEream, data+size, SOUND_BUFFER_SIZE - size, 0, 2, 1, &section);
 		if(result > 0)
 			size += result;
 		else

@@ -41,8 +41,10 @@
 #include <string.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
+
 #include <OgrePixelCountLodStrategy.h>
 #include <OgreDistanceLodStrategy.h>
+#include "OgreRoot.h"
 
 using namespace Ogre;
 
@@ -127,7 +129,7 @@ bool rcMeshLoaderObj::load(const char* filepath)
 
 	*/
 
-	Ogre::Mesh* mesh = reinterpret_cast<Ogre::Mesh *>(Ogre::Root::getSingleton().getMeshManager()->getByName(fileName).get() );	
+	Ogre::Mesh* mesh = reinterpret_cast<Ogre::Mesh *>(Root::getSingleton().getMeshManager()->getByName(fileName).get() );	
 
 	for (int i = 0 ; i < numNodes ; i++)
 	{

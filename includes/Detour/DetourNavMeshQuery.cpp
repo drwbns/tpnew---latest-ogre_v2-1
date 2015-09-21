@@ -367,7 +367,7 @@ dtStatus dtNavMeshQuery::findNearestPoly(const float* center, const float* exten
 	if (dtStatusFailed(queryPolygons(center, extents, filter, polys, &polyCount, 128)))
 		return DT_FAILURE | DT_INVALID_PARAM;
 	
-	// Find nearest polygon amongst the nearby polygons.
+	// Find nearest polygon amonGAMESTATE the nearby polygons.
 	dtPolyRef nearest = 0;
 	float nearestDistanceSqr = FLT_MAX;
 	for (int i = 0; i < polyCount; ++i)
@@ -404,7 +404,7 @@ dtPolyRef dtNavMeshQuery::findNearestPolyInTile(const dtMeshTile* tile, const fl
 	dtPolyRef polys[128];
 	int polyCount = queryPolygonsInTile(tile, bmin, bmax, filter, polys, 128);
 	
-	// Find nearest polygon amongst the nearby polygons.
+	// Find nearest polygon amonGAMESTATE the nearby polygons.
 	dtPolyRef nearest = 0;
 	float nearestDistanceSqr = FLT_MAX;
 	for (int i = 0; i < polyCount; ++i)

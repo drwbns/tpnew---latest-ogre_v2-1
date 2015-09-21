@@ -19,10 +19,13 @@ class AIStateMachine;
 class AgentInfo;
 class PositionalInfo;
 class AIState;
+class Level;
+class World;
+class CamController;
 
 class dtNavMesh;
 class dtNavMeshQuery;
-class SampleTool;
+struct SampleTool;
 class BuildContext;
 
 #endif // !prereqs_h

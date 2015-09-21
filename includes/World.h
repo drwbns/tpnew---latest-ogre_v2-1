@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "prereqs.h"
 
 #include "Agent.h"
+#include "Path.h"
 
 #include "OgreSingleton.h"
 
@@ -58,7 +59,7 @@ public:
 
 	void setPlayer(int id) { player = id; }
 	int getPlayer() { return player; }
-	Moving* getPlayerAgent() { return agents[player]; }
+	Agent* getPlayerAgent() { return agents[player]; }
 
 
 private:

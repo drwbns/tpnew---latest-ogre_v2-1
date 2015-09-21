@@ -21,17 +21,33 @@ THE SOFTWARE.
 */
 
 
-#include "World.h"
-#include "GameState.h"
-#include "StateSystem.h"
-#include "GraphicsSystem.h"
-#include "CamController.h"
-#include "zzzSndSystem.h"
-#include "ProjectileManager.h"
-#include "PhysicsSystem.h"
-using namespace Ogre;
 
-ControllerHitReport GignChrHitReport;
+#include "Gign.h"
+
+
+#include "OgreStringConverter.h"
+#include "OgreEntity.h"
+#include "OgreSceneNode.h"
+#include "OgreManualObject.h"
+#include "OgreBone.h"
+#include "OgreSkeletonInstance.h"
+
+#include "GraphicsSystem.h"
+#include "PhysicsSystem.h"
+#include "GlobalVars.h"
+#include "ZZZSndSystem.h"
+#include "GUtility.h"
+#include "ProjectileManager.h"
+#include "PhysicsHelper.h"
+#include "World.h"
+
+#include "characterkinematic\PxCapsuleController.h"
+#include "characterkinematic\PxControllerManager.h"
+
+using namespace Ogre;
+using namespace physx;
+
+//ControllerHitReport GignChrHitReport;
 
 Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0, 40, 0.4)
 {
@@ -57,7 +73,8 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 
 	float range = viewRange / node->getScale().x;//marked
 	//60 degrees left & right, total 120 degrees of sight
-	Quaternion q;q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+	Quaternion q;
+	q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
 	Vector3 direction = GetRotation() * Vector3::UNIT_Z;
 	Vector3 A = Vector3::ZERO;
 	Vector3 B = A + q * (direction * range);
@@ -98,6 +115,8 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	deadAnimState->setEnabled(false);
 	deadAnimState->setWeight(1.0);
 
+
+	/*
 	//phy controller
 	PxCapsuleControllerDesc desc;
 	desc.position.x		= position.x;
@@ -106,7 +125,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	desc.height         = 1.25;
 	desc.radius	        = Radius;
 	desc.upDirection	= NX_Y;
-	desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
+	desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
 	desc.skinWidth		= 0.10;
 	desc.stepOffset		= 0.25;
 	desc.callback		= &GignChrHitReport;
@@ -142,7 +161,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	hitboxes.push_back(actor);
 	actor->userData = this;
 
-	
+	*/
 }
 
 Gign::~Gign()
@@ -158,11 +177,11 @@ Gign::~Gign()
 	wEnt = NULL;
 
 	//phy
-	PHY->getCManager()->releaseController(*phycontrol);
+	//PHY->getCManager()->releaseController(*phycontrol);
 	phycontrol = NULL;
 	for (size_t i=0;i<hitboxes.size();i++)
 	{
-		PHY->getScene()->releaseActor(*hitboxes[i]);
+		//PHY->getScene()->releaseActor(*hitboxes[i]);
 		hitboxes[i] = NULL;
 	}
 	hitboxes.clear();
@@ -196,6 +215,7 @@ void Gign::Update()
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	PxU32 collisionFlag;
+	/*
 	phycontrol->move(disp,COLLIDABLE_MASK,0.001,collisionFlag);
 	flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 
@@ -203,19 +223,19 @@ void Gign::Update()
 	Position.x = phycontrol->getActor()->getGlobalPosition().x;
 	Position.y = phycontrol->getActor()->getGlobalPosition().y - 1.0;
 	Position.z = phycontrol->getActor()->getGlobalPosition().z;
-
+	*/
 	node->setPosition(Position);
 
 	//update hitbox transform.
 	//head
 	Vector3 hpos = GetHeadPosition();hpos.y += 0.05;
 	//Quaternion hori = GetHeadRotation();
-	hitboxes[0]->setGlobalPosition(TemplateUtils::toNX(hpos));
+	//hitboxes[0]->setGlobalPosition(TemplateUtils::toNX(hpos));
 	//hitboxes[0]->setGlobalOrientationQuat(TemplateUtils::toNX(hori));
 	//body
 	Vector3 bpos = GetBodyPosition();bpos.y -= 0.20;
 	//Quaternion bori = GetBodyRotation();
-	hitboxes[1]->setGlobalPosition(TemplateUtils::toNX(bpos));
+	//hitboxes[1]->setGlobalPosition(TemplateUtils::toNX(bpos));
 	//hitboxes[1]->setGlobalOrientationQuat(TemplateUtils::toNX(bori));
 
 	//set anim acc. to speed
@@ -242,12 +262,12 @@ void Gign::Update()
 	if (scount == 0 && runAnimState->getTimePosition() >= 0.5 * runAnimState->getLength())
 	{
 		scount++;
-		SND->PlaySound("step");
+		ZSND->PlaySound("step");
 	}
 	else if (scount == 1 && runAnimState->getTimePosition() >= runAnimState->getLength() - 1.5 * time2add)
 	{
 		scount++;
-		SND->PlaySound("step");
+		ZSND->PlaySound("step");
 	}
 	else if (scount == 2)
 	{
@@ -283,10 +303,12 @@ Vector3 Gign::GetFirePosition()
 
 Vector3 Gign::GetFireDirection(Vector3 trg_pos)
 {
+	/*
 	if (this == WORLD->getPlayerAgent())
 	{
 		trg_pos = PHY->CastRay1(CAM->getPosition(), CAM->getDirection());
 	}
+	*/
 	return (trg_pos - GetFirePosition()).normalisedCopy(); 
 }
 
@@ -324,7 +346,7 @@ void Gign::Shoot(bool first, Vector3 trg_pos)
 		{
 			PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), GetFireDirection(trg_pos));
 			shootAnimState->setTimePosition(0);
-			SND->PlaySound("fire");
+			ZSND->PlaySound("fire");
 			incShotsFired();
 		}
 	}
@@ -335,11 +357,13 @@ void Gign::Die()
 	Agent::Die();
 
 	//disable hitboxes
-	hitboxes[0]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
-	hitboxes[1]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
+	//hitboxes[0]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
+	//hitboxes[1]->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	//disable controller
+	/*
 	phycontrol->setInteraction(NXIF_INTERACTION_EXCLUDE);
 	phycontrol->setCollision(false);
+	*/
 
 	headText->setVisible(false);
 	deadAnimState->setEnabled(true);

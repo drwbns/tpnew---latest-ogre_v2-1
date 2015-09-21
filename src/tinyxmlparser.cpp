@@ -31,7 +31,7 @@ distribution.
 #if defined( DEBUG_PARSER )
 #	if defined( DEBUG ) && defined( _MSC_VER )
 #		include <windows.h>
-#		define TIXML_LOG OutputDebugString
+#		define TIXML_LOG OutputDebuGAMESTATEring
 #	else
 #		define TIXML_LOG printf
 #	endif

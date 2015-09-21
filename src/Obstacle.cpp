@@ -22,7 +22,15 @@ THE SOFTWARE.
 
 
 #include "Obstacle.h"
+
 #include "GraphicsSystem.h"
+
+#include "OgreManualObject.h"
+#include "OgreSceneManager.h"
+#include "OgreSceneNode.h"
+#include "OgreMaterialManager.h"
+#include "OgreTechnique.h"
+
 using namespace Ogre;
 
 Obstacle::Obstacle(Ogre::Vector3 position, float radius)

@@ -22,10 +22,18 @@ THE SOFTWARE.
 
 
 #include "GuiSystem.h"
+
 #include "GraphicsSystem.h"
-#include "StateSystem.h"
-#include "GameState.h"
+#include "TextRenderer.h"
 #include "World.h"
+#include "GlobalVars.h"
+
+#include "OgreManualObject.h"
+#include "OgreSceneManager.h"
+#include "OgreSceneNode.h"
+
+
+
 using namespace Ogre;
 
 template<> GuiSystem* Ogre::Singleton<GuiSystem>::msSingleton = 0;
@@ -40,7 +48,7 @@ GuiSystem& GuiSystem::getSingleton(void)
 	assert( msSingleton );  return ( *msSingleton );
 }
 
-GuiSystem::GuiSystem() : mGUI(NULL), mPlatform(NULL), mTxt(NULL)
+GuiSystem::GuiSystem() : /*mGUI(NULL), mPlatform(NULL),*/ mTxt(NULL)
 {
 }
 
@@ -51,6 +59,7 @@ GuiSystem::~GuiSystem()
 
 void GuiSystem::Initialize()
 {
+	/*
 	mPlatform = new MyGUI::OgrePlatform();
 	mPlatform->initialise(GSYS->GetWindow(), GSYS->GetSceneMgr());
 	mGUI = new MyGUI::Gui();
@@ -62,6 +71,7 @@ void GuiSystem::Initialize()
 	material->setReceiveShadows(false);
 	material->getTechnique(0)->setLightingEnabled(false); 
 	material->getTechnique(0)->getPass(0)->setSelfIllumination(0,1,0);
+	*/
 	//init crossHair obj
 	crossHair = GSYS->GetSceneMgr()->createManualObject("crossHair");
 	crossHair->setUseIdentityProjection(true);
@@ -91,13 +101,15 @@ void GuiSystem::Initialize()
 
 void GuiSystem::Finalize()
 {
+	/*
 	mGUI->shutdown();
 	delete mGUI;
 	mGUI = NULL;   
 	mPlatform->shutdown();
+	
 	delete mPlatform;
 	mPlatform = NULL;
-
+*/
 	DeinitDebuggers();
 
 	crossHair->clear();
@@ -112,12 +124,12 @@ void GuiSystem::Update()
 
 void GuiSystem::LoadLayout(std::string name)
 {
-	mLayout = MyGUI::LayoutManager::getInstance().load(name + ".layout");
+	//mLayout = MyGUI::LayoutManager::getInstance().load(name + ".layout");
 }
 
 void GuiSystem::UnloadLayout()
 {
-	MyGUI::LayoutManager::getInstance().unloadLayout(mLayout);
+	//MyGUI::LayoutManager::getInstance().unloadLayout(mLayout);
 }
 
 void GuiSystem::InitDebuggers()
@@ -204,6 +216,8 @@ void GuiSystem::UpdateDebuggers()
 
 //sets
 
-inline void GuiSystem::SetCursor(bool show) { MyGUI::PointerManager::getInstance().setVisible(show); }
+inline void GuiSystem::SetCursor(bool show) { 
+	//MyGUI::PointerManager::getInstance().setVisible(show); 
+}
 
 inline void GuiSystem::SetCrossHair(bool show) { crossHair->setVisible(show); }

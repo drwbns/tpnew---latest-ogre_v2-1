@@ -52,14 +52,17 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include "Recast.h"
-#include "RecastLog.h"
+
+#include "Recast/Recast.h"
+#include "Recast/RecastLog.h"
+
 #include "InputGeom.h"
 #include "ChunkyTriMesh.h"
 #include "MeshLoaderObj.h"
 #include "DebugDrawOgre.h"
+
 //#include "RecastDebugDraw.h"
-#include "DetourNavMesh.h"
+#include "Detour/DetourNavMesh.h"
 
 #include "SharedData.h"
 

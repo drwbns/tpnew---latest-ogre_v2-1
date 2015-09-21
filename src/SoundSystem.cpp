@@ -368,7 +368,7 @@ SoundBuffer* SoundSystem::createStreamingBuffer(SoundSource* mSource, const Ogre
 
 	StreamingBuffer* mBuffer = NULL;
 	if(fileName.find(".ogg") != std::string::npos || fileName.find(".OGG") != std::string::npos)
-		mBuffer = OGRE_NEW OggStream(fileName, mSource, 4);
+		mBuffer = OGRE_NEW OgGAMESTATEream(fileName, mSource, 4);
 	//else if(fileName.find(".wav") != std::string::npos || fileName.find(".WAV") != std::string::npos)
 	//	mBuffer = new WavBuffer(fileName);
 
