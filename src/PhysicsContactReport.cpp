@@ -4,6 +4,7 @@
 #include "zzzSndSystem.h"
 #include "GUtility.h"
 
+/*
 void PhysicsContactReport::onContactNotify(NxContactPair& pair, PxU32 events)
 {
 	NxContactStreamIterator j(pair.stream);
@@ -30,3 +31,4 @@ void PhysicsContactReport::onContactNotify(NxContactPair& pair, PxU32 events)
 	{
 	}
 }
+*/

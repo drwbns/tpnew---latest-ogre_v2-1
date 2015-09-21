@@ -28,5 +28,7 @@ class dtNavMeshQuery;
 struct SampleTool;
 class BuildContext;
 
+class Character;
+
 #endif // !prereqs_h
 

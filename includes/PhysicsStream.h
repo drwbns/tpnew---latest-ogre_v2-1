@@ -8,78 +8,83 @@
 #ifndef STREAM_H
 #define STREAM_H
 
-#include "NxStream.h"
+#include "foundation\PxIO.h"
+#include "foundation/Px.h"
+#include "foundation\PxAssert.h"
+
+using namespace physx;
+
 #include <stdio.h>
 
-class UserStream : public NxStream
+class UserInputStream : public PxInputStream
 {
 public:
-								UserStream(const char* filename, bool load);
-	virtual						~UserStream();
+								UserInputStream(const char* filename, bool load);
+	virtual						~UserInputStream();
 
-	virtual		NxU8			readByte()								const;
-	virtual		NxU16			readWord()								const;
+	virtual		PxU8			readByte()								const;
+	virtual		PxU16			readWord()								const;
 	virtual		PxU32			readDword()								const;
 	virtual		float			readFloat()								const;
 	virtual		double			readDouble()							const;
 	virtual		void			readBuffer(void* buffer, PxU32 size)	const;
 
-	virtual		NxStream&		storeByte(NxU8 b);
-	virtual		NxStream&		storeWord(NxU16 w);
-	virtual		NxStream&		storeDword(PxU32 d);
-	virtual		NxStream&		storeFloat(NxReal f);
-	virtual		NxStream&		storeDouble(NxF64 f);
-	virtual		NxStream&		storeBuffer(const void* buffer, PxU32 size);
+	virtual		PxInputStream&		storeByte(PxU8 b);
+	virtual		PxInputStream&		storeWord(PxU16 w);
+	virtual		PxInputStream&		storeDword(PxU32 d);
+	virtual		PxInputStream&		storeFloat(PxReal f);
+	virtual		PxInputStream&		storeDouble(PxF64 f);
+	virtual		PxInputStream&		storeBuffer(const void* buffer, PxU32 size);
 
 				FILE*			fp;
 };
 
-class MemoryWriteBuffer : public NxStream
+class MemoryWriteBuffer : public PxInputStream
 {
 	public:
 								MemoryWriteBuffer();
 	virtual						~MemoryWriteBuffer();
 
-	virtual		NxU8			readByte()								const	{ NX_ASSERT(0);	return 0;	}
-	virtual		NxU16			readWord()								const	{ NX_ASSERT(0);	return 0;	}
-	virtual		PxU32			readDword()								const	{ NX_ASSERT(0);	return 0;	}
-	virtual		float			readFloat()								const	{ NX_ASSERT(0);	return 0.0f;}
-	virtual		double			readDouble()							const	{ NX_ASSERT(0);	return 0.0;	}
-	virtual		void			readBuffer(void* /*buffer*/, PxU32 /*size*/)	const	{ NX_ASSERT(0);				}
+	virtual		PxU8			readByte()								const	{ PX_ASSERT(0);	return 0;	}
+	virtual		PxU16			readWord()								const	{ PX_ASSERT(0);	return 0;	}
+	virtual		PxU32			readDword()								const	{ PX_ASSERT(0);	return 0;	}
+	virtual		float			readFloat()								const	{ PX_ASSERT(0);	return 0.0f;}
+	virtual		double			readDouble()							const	{ PX_ASSERT(0);	return 0.0;	}
+	virtual		void			readBuffer(void* /*buffer*/, PxU32 /*size*/)	const	{ PX_ASSERT(0);				}
 
-	virtual		NxStream&		storeByte(NxU8 b);
-	virtual		NxStream&		storeWord(NxU16 w);
-	virtual		NxStream&		storeDword(PxU32 d);
-	virtual		NxStream&		storeFloat(NxReal f);
-	virtual		NxStream&		storeDouble(NxF64 f);
-	virtual		NxStream&		storeBuffer(const void* buffer, PxU32 size);
+	virtual		PxInputStream&		storeByte(PxU8 b);
+	virtual		PxInputStream&		storeWord(PxU16 w);
+	virtual		PxInputStream&		storeDword(PxU32 d);
+	virtual		PxInputStream&		storeFloat(PxReal f);
+	virtual		PxInputStream&		storeDouble(PxF64 f);
+	virtual		PxInputStream&		storeBuffer(const void* buffer, PxU32 size);
 
 				PxU32			currentSize;
 				PxU32			maxSize;
-				NxU8*			data;
+				PxU8*			data;
 };
 
-class MemoryReadBuffer : public NxStream
+class MemoryReadBuffer : public PxInputStream
 {
 	public:
-								MemoryReadBuffer(const NxU8* data);
+								MemoryReadBuffer(const PxU8* data);
 	virtual						~MemoryReadBuffer();
 
-	virtual		NxU8			readByte()								const;
-	virtual		NxU16			readWord()								const;
+	virtual		PxU8			readByte()								const;
+	virtual		PxU16			readWord()								const;
 	virtual		PxU32			readDword()								const;
 	virtual		float			readFloat()								const;
 	virtual		double			readDouble()							const;
 	virtual		void			readBuffer(void* buffer, PxU32 size)	const;
 
-	virtual		NxStream&		storeByte(NxU8 /*b*/)							{ NX_ASSERT(0);	return *this;	}
-	virtual		NxStream&		storeWord(NxU16 /*w*/)							{ NX_ASSERT(0);	return *this;	}
-	virtual		NxStream&		storeDword(PxU32 /*d*/)							{ NX_ASSERT(0);	return *this;	}
-	virtual		NxStream&		storeFloat(NxReal /*f*/)						{ NX_ASSERT(0);	return *this;	}
-	virtual		NxStream&		storeDouble(NxF64 /*f*/)						{ NX_ASSERT(0);	return *this;	}
-	virtual		NxStream&		storeBuffer(const void* /*buffer*/, PxU32 /*size*/)	{ NX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeByte(PxU8 /*b*/)							{ PX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeWord(PxU16 /*w*/)							{ PX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeDword(PxU32 /*d*/)							{ PX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeFloat(PxReal /*f*/)						{ PX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeDouble(PxF64 /*f*/)						{ PX_ASSERT(0);	return *this;	}
+	virtual		PxInputStream&		storeBuffer(const void* /*buffer*/, PxU32 /*size*/)	{ PX_ASSERT(0);	return *this;	}
 
-	mutable		const NxU8*		buffer;
+	mutable		const PxU8*		buffer;
 };
 
 #endif  // STREAM_H

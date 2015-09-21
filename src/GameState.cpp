@@ -102,13 +102,13 @@ void GameState::Initialize()
 	{
 		mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(i*4,0.1,30), new EnemyAIController());
 		int ci = mWorld->getAgentTotal() - 1;
-		Vector3 cpos = mWorld->getAgent(ci)->GetPosition();
+		Vector3 * cpos = &mWorld->getAgent(ci)->GetPosition();
 		PtfNode node1(cpos);
-		cpos.z -= 30;
+		cpos->z -= 30;
 		PtfNode node2(cpos);
-		cpos.x -= 10;
+		cposs->x -= 10;
 		PtfNode node3(cpos);
-		cpos.z += 30;
+		cposs->z += 30;
 		PtfNode node4(cpos);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node1);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node2);

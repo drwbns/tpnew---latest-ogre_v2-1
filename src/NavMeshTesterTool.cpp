@@ -20,17 +20,20 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+
 //#include "SDL.h"
 //#include "SDL_opengl.h"
 //#include "imgui.h"
 #include "NavMeshTesterTool.h"
 #include "Sample.h"
-#include "Recast.h"
+
+#include "Recast/Recast.h"
 //#include "RecastDebugDraw.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshBuilder.h"
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshBuilder.h"
 //#include "DetourDebugDraw.h"
-#include "DetourCommon.h"
+#include "Detour/DetourCommon.h"
+
 #include "DebugDrawOgre.h"
 
 #ifdef WIN32

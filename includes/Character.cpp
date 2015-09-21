@@ -6,10 +6,54 @@
 #include "OgreVector3.h"
 #include "OgreSceneManager.h"
 
+inline SceneNode * Character::getSightNode() {
+	return mSightNode;
+}
+
+inline SceneNode * Character::getCameraNode() {
+	return mCameraNode;
+}
+
+inline SceneNode * Character::getTopCamNode() {
+	return mTopCamNode;
+}
+
+inline AnimationState * Character::getAnimState() {
+	return mAnimationState;
+}
+
 inline void Character::setAnimationState(String string) {
 	mAnimationState = mEntity->getAnimationState(string.c_str());
 	mAnimationState->setLoop(true);
 	mAnimationState->setEnabled(true);
+}
+
+inline SceneNode * Character::getYawNode() {
+	return mYawNode;
+}
+
+inline SceneNode * Character::getPitchNode() {
+	return mPitchNode;
+}
+
+inline SceneNode * Character::getRollNode() {
+	return mRollNode;
+}
+
+inline SceneNode * Character::getMainNode() {
+	return mMainNode;
+}
+
+inline SceneNode * Character::getPlayerNode() {
+	return mPlayerNode;
+}
+
+inline void Character::setTightness(Real tightness) {
+	mTightness = tightness;
+}
+
+inline Real Character::getTightness() {
+	return mTightness;
 }
 
 inline Vector3 Character::getPlayerDirection()
@@ -45,6 +89,8 @@ inline void Character::update(Real elapsedTime, Vector3 cameraPosition, Vector3 
 
 
 }
+
+inline void Character::SetDirection(Ogre::Quaternion * q) { Direction = q; }
 
 inline OgreCharacter::OgreCharacter(String name, SceneManager * sceneMgr) {
 	// Setup basic member references

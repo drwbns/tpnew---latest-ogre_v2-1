@@ -30,6 +30,7 @@ This source file is part of the
 #include "OgreConfigFile.h"
 #include "OgreTextureManager.h"
 #include "OgreMaterialManager.h"
+#include "OgreSceneNode.h"
 
 #include "Character.h"
 

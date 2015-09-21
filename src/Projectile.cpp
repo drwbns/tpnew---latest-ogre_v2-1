@@ -28,9 +28,9 @@ using namespace Ogre;
 Projectile::Projectile()
 {
 	Owner = NULL;
-	Start = Vector3::ZERO;
-	Position = Vector3::ZERO;
-	Direction = Vector3::ZERO;
+	*Start = Vector3::ZERO;
+	*Position = Vector3::ZERO;
+	*Direction = Vector3::ZERO;
 	Speed = 0;
 	HitPoint = 0;
 	Alive = false;

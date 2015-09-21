@@ -19,14 +19,19 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdio.h>
+
 #include "Sample.h"
 #include "InputGeom.h"
-#include "Recast.h"
+#include "Recast/Recast.h"
+
 //#include "RecastDebugDraw.h"
 //#include "DetourDebugDraw.h"
-#include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
+
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshQuery.h"
+
 #include "DebugDrawOgre.h"
+
 //#include "DetourCrowd.h"
 //#include "imgui.h"
 //#include "SDL.h"

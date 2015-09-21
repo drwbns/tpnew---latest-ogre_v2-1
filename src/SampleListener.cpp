@@ -1,5 +1,26 @@
 #include "SampleListener.h"
 
+#include "OgreStringConverter.h"
+#include "OGRE\Overlay\OgreOverlayManager.h"
+#include "OgreSceneNode.h"
+
+#include "Character.h"
+
+inline SampleListener::SampleListener(RenderWindow * win, Camera * cam)
+
+{
+	this->win = win;
+	mChar = 0;
+	// we're initially on mode 0 (3rd person), next cam is far chase cam(mode 1)
+	mMouseSpeed = 50;
+	fixedCam = true;
+	camRotate = false;
+
+	guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
+	// Set the debug txt alignment
+	guiDbg->setTop(guiDbg->getTop() - 50);
+}
+
 //-------------------------------------------------------------------------------------
 bool SampleListener::keyPressed( const OIS::KeyEvent &arg )
 {
@@ -29,6 +50,10 @@ bool SampleListener::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonI
 bool SampleListener::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
     return true;
+}
+
+inline void SampleListener::setCharacter(Character * character) {
+	mChar = character;
 }
 
 inline void SampleListener::updateStats() {
@@ -68,4 +93,8 @@ inline void SampleListener::updateStats() {
 
 	}
 	catch (...) { /* ignore */ }
+}
+
+inline bool SampleListener::frameStarted(const FrameEvent & evt)
+{
 }

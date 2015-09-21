@@ -23,6 +23,9 @@ THE SOFTWARE.
 
 
 #include "RtsCamController.h"
+
+#include "GlobalVars.h"
+
 using namespace Ogre;
 
 RtsCamController::RtsCamController() : CamController()

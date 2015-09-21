@@ -26,6 +26,10 @@ THE SOFTWARE.
 #include "GameState.h"
 #include "StateSystem.h"
 #include "GlobalVars.h"
+#include "Obstacle.h"
+#include "AIUtility.h"
+#include "Wall.h"
+#include "AIConsts.h"
 
 using namespace Ogre;
 
@@ -223,8 +227,8 @@ Vector3 Moving::CalculateWallAvoidance()
 		Vector3 line1start = Position;
 		Vector3 line1end = Position + Velocity;
 
-		Vector3 line2start = WORLD->getWall(i)->GetFrom();
-		Vector3 line2end = WORLD->getWall(i)->GetTo();
+		Vector3 line2start = *WORLD->getWall(i)->GetFrom();
+		Vector3 line2end = *WORLD->getWall(i)->GetTo();
 
 		Vector3 d1 = line1end - line1start;
 		Vector3 d2 = line2end - line2start;
@@ -243,7 +247,7 @@ Vector3 Moving::CalculateWallAvoidance()
 				//from agent to intersection
 				Vector3 v1 = result - Position;
 				//wall normal
-				Vector3 v2 = WORLD->getWall(i)->GetNormal();
+				Vector3 v2 = *WORLD->getWall(i)->GetNormal();
 				//find angle between v1 & v2
 				float angle = v1.getRotationTo(v2).getYaw().valueDegrees();
 				//left

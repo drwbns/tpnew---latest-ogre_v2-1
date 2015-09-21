@@ -45,6 +45,7 @@
 #include "GraphicsSystem.h"
 
 #include <boost/thread/once.hpp> 
+#include <boost/thread/condition_variable.hpp> 
 
 #ifdef WIN32
 #	define snprintf _snprintf

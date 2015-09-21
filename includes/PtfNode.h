@@ -30,7 +30,7 @@ class PtfNode
 {
 public:
 	PtfNode(float x, float y, float z);
-	PtfNode(Ogre::Vector3 p);
+	PtfNode(Ogre::Vector3 * p);
 	~PtfNode();
 	
 	//gets & sets

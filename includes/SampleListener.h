@@ -5,12 +5,12 @@
 #include "OgrePrerequisites.h"
 
 #include "OGRE\Overlay\OgreOverlayElement.h"
-#include "OGRE\Overlay\OgreOverlayManager.h"
+
 
 #include "OIS\OISMouse.h"
 #include "OIS\OISKeyboard.h"
 
-#include "Character.h"
+
 
 using namespace Ogre;
 
@@ -45,20 +45,7 @@ class SampleListener : public OIS::MouseListener, public OIS::KeyListener
 	size_t mAniso;
 	int mSceneDetailIndex;
  public:
-	 SampleListener(RenderWindow* win, Camera* cam)
-     
-     {
-		 this->win = win;
-         mChar = 0;
-		 // we're initially on mode 0 (3rd person), next cam is far chase cam(mode 1)
-		mMouseSpeed = 50;
-		fixedCam = true;
-		camRotate = false;
-
-	guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-	// Set the debug txt alignment
-	guiDbg->setTop(guiDbg->getTop() - 50);
-     }
+	 SampleListener(RenderWindow* win, Camera* cam);
 
 	 // Virtual function declarations for handling mouse and Keyboard events
     // OIS::KeyListener
@@ -68,18 +55,14 @@ class SampleListener : public OIS::MouseListener, public OIS::KeyListener
     virtual bool mouseMoved( const OIS::MouseEvent &arg );
     virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
     virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
-     void setCharacter (Character *character) {
-         mChar = character;
-     }
+	void setCharacter(Character *character);
 	
 	 void updateStats();
  
 
 
 
-     bool frameStarted(const FrameEvent& evt)
-     {
-	 }
+	 bool frameStarted(const FrameEvent& evt);
 
  };
 

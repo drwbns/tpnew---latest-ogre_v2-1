@@ -3,7 +3,7 @@
 
 #include "OgrePrerequisites.h"
 
-#include "OgreSceneNode.h"
+
 
 using namespace Ogre;
 
@@ -48,44 +48,22 @@ using namespace Ogre;
          // Updates the character (movement...)
 		 virtual void update (Real elapsedTime, OIS::Keyboard *input, OIS::Mouse * mInput) = 0;
 		 
-         SceneNode *getSightNode () {
-			return mSightNode;
-         }
-         SceneNode *getCameraNode () {
-             return mCameraNode;
-         }
-		 SceneNode *getTopCamNode () {
-             return mTopCamNode;
-         }
-		 AnimationState *getAnimState(){
-			 return mAnimationState;
-		 }
+		 SceneNode *getSightNode();
+		 SceneNode *getCameraNode();
+		 SceneNode *getTopCamNode();
+		 AnimationState *getAnimState();
 		 void setAnimationState(String string);
 
-		 SceneNode *getYawNode () {
-             return mYawNode;
-         }
-		SceneNode *getPitchNode () {
-             return mPitchNode;
-         }
-		SceneNode *getRollNode () {
-             return mRollNode;
-         }
+		 SceneNode *getYawNode();
+		 SceneNode *getPitchNode();
+		 SceneNode *getRollNode();
 		 
-		 SceneNode *getMainNode () {
-             return mMainNode;
-         }
-		 SceneNode *getPlayerNode () {
-             return mPlayerNode;
-         }
+		 SceneNode *getMainNode();
+		 SceneNode *getPlayerNode();
 		
-		void setTightness (Real tightness) {
-		 mTightness = tightness;
-		 }
+		 void setTightness(Real tightness);
 
-		 Real getTightness () {
-			 return mTightness;
-		 }
+		 Real getTightness();
 
 		 Vector3 getPlayerDirection();
 
@@ -95,7 +73,7 @@ using namespace Ogre;
  
 		 void update(Real elapsedTime, Vector3 cameraPosition, Vector3 targetPosition);
 
-		 void SetDirection(Ogre::Quaternion * q) { Direction = q; }
+		 void SetDirection(Ogre::Quaternion * q);
 		 Ogre::Vector3 * GetVelocity() { return Velocity; }
  };
 

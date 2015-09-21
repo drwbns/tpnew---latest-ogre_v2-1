@@ -21,15 +21,16 @@ THE SOFTWARE.
 */
 
 #include "PtfNode.h"
+#include "OgreVector3.h"
 
 PtfNode::PtfNode(float x, float y, float z)
 {
-	pos.x = x;
-	pos.y = y;
-	pos.z = z;
+	pos->x = x;
+	pos->y = y;
+	pos->z = z;
 }
 
-PtfNode::PtfNode(Ogre::Vector3 p)
+PtfNode::PtfNode(Ogre::Vector3 *p)
 {
 	pos = p;
 }

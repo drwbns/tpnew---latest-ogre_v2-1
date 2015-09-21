@@ -25,6 +25,8 @@ THE SOFTWARE.
 #include "OgreManualObject.h"
 #include "OgreMaterialManager.h"
 #include "OgreMaterial.h"
+#include "OgreTechnique.h"
+#include "OgreTimer.h"
 
 #include "FileList.h"
 #include "GraphicsSystem.h"
@@ -548,7 +550,7 @@ void NavMesher::GetPath(Ogre::Vector3 from, Ogre::Vector3 to, Path* &path)
 			for (int i = 0; i < path->numStraightPaths; ++i)
 			{
 				Vector3 cpos(m_straightPath[i*3], m_straightPath[i*3+1]+0.25, m_straightPath[i*3+2]);
-				PtfNode node(cpos);
+				PtfNode node(&cpos);
 				path->AddNode(node);
 			}
 		}

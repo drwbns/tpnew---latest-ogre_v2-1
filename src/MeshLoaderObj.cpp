@@ -45,6 +45,7 @@
 #include <OgrePixelCountLodStrategy.h>
 #include <OgreDistanceLodStrategy.h>
 #include "OgreRoot.h"
+#include "OgreMeshManager.h"
 
 using namespace Ogre;
 
