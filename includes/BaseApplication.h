@@ -17,17 +17,16 @@ This source file is part of the
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
 
+#include "prereqs.h"
+
 #include "OgreSingleton.h"
 #include "OgreFrameListener.h"
 #include "OgreWindowEventUtilities.h"
-
+#include "Overlay\OgreOverlayElement.h"
 
 #include "OIS\OISMouse.h"
 #include "OIS\OISKeyboard.h"
 
-class OgreCharacter;
-
-#include "Overlay\OgreOverlayElement.h"
 
 #define BASE BaseApplication::getSingletonPtr()
 

@@ -29,6 +29,7 @@ struct SampleTool;
 class BuildContext;
 
 class Character;
+class OgreCharacter;
 
 #endif // !prereqs_h
 

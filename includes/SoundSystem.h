@@ -27,13 +27,17 @@ THE SOFTWARE.
 #include <map>
 #include <vector>
 
-#include <OgreIteratorWrappers.h>
-#include <OgreSingleton.h>
-
 #include "SoundPrereqs.h"
 #include "SoundSource.h"
 #include "SoundListener.h"
 #include "SoundDevices.h"
+
+#include <OgreIteratorWrappers.h>
+#include <OgreSingleton.h>
+#include "OgreMemoryAllocatorConfig.h"
+
+
+
 
 #define SOUND_BUFFER_SIZE (4096 * 8)
 

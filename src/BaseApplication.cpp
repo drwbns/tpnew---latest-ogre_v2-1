@@ -18,19 +18,16 @@ This source file is part of the
 
 #include "OgreCommon.h"
 #include "OgreRoot.h"
-
 #include "OgreCamera.h"
-
 #include "OgreLogManager.h"
 #include "OgreRenderWindow.h"
-
-#include "OIS\OISInputManager.h"
-
 #include "OgreViewport.h"
 #include "OgreConfigFile.h"
 #include "OgreTextureManager.h"
 #include "OgreMaterialManager.h"
 #include "OgreSceneNode.h"
+
+#include "OIS\OISInputManager.h"
 
 #include "Character.h"
 
@@ -668,7 +665,7 @@ void BaseApplication::windowResized(Ogre::RenderWindow* rw)
     int left, top;
     rw->getMetrics(width, height, depth, left, top);
 
-    const OIS::MouseState &ms = mMouse->getMouseState();
+    OIS::MouseState ms = mMouse->getMouseState();
     ms.width = width;
     ms.height = height;
 }

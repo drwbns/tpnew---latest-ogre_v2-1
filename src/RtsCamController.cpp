@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
+template<> RtsCamController* Ogre::Singleton<RtsCamController>::msSingleton = 0;
+
 RtsCamController::RtsCamController() : CamController()
 {
 	type = CT_RTS;

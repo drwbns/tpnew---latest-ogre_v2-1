@@ -76,7 +76,7 @@ void InputSystem::Initialize()
 	mKeyboard->setEventCallback(this);
 
 	//set mouse clip area
-	const OIS::MouseState &ms = mMouse->getMouseState();
+	OIS::MouseState ms = mMouse->getMouseState();
 	int w = GSYS->GetWindow()->getWidth();
 	int h = GSYS->GetWindow()->getHeight();
 	ms.width = w;
@@ -198,7 +198,7 @@ bool InputSystem::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
 {
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		const MouseState &ms = mMouse->getMouseState();
+		MouseState ms = mMouse->getMouseState();
 		GAMESTATE->GetCurrentCam()->UpdateRotation(-ms.Y.rel, -ms.X.rel);
 
 		if (ms.buttonDown(MB_Middle))

@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #include "SoundPrereqs.h"
 
+#include "OgreMemoryAllocatorConfig.h"
+
 typedef struct AlDeviceInfo
 {
 	std::string					strDeviceName;

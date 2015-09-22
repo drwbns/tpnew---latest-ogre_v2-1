@@ -18,6 +18,7 @@
 #include "OgreAxisAlignedBox.h"
 #include "OgreCamera.h"
 #include "OgreSceneNode.h"
+#include "Overlay\OgreFont.h"
 
 #define POS_TEX_BINDING    0
 #define COLOUR_BINDING     1
