@@ -94,7 +94,7 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 		Vector3 add1 = agent1->GetRotation() * agent1->getEyePos();
 		Vector3 add2(-add1.x, add1.y, -add1.z);
 		//Vector3 add3 = agent1->GetFirePosition();
-		Vector3 result = PHY->CastRay3(&(agent1->GetPosition()+add1), &(agent2->GetPosition()+add2));
+		Vector3 result = PHY->CastRay3(agent1->GetPosition()+add1, agent2->GetPosition()+add2);
 		//
 		return dy < 1.0 && AIUtility::PointInTriangle2D(P, A, B, C) && result == Vector3::ZERO;
 	}
@@ -299,7 +299,7 @@ void AIPerceptor::FindCovers(Agent* agent)
 			it = tposs.begin();
 			while (it != tposs.end())
 			{
-				Vector3 ret = PHY->CastRay3(&coverFrom, &*it);
+				Vector3 ret = PHY->CastRay3(coverFrom, *it);
 				if (ret == Vector3::ZERO)
 				{
 					it = tposs.erase(it);

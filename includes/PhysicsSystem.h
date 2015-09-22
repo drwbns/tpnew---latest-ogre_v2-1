@@ -48,9 +48,9 @@ public:
 	void FlipDebug();
 
 	//utility
-	Ogre::Vector3 CastRay1(Ogre::Vector3 *from, Ogre::Vector3 *dir);
-	Ogre::Vector3 CastRay2(Ogre::Vector3 *from, Ogre::Vector3 *to, PxShape** shape, PxMaterial &mat);
-	Ogre::Vector3 CastRay3(Ogre::Vector3 *from, Ogre::Vector3 *to);
+	Ogre::Vector3 CastRay1(const Ogre::Vector3 &from, Ogre::Vector3 &dir);
+	Ogre::Vector3 CastRay2(Ogre::Vector3 &from, Ogre::Vector3 &to, PxShape** shape, PxMaterial &mat);
+	Ogre::Vector3 CastRay3(Ogre::Vector3 &from, Ogre::Vector3 &to);
 	bool OverlapTest(Ogre::Vector3 *min, Ogre::Vector3 *max);
 
 	//gets & sets

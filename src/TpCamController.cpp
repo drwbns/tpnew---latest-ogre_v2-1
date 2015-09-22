@@ -99,7 +99,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	Quaternion q;
 	q.FromAngleAxis(Radian(pitch), Vector3::UNIT_X);
 	Vector3 addPos = rotation * q * curCamOffset;
-	Vector3 castPos = PHY->CastRay1(&mPos, &addPos.normalisedCopy());
+	Vector3 castPos = PHY->CastRay1(mPos, addPos.normalisedCopy());
 	float dist = castPos.distance(mPos);
 	float skinWidth2 = 0.25;
 	if (dist - skinWidth2 < addPos.length())
