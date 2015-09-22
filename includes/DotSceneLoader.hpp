@@ -6,26 +6,13 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 // Includes
-#include <OgreString.h>
-#include <OgreVector3.h>
-#include <OgreQuaternion.h>
-#include <OgreResourceGroupManager.h>
-#include <vector>
+#include "OgrePrerequisites.h"
+
+
+#include "Terrain/OgreTerrain.h"
+#include "Terrain/OgreTerrainGroup.h"
 
 #include "rapidxml.hpp"
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-// Forward declarations
-namespace Ogre
-{
-    class SceneManager;
-    class SceneNode;
-    class TerrainGroup;
-    class TerrainGlobalOptions;
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
 
 class nodeProperty
 {

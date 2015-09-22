@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "PhysicsSystem.h"
 #include "GlobalVars.h"
 
+template<> TpCamController* Ogre::Singleton<TpCamController>::msSingleton = 0;
 
 using namespace Ogre;
 

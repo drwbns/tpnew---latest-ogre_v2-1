@@ -33,6 +33,8 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
+template<> NavMesher* Ogre::Singleton<NavMesher>::msSingleton = 0;
+
 NavMesher::NavMesher():
 	m_geom(0),
 	m_navMesh(0),

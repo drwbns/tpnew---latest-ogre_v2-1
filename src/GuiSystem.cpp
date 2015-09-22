@@ -216,8 +216,8 @@ void GuiSystem::UpdateDebuggers()
 
 //sets
 
-inline void GuiSystem::SetCursor(bool show) { 
+void GuiSystem::SetCursor(bool show) { 
 	//MyGUI::PointerManager::getInstance().setVisible(show); 
 }
 
-inline void GuiSystem::SetCrossHair(bool show) { crossHair->setVisible(show); }
+void GuiSystem::SetCrossHair(bool show) { crossHair->setVisible(show); }

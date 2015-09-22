@@ -6,7 +6,7 @@
 
 #include "Character.h"
 
-inline SampleListener::SampleListener(RenderWindow * win, Camera * cam)
+SampleListener::SampleListener(RenderWindow * win, Camera * cam)
 
 {
 	this->win = win;
@@ -52,11 +52,11 @@ bool SampleListener::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButton
     return true;
 }
 
-inline void SampleListener::setCharacter(Character * character) {
+void SampleListener::setCharacter(Character * character) {
 	mChar = character;
 }
 
-inline void SampleListener::updateStats() {
+void SampleListener::updateStats() {
 	try {
 
 
@@ -95,6 +95,7 @@ inline void SampleListener::updateStats() {
 	catch (...) { /* ignore */ }
 }
 
-inline bool SampleListener::frameStarted(const FrameEvent & evt)
+bool SampleListener::frameStarted(const FrameEvent & evt)
 {
+	return true;
 }

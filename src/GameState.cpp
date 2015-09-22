@@ -45,6 +45,8 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
+template<> GameState* Ogre::Singleton<GameState>::msSingleton = 0;
+
 GameState::GameState()
 {
 }

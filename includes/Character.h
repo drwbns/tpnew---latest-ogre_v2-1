@@ -43,7 +43,6 @@ using namespace Ogre;
 		Vector3 *tv3, *thePoint,* tx, *cam_pos_w;
 		 static const int MINSPD = 5;
  // Methods ---------------------------------------------------------------------------------
-     protected:
      public:
          // Updates the character (movement...)
 		 virtual void update (Real elapsedTime, OIS::Keyboard *input, OIS::Mouse * mInput) = 0;
@@ -82,9 +81,6 @@ using namespace Ogre;
  // Attributes ------------------------------------------------------------------------------
      protected:
          String mName;
-     public:
- // Methods ---------------------------------------------------------------------------------
-     protected:
      public:
 		 OgreCharacter(String name, SceneManager *sceneMgr);
 		 ~OgreCharacter();

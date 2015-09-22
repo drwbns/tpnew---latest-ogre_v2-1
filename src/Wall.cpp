@@ -82,8 +82,8 @@ Wall::~Wall()
 	mark = NULL;
 }
 
-inline Ogre::Vector3 & Wall::GetFrom() { return From; }
+Ogre::Vector3 & Wall::GetFrom() { return From; }
 
-inline Ogre::Vector3 & Wall::GetTo() { return To; }
+Ogre::Vector3 & Wall::GetTo() { return To; }
 
-inline Ogre::Vector3 & Wall::GetNormal() { return Normal; }
+Ogre::Vector3 & Wall::GetNormal() { return Normal; }

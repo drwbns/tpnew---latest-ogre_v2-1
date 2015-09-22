@@ -1,11 +1,12 @@
 #include "DotSceneLoader.hpp"
-#include <Ogre.h>
-#include <Terrain/OgreTerrain.h>
-#include <Terrain/OgreTerrainGroup.h>
+
 #include <Terrain/OgreTerrainMaterialGeneratorA.h>
 #include "OgrePixelCountLodStrategy.h"
-#pragma warning(disable:4390)
-#pragma warning(disable:4305)
+#include "OgreLogManager.h"
+#include "OgreSceneNode.h"
+#include "OgreCamera.h"
+#include "OgreMeshManager.h"
+#include "OgreEntity.h"
 
 
 DotSceneLoader::DotSceneLoader() : mSceneMgr(0), mTerrainGroup(0)
@@ -204,8 +205,8 @@ void DotSceneLoader::processEnvironment(rapidxml::xml_node<>* XMLNode)
     // Process colourBackground (?)
     //! @todo Set the background colour of all viewports (RenderWindow has to be provided then)
     pElement = XMLNode->first_node("colourBackground");
-    if(pElement)
-        ;//mSceneMgr->set(parseColour(pElement));
+//    if(pElement)
+  //      ;//mSceneMgr->set(parseColour(pElement));
 
     // Process userDataReference (?)
     pElement = XMLNode->first_node("userDataReference");
@@ -469,8 +470,8 @@ void DotSceneLoader::processLight(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode
     }
     // Process userDataReference (?)
     pElement = XMLNode->first_node("userDataReference");
-    if(pElement)
-        ;//processUserDataReference(pElement, pLight);
+//    if(pElement)
+   //     ;//processUserDataReference(pElement, pLight);
 }
 
 void DotSceneLoader::processCamera(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent)
@@ -527,23 +528,23 @@ void DotSceneLoader::processCamera(rapidxml::xml_node<>* XMLNode, Ogre::SceneNod
 
     // Process normal (?)
     pElement = XMLNode->first_node("normal");
-    if(pElement)
-        ;//!< @todo What to do with this element?
+ //   if(pElement)
+  //      ;//!< @todo What to do with this element?
 
     // Process lookTarget (?)
     pElement = XMLNode->first_node("lookTarget");
-    if(pElement)
-        ;//!< @todo Implement the camera look target
+//    if(pElement)
+   //     ;//!< @todo Implement the camera look target
 
     // Process trackTarget (?)
     pElement = XMLNode->first_node("trackTarget");
-    if(pElement)
-        ;//!< @todo Implement the camera track target
+ //   if(pElement)
+   //     ;//!< @todo Implement the camera track target
 
     // Process userDataReference (?)
     pElement = XMLNode->first_node("userDataReference");
-    if(pElement)
-        ;//!< @todo Implement the camera user data reference
+//    if(pElement)
+    //    ;//!< @todo Implement the camera user data reference
 
     // construct a scenenode is no parent
     if(!pParent)
@@ -779,13 +780,13 @@ void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNod
 
     // Process vertexBuffer (?)
     pElement = XMLNode->first_node("vertexBuffer");
-    if(pElement)
-        ;//processVertexBuffer(pElement);
+ //   if(pElement)
+  //      ;//processVertexBuffer(pElement);
 
     // Process indexBuffer (?)
     pElement = XMLNode->first_node("indexBuffer");
-    if(pElement)
-        ;//processIndexBuffer(pElement);
+  //  if(pElement)
+  //      ;//processIndexBuffer(pElement);
 
     // Create the entity
     Ogre::Entity *pEntity = 0;
@@ -826,7 +827,7 @@ void DotSceneLoader::processParticleSystem(rapidxml::xml_node<>* XMLNode, Ogre::
     try
     {
         Ogre::ParticleSystem *pParticles = mSceneMgr->createParticleSystem(name, file);
-        pParent->attachObject(pParticles);
+        pParent->attachObject((Ogre::MovableObject*)pParticles);
     }
     catch(Ogre::Exception &/*e*/)
     {

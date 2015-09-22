@@ -6,57 +6,57 @@
 #include "OgreVector3.h"
 #include "OgreSceneManager.h"
 
-inline SceneNode * Character::getSightNode() {
+SceneNode * Character::getSightNode() {
 	return mSightNode;
 }
 
-inline SceneNode * Character::getCameraNode() {
+SceneNode * Character::getCameraNode() {
 	return mCameraNode;
 }
 
-inline SceneNode * Character::getTopCamNode() {
+SceneNode * Character::getTopCamNode() {
 	return mTopCamNode;
 }
 
-inline AnimationState * Character::getAnimState() {
+AnimationState * Character::getAnimState() {
 	return mAnimationState;
 }
 
-inline void Character::setAnimationState(String string) {
+void Character::setAnimationState(String string) {
 	mAnimationState = mEntity->getAnimationState(string.c_str());
 	mAnimationState->setLoop(true);
 	mAnimationState->setEnabled(true);
 }
 
-inline SceneNode * Character::getYawNode() {
+SceneNode * Character::getYawNode() {
 	return mYawNode;
 }
 
-inline SceneNode * Character::getPitchNode() {
+SceneNode * Character::getPitchNode() {
 	return mPitchNode;
 }
 
-inline SceneNode * Character::getRollNode() {
+SceneNode * Character::getRollNode() {
 	return mRollNode;
 }
 
-inline SceneNode * Character::getMainNode() {
+SceneNode * Character::getMainNode() {
 	return mMainNode;
 }
 
-inline SceneNode * Character::getPlayerNode() {
+SceneNode * Character::getPlayerNode() {
 	return mPlayerNode;
 }
 
-inline void Character::setTightness(Real tightness) {
+void Character::setTightness(Real tightness) {
 	mTightness = tightness;
 }
 
-inline Real Character::getTightness() {
+Real Character::getTightness() {
 	return mTightness;
 }
 
-inline Vector3 Character::getPlayerDirection()
+Vector3 Character::getPlayerDirection()
 {
 	Matrix3 matrix;
 	mMainNode->getOrientation().ToRotationMatrix(matrix);
@@ -64,7 +64,7 @@ inline Vector3 Character::getPlayerDirection()
 	return mDirection;
 }
 
-inline Vector3 Character::getCameraDirection()
+Vector3 Character::getCameraDirection()
 {
 	Matrix3 matrix;
 	mCameraNode->getOrientation().ToRotationMatrix(matrix);
@@ -72,12 +72,12 @@ inline Vector3 Character::getCameraDirection()
 	return mDirection;
 }
 
-inline void Character::instantUpdate(Vector3 cameraPosition, Vector3 targetPosition) {
+void Character::instantUpdate(Vector3 cameraPosition, Vector3 targetPosition) {
 	mCameraNode->setPosition(cameraPosition);
 	mSightNode->setPosition(targetPosition);
 }
 
-inline void Character::update(Real elapsedTime, Vector3 cameraPosition, Vector3 targetPosition) {
+void Character::update(Real elapsedTime, Vector3 cameraPosition, Vector3 targetPosition) {
 	// Handle movement
 	Vector3 displacement;
 
@@ -90,9 +90,9 @@ inline void Character::update(Real elapsedTime, Vector3 cameraPosition, Vector3 
 
 }
 
-inline void Character::SetDirection(Ogre::Quaternion * q) { Direction = q; }
+void Character::SetDirection(Ogre::Quaternion * q) { Direction = q; }
 
-inline OgreCharacter::OgreCharacter(String name, SceneManager * sceneMgr) {
+OgreCharacter::OgreCharacter(String name, SceneManager * sceneMgr) {
 	// Setup basic member references
 	mName = name;
 	mSceneMgr = sceneMgr;
@@ -126,14 +126,14 @@ inline OgreCharacter::OgreCharacter(String name, SceneManager * sceneMgr) {
 	setAnimationState("Idle1");
 }
 
-inline OgreCharacter::~OgreCharacter() {
+OgreCharacter::~OgreCharacter() {
 	mMainNode->detachAllObjects();
 	delete mEntity;
 	mMainNode->removeAndDestroyAllChildren();
 	mSceneMgr->destroySceneNode(mName);
 }
 
-inline void OgreCharacter::update(Real elapsedTime, OIS::Keyboard * input, OIS::Mouse * mInput) {
+void OgreCharacter::update(Real elapsedTime, OIS::Keyboard * input, OIS::Mouse * mInput) {
 	// Handle movement
 	if (mInput->getMouseState().buttonDown(OIS::MB_Left)) {
 		setAnimationState("Attack3");
@@ -168,6 +168,6 @@ inline void OgreCharacter::update(Real elapsedTime, OIS::Keyboard * input, OIS::
 
 // Change visibility - Useful for 1st person view ;)
 
-inline void OgreCharacter::setVisible(bool visible) {
+void OgreCharacter::setVisible(bool visible) {
 	mMainNode->setVisible(visible);
 }

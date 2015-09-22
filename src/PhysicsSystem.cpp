@@ -185,6 +185,21 @@ void PhysicsSystem::FlipDebug()
 	*/
 }
 
+Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 & dir)
+{
+	return Ogre::Vector3();
+}
+
+Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, PxShape ** shape, PxMaterial & mat)
+{
+	return Ogre::Vector3();
+}
+
+Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 & from, Ogre::Vector3 & to)
+{
+	return Ogre::Vector3();
+}
+
 /*
 
 Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)

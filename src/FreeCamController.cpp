@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
+template<> FreeCamController* Ogre::Singleton<FreeCamController>::msSingleton = 0;
+
 FreeCamController::FreeCamController() : CamController()
 {
 	type = CT_FREE;

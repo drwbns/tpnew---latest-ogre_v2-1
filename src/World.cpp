@@ -30,6 +30,8 @@ THE SOFTWARE.
 
 #include "OgreVector3.h"
 
+template<> World* Ogre::Singleton<World>::msSingleton = 0;
+
 World::World()
 {
 	player = -1;
