@@ -60,7 +60,7 @@ void zzzSndSystem::Initialize()
 	}
 	slistener = SoundListener::getSingletonPtr();
 	slistener->setGain(1.0);
-	LoadSounds();
+	//LoadSounds();
 }
 
 void zzzSndSystem::Finalize()

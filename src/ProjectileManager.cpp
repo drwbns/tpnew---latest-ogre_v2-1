@@ -89,9 +89,9 @@ void ProjectileManager::Shoot(Type t, Agent* owner, Ogre::Vector3 pos, Ogre::Vec
 		case Blue:
 		{
 			blues[NextBlue]->Owner = owner;
-			*blues[NextBlue]->Start = pos;
-			*blues[NextBlue]->Position = pos;
-			*blues[NextBlue]->Direction = dir;
+			blues[NextBlue]->Start = pos;
+			blues[NextBlue]->Position = pos;
+			blues[NextBlue]->Direction = dir;
 			blues[NextBlue]->Alive = true;
 			blues[NextBlue]->bill = BBS->ShowBillboard("Bullet", pos, 100);
 			blues[NextBlue]->sbill = -1;

@@ -52,7 +52,7 @@ BlueBullet::~BlueBullet()
 void BlueBullet::Update()
 {
 	//check if it will hit sth.;
-	Vector3 toAdd = *Direction * Speed * GlobalVars::Tick;
+	Vector3 toAdd = Direction * Speed * GlobalVars::Tick;
 	PxShape* shape = NULL;
 	/*
 	PxMaterial mat;

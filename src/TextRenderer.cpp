@@ -5,7 +5,7 @@
 
 TextRenderer::TextRenderer()
 {
-	_overlayMgr = Ogre::OverlayManager::getSingletonPtr();
+	_overlayMgr = OGRE_NEW(Ogre::OverlayManager);
 
 	_overlay = _overlayMgr->create("overlay1");
 	_panel = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("Panel", "container1"));
