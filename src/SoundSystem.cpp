@@ -55,7 +55,7 @@ bool SoundSystem::initialize()
 	Ogre::Root::getSingleton().addMovableObjectFactory(mSourceFactory);
 	Ogre::Root::getSingleton().addMovableObjectFactory(mListenerFactory);
 
-//	alutInitWithoutContext(NULL, NULL);
+	alutInitWithoutContext(NULL, NULL);
 
 	logMessage("Creating OpenAL");
 
@@ -185,7 +185,7 @@ void SoundSystem::finalize()
 	alcMakeContextCurrent(NULL);
 	alcDestroyContext(context);
 	alcCloseDevice(device);
-//	alutExit();
+	alutExit();
 }
 //----------------------------------------------------------------------------//
 struct SoundSystem::UpdateSource
