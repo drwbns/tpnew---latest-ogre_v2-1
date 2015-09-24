@@ -30,6 +30,8 @@ THE SOFTWARE.
 #include "OgreRoot.h"
 #include "OgreRenderWindow.h"
 #include "OgreCamera.h"
+#include <Overlay/OgreOverlayManager.h>
+#include "Overlay\OgreOverlaySystem.h"
 
 #define GSYS GraphicsSystem::getSingletonPtr()
 
@@ -55,12 +57,16 @@ public:
 	Ogre::SceneManager* GetSceneMgr() { return mSceneMgr; }
 	Ogre::RenderWindow* GetWindow()   { return mWindow; }
 	Ogre::Camera* GetCamera()		  { return mCamera; }
+	Ogre::OverlayManager * GetOverlayMgr() { return mOverlayMgr; }
+	Ogre::OverlaySystem * GetOverlaySystem() { return mOverlaySystem; }
 	
 private:
 	Ogre::Root*			mRoot;
 	Ogre::RenderWindow* mWindow;
 	Ogre::SceneManager* mSceneMgr;
 	Ogre::Camera*		mCamera;
+	Ogre::OverlayManager * mOverlayMgr;
+	Ogre::OverlaySystem * mOverlaySystem;
 };
 
 #endif

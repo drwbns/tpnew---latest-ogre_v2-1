@@ -265,12 +265,16 @@ void Vip::Update()
 	if (scount == 0 && runAnimState->getTimePosition() >= 0.5 * runAnimState->getLength())
 	{
 		scount++;
+#ifndef DISABLE_SOUND
 		ZSND->PlaySound("step");
+#endif
 	}
 	else if (scount == 1 && runAnimState->getTimePosition() >= runAnimState->getLength() - 1.5 * time2add)
 	{
 		scount++;
+#ifndef DISABLE_SOUND
 		ZSND->PlaySound("step");
+#endif
 	}
 	else if (scount == 2)
 	{
@@ -363,7 +367,9 @@ void Vip::Shoot(bool first, Vector3 trg_pos)
 		{
 			PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), GetFireDirection(trg_pos));
 			shootAnimState->setTimePosition(0);
+#ifndef DISABLE_SOUND
 			ZSND->PlaySound("fire");
+#endif
 			incShotsFired();
 		}
 	}

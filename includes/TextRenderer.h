@@ -3,6 +3,7 @@
 
 #include <Overlay/OgreOverlayContainer.h>
 #include <Overlay/OgreOverlayManager.h>
+#include <Overlay/OgreOverlaySystem.h>
 
 class TextRenderer : public Ogre::GeneralAllocatedObject
 {
@@ -27,6 +28,7 @@ private:
 	Ogre::OverlayManager*    _overlayMgr;
 	Ogre::Overlay*           _overlay;
 	Ogre::OverlayContainer*  _panel;
+	Ogre::OverlaySystem* pOverlaySystem;
 };
 
 #endif

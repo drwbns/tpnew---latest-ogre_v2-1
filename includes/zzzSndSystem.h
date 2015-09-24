@@ -29,6 +29,8 @@ THE SOFTWARE.
 
 #define ZSND zzzSndSystem::getSingletonPtr()
 
+#define DISABLE_SOUND 1
+
 class zzzSndSystem : public Ogre::Singleton<zzzSndSystem>, public Ogre::GeneralAllocatedObject
 {
 public:

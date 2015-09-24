@@ -102,6 +102,8 @@ void GraphicsSystem::Initialize()
 		mRoot->setRenderSystem(mRenderSys);
 		mWindow = mRoot->initialise(true,"Whatever");
 	}
+	mOverlaySystem = OGRE_NEW(OverlaySystem);
+	mOverlayMgr = OverlayManager::getSingletonPtr();
 	//init resources
 	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 

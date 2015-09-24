@@ -3,9 +3,14 @@
 
 #include <Overlay/OgreOverlay.h>
 
+#include "GraphicsSystem.h"
+
 TextRenderer::TextRenderer()
 {
-	_overlayMgr = OGRE_NEW(Ogre::OverlayManager);
+	pOverlaySystem = GSYS->GetOverlaySystem();
+	GSYS->GetSceneMgr()->addRenderQueueListener(pOverlaySystem);
+
+	_overlayMgr = GSYS->GetOverlayMgr();
 
 	_overlay = _overlayMgr->create("overlay1");
 	_panel = static_cast<Ogre::OverlayContainer*>(_overlayMgr->createOverlayElement("Panel", "container1"));
@@ -39,7 +44,7 @@ void TextRenderer::addTextBox(
 	textBox->setPosition(x, y);
 	textBox->setWidth(width);
 	textBox->setHeight(height);
-	textBox->setParameter("font_name", "whatever");
+	textBox->setParameter("font_name", "test");
 	textBox->setParameter("char_height", "20");
 	textBox->setColour(color);
 

@@ -407,7 +407,7 @@ void MovableText::_setupGeometry()
     ptbuf->unlock();
 
     // update AABB/Sphere radius
-    *mAABB = Ogre::AxisAlignedBox(min, max);
+    mAABB = Ogre::AxisAlignedBox(min, max);
     mRadius = Ogre::Math::Sqrt(maxSquaredRadius);
 
     if (mUpdateColors)

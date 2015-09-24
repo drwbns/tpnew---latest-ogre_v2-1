@@ -63,12 +63,16 @@ void MenuState::Update()
 
 void MenuState::OnPlay()
 {
+#ifndef DISABLE_SOUND
 	ZSND->PlaySound("tick");
+#endif
 	SSYS->LoadState("game");
 }
 
 void MenuState::OnExit()
 {
+#ifndef DISABLE_SOUND
 	ZSND->PlaySound("tick");
+#endif
 	GlobalVars::ShutDown = true;
 }
