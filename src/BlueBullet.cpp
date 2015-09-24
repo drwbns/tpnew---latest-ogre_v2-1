@@ -55,6 +55,8 @@ void BlueBullet::Update()
 	Vector3 toAdd = Direction * Speed * GlobalVars::Tick;
 	PxShape* shape = NULL;
 	
+	; // Start Section Outdated, marked for removal 
+	/*
 	PxMaterial mat;
 	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape, mat);
 	if (normal == Vector3::ZERO)
@@ -143,5 +145,6 @@ void BlueBullet::Update()
 			}
 		}
 	}
-	
+	*/
+	; // End Section Outdated, marked for removal 
 }

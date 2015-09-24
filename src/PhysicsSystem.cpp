@@ -64,8 +64,10 @@ void PhysicsSystem::Initialize()
 		OgreAssert("PxCreatePhysics failed!",1);
 	//sdk
 	
-	//gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
+	; // Outdated, marked for removal //gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
+	; // Start Section Outdated, marked for removal 
+	/*
 	//scene
 	PxSceneDesc sceneDesc;
 	sceneDesc.gravity = PxVec3(0,-10,0);
@@ -114,12 +116,15 @@ void PhysicsSystem::Initialize()
 	AxisAlignedBox aabInf;
 	aabInf.setInfinite();
 	mVisualDebugger->setBoundingBox(aabInf);
+	*/
+	; // End Section Outdated, marked for removal 
 	
 }
 
 void PhysicsSystem::Finalize()
 {
 	//debugger
+	; // Start Section Outdated, marked for removal 
 	/*
 	mVisualDebuggerNode->detachAllObjects();
 	mVisualDebuggerNode->getParentSceneNode()->removeAndDestroyChild(mVisualDebuggerNode->getName());
@@ -134,10 +139,12 @@ void PhysicsSystem::Finalize()
 	gPhysicsSDK->releaseScene(*gScene);
 	gPhysicsSDK->release();
 	*/
+	; // End Section Outdated, marked for removal 
 }
 
 void PhysicsSystem::Update()
 {
+	; // Start Section Outdated, marked for removal 
 	/*
 	gScene->simulate(GlobalVars::Tick);
 	gScene->flushStream();
@@ -165,7 +172,10 @@ void PhysicsSystem::Update()
 		mVisualDebugger->end();
 	}
 	*/
+	; // End Section Outdated, marked for removal 
 }
+
+; // Start Section Outdated, marked for removal 
 /*
 void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group)
 {
@@ -178,10 +188,12 @@ void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup grou
 	}
 }
 */
+; // End Section Outdated, marked for removal 
 
 void PhysicsSystem::FlipDebug()
 {
 	mDebuggerView = !mDebuggerView;
+	; // Start Section Outdated, marked for removal 
 	/*
 	if (!mDebuggerView)
 	{
@@ -196,6 +208,7 @@ void PhysicsSystem::FlipDebug()
 		mVisualDebugger->end();
 	}
 	*/
+	; // End Section Outdated, marked for removal 
 }
 
 Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 & dir)
@@ -212,7 +225,7 @@ Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 & from, Ogre::Vector3 & to)
 {
 	return Ogre::Vector3();
 }
-
+; // Start Section Outdated, marked for removal 
 /*
 
 Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)
@@ -314,3 +327,4 @@ Ogre::String PhysicsSystem::getMaterialName(PxMaterialIndex index)
 }
 
 */
+; // End Section Outdated, marked for removal 

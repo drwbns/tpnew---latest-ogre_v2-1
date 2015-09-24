@@ -32,6 +32,32 @@ THE SOFTWARE.
 
 using namespace physx;
 
+#include <malloc.h>
+class PxDefaultAllocator : public PxAllocatorCallback
+{
+	void* allocate(size_t size, const char*, const char*, int)
+	{
+		return _aligned_malloc(size, 16);
+	}
+
+	void deallocate(void* ptr)
+	{
+		_aligned_free(ptr);
+	}
+};
+
+class UserErrorCallback : public PxErrorCallback
+{
+public:
+	virtual void reportError(PxErrorCode::Enum code, const char* message, const char* file,
+		int line)
+	{
+		// error processing implementation
+		;
+	}
+};
+
+
 #define PHY PhysicsSystem::getSingletonPtr()
 
 class PhysicsSystem : public Ogre::Singleton<PhysicsSystem>, public Ogre::GeneralAllocatedObject
@@ -55,19 +81,19 @@ public:
 
 	//gets & sets
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
-	//PxPhysicsSDK* getSDK()  const { return gPhysicsSDK; }
+	; // Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
 	PxScene*      getScene() const { return gScene; }
 	PxControllerManager* getCManager() const { return gManager; }
-	//void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
-	//PxMaterialIndex addNewMaterial(Ogre::String name);
+	; // Outdated - new implementation needed //void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
+	; // Outdated - new implementation needed //PxMaterialIndex addNewMaterial(Ogre::String name);
 	Ogre::String getMaterialName(PxMaterial *mat);
 
 	
 private:
-	//PxPhysicsSDK*        gPhysicsSDK;
+	; // Outdated, marked for removal //PxPhysicsSDK*        gPhysicsSDK;
     PxScene*	         gScene;
 	PxControllerManager* gManager;
-	//PhysicsContactReport * gContactReport;
+	; // Outdated - new implementation needed //PhysicsContactReport * gContactReport;
 	std::vector<Ogre::String> materials;
 
 	//debugging
