@@ -173,7 +173,7 @@ void GameState::Update()
 
 		tm = tmr.getMicroseconds();
 		BBS->Update();
-		//PTM->Update();
+		PTM->Update();
 		mLevel->Update();
 		tm = tmr.getMicroseconds() - tm;
 		if (GlobalVars::Tick_4 == 0)

@@ -49,9 +49,22 @@ PhysicsSystem::~PhysicsSystem()
 
 void PhysicsSystem::Initialize()
 {
+	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
+	if (!mFoundation)
+		OgreAssert("PxCreateFoundation failed!",1);
+
+	bool recordMemoryAllocations = true;
+	mProfileZoneManager = &PxProfileZoneManager::createProfileZoneManager(mFoundation);
+	if (!mProfileZoneManager)
+		OgreAssert("PxProfileZoneManager::createProfileZoneManager failed!",1);
+
+	mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation,
+		PxTolerancesScale(), recordMemoryAllocations, mProfileZoneManager);
+	if (!mPhysics)
+		OgreAssert("PxCreatePhysics failed!",1);
 	//sdk
-	/*
-	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
+	
+	//gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
 	//scene
 	PxSceneDesc sceneDesc;
@@ -101,7 +114,7 @@ void PhysicsSystem::Initialize()
 	AxisAlignedBox aabInf;
 	aabInf.setInfinite();
 	mVisualDebugger->setBoundingBox(aabInf);
-	*/
+	
 }
 
 void PhysicsSystem::Finalize()

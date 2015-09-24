@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include "OgreSingleton.h"
 #include "OgreMemoryAllocatorConfig.h"
 
-#include "PxScene.h"
+#include "PxPhysicsAPI.h"
 
 using namespace physx;
 
@@ -61,6 +61,7 @@ public:
 	//void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
 	//PxMaterialIndex addNewMaterial(Ogre::String name);
 	Ogre::String getMaterialName(PxMaterial *mat);
+
 	
 private:
 	//PxPhysicsSDK*        gPhysicsSDK;
@@ -73,6 +74,13 @@ private:
 	Ogre::ManualObject*	mVisualDebugger;
 	Ogre::SceneNode*	mVisualDebuggerNode;
 	bool				mDebuggerView;
+
+	PxFoundation * mFoundation;
+
+	static PxDefaultErrorCallback gDefaultErrorCallback;
+	static PxDefaultAllocator gDefaultAllocatorCallback;
+	static PxProfileZoneManager * mProfileZoneManager;
+	PxPhysics * mPhysics;
 };
 
 #endif
