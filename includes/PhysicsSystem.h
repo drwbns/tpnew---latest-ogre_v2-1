@@ -69,19 +69,19 @@ public:
 
 	//gets & sets
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
-	; // Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
+	//@TODO: Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
 	PxScene*      getScene() const { return gScene; }
 	PxControllerManager* getCManager() const { return gManager; }
-	; // Outdated - new implementation needed //void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
-	; // Outdated - new implementation needed //PxMaterialIndex addNewMaterial(Ogre::String name);
+	//@TODO: Outdated - new implementation needed //void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
+	//@TODO: Outdated - new implementation needed //PxMaterialIndex addNewMaterial(Ogre::String name);
 	Ogre::String getMaterialName(PxMaterial *mat);
 
 	
 private:
-	; // Outdated, marked for removal //PxPhysicsSDK*        gPhysicsSDK;
+	//@TODO: Outdated, marked for removal //PxPhysicsSDK*        gPhysicsSDK;
     PxScene*	         gScene;
 	PxControllerManager* gManager;
-	; // Outdated - new implementation needed //PhysicsContactReport * gContactReport;
+	//@TODO: Outdated - new implementation needed //PhysicsContactReport * gContactReport;
 	std::vector<Ogre::String> materials;
 
 	//debugging
