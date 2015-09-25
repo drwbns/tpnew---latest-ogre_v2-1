@@ -91,9 +91,9 @@ private:
 
 	PxFoundation * mFoundation;
 
-	static PxDefaultErrorCallback gDefaultErrorCallback;
-	static PxDefaultAllocator gDefaultAllocatorCallback;
-	static PxProfileZoneManager * mProfileZoneManager;
+	PxDefaultErrorCallback gDefaultErrorCallback;
+	PxDefaultAllocator gDefaultAllocatorCallback;
+	PxProfileZoneManager * mProfileZoneManager;
 	PxPhysics * mPhysics;
 };
 
