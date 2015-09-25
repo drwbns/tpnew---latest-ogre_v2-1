@@ -140,6 +140,8 @@ void PhysicsSystem::Finalize()
 	gPhysicsSDK->release();
 	*/
 	; // End Section Outdated, marked for removal 
+	mPhysics->release();
+	mFoundation->release();
 }
 
 void PhysicsSystem::Update()
@@ -315,7 +317,7 @@ PxMaterialIndex PhysicsSystem::addNewMaterial(Ogre::String name)
 	}
 	catch(const std::bad_alloc & e )
 	{
-		return (PxMaterialIndex)999999;
+		return (PxMaterialIndex);
 	}
 	return (PxMaterialIndex)materials.size();
 }
