@@ -115,24 +115,70 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	deadAnimState->setEnabled(false);
 	deadAnimState->setWeight(1.0);
 
-
 	/*
-	//phy controller
+	mControllerManager = PxCreateControllerManager(*mScene);
 	PxCapsuleControllerDesc desc;
+	desc.material = mMaterial;
+	desc.position = PxExtendedVec3(mBodyNode->getPosition().x, mBodyNode->getPosition().y, mBodyNode->getPosition().z);
+	desc.height = mStandingSize;
+	desc.radius = mControllerRadius;
+	desc.slopeLimit = 0.0f;
+	desc.contactOffset = 0.1f;
+	desc.stepOffset = 0.02f;
+	desc.reportCallback = this;
+	desc.behaviorCallback = this;
+	mController = mControllerManager->createController(desc);
+	*/
+
+	//phy controller
+	// setup default material...
+	mMaterial = PHY->getPhysics()->createMaterial(0.5f, 0.5f, 0.1f);
+	if (!mMaterial)
+		OgreAssert("createMaterial failed!",1);
+
+	PxCapsuleControllerDesc desc;
+	desc.material = mMaterial;
+	desc.slopeLimit = 0.0f;
+	desc.contactOffset = 0.1f;
+	desc.stepOffset = 0.02f;
+	desc.reportCallback = this;
+	desc.behaviorCallback = this;
+	desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
+	desc.stepOffset		= 0.25;
+	desc.callback		= this;
 	desc.position.x		= position.x;
 	desc.position.y		= position.y + 2.0;
 	desc.position.z		= position.z;
 	desc.height         = 1.25;
 	desc.radius	        = Radius;
-	desc.upDirection	= NX_Y;
-	desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
-	desc.skinWidth		= 0.10;
-	desc.stepOffset		= 0.25;
-	desc.callback		= &GignChrHitReport;
-	phycontrol = (PxCapsuleController*)PHY->getCManager()->createController(PHY->getScene(), desc);
-	phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
+
+	//desc.upDirection	= PX_Y;
+	//desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
+	//desc.skinWidth		= 0.10;
+
+ 	phycontrol = static_cast<PxCapsuleController*>(PHY->getCManager()->createController(desc));
+	if(phycontrol== NULL)
+		OgreAssert("No capsule controller!", 1);
+	//phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	flying = false;
 
+	// remove controller shape from scene query for standup overlap test
+	PxRigidDynamic* actor = phycontrol->getActor();
+	if (actor)
+	{
+		if (actor->getNbShapes())
+		{
+			PxShape* ctrlShape;
+			actor->getShapes(&ctrlShape, 1);
+			ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
+		}
+		else
+			OgreAssert("character actor has no shape",1);
+	}
+	else
+		OgreAssert("character could not create actor",1);
+
+	/*
 	//material for hit boxes
 	int index = PHY->addNewMaterial("gignbody");
 
@@ -142,26 +188,28 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions.set(0.10,0.15,0.10);
 	boxDesc.materialIndex = index;
+
 	actorDesc.shapes.pushBack(&boxDesc);
 	actorDesc.globalPose.t = TemplateUtils::toNX(position);
 	actorDesc.flags = NX_AF_DISABLE_COLLISION;
-	PxActor* actor = PHY->getScene()->createActor(actorDesc);
-	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
+
+	//actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
+	//actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
 	hitboxes.push_back(actor);
-	actor->userData = this;
+	mActor->userData = this;
 
 	boxDesc.dimensions.set(0.25,0.80,0.25);
 	actorDesc.shapes.clear();
 	actorDesc.shapes.pushBack(&boxDesc);
 	actorDesc.globalPose.t = TemplateUtils::toNX(position);
-	actor = PHY->getScene()->createActor(actorDesc);
+	
+	PHY->getScene()->addActor(actorDesc);
 	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
 	actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
 	hitboxes.push_back(actor);
 	actor->userData = this;
-
 	*/
+	
 }
 
 Gign::~Gign()

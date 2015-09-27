@@ -29,10 +29,13 @@ THE SOFTWARE.
 #include "OgreMemoryAllocatorConfig.h"
 
 #include "PxPhysicsAPI.h"
+#include "extensions/PxDefaultSimulationFilterShader.h"
 
 using namespace physx;
 
 #include <malloc.h>
+
+#define PVD_HOST "127.0.0.1"	//Set this to the IP address of the system running the PhysX Visual Debugger that you want to connect to.
 
 class UserErrorCallback : public PxErrorCallback
 {
@@ -71,16 +74,19 @@ public:
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
 	//@TODO: Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
 	PxScene*      getScene() const { return gScene; }
-	PxControllerManager* getCManager() const { return gManager; }
+	PxPhysics * getPhysics() { return mPhysics; }
+	PxControllerManager* getCManager() const { 
+		return mControllerManager;
+	}
 	//@TODO: Outdated - new implementation needed //void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
 	//@TODO: Outdated - new implementation needed //PxMaterialIndex addNewMaterial(Ogre::String name);
+	PxMaterial* addNewMaterial(Ogre::String name);
 	Ogre::String getMaterialName(PxMaterial *mat);
 
 	
 private:
 	//@TODO: Outdated, marked for removal //PxPhysicsSDK*        gPhysicsSDK;
     PxScene*	         gScene;
-	PxControllerManager* gManager;
 	//@TODO: Outdated - new implementation needed //PhysicsContactReport * gContactReport;
 	std::vector<Ogre::String> materials;
 
@@ -94,7 +100,15 @@ private:
 	PxDefaultErrorCallback gDefaultErrorCallback;
 	PxDefaultAllocator gDefaultAllocatorCallback;
 	PxProfileZoneManager * mProfileZoneManager;
+	PxDefaultCpuDispatcher *mCpuDispatcher;
+	PxFilterFlags gDefaultFilterShader;
 	PxPhysics * mPhysics;
+	PxVisualDebuggerConnection* gConnection;
+	PxScene * mScene;
+	PxCooking * mCooking;
+	PxControllerManager* mControllerManager;
+	PxController * mController;
+	PxMaterial * mMaterial;
 };
 
 #endif

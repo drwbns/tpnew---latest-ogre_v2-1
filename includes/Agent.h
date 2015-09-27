@@ -27,12 +27,16 @@ THE SOFTWARE.
 #include "OGRE\OgrePrerequisites.h"
 #include "physxPrereqs.h"
 
+#include "characterkinematic\PxController.h"
+#include "characterkinematic\PxControllerBehavior.h"
+#include "PxSimulationEventCallback.h"
+
 #include "MovableText.h"
 #include "Moving.h"
 
+using namespace physx;
 
-
-class Agent : public Moving
+class Agent: public PxUserControllerHitReport, public PxControllerBehaviorCallback, public Moving
 {
 	friend class World;
 public:
@@ -48,12 +52,39 @@ public:
 		RT_ENEMY
 	};
 
+	enum
+	{
+		CCD_FLAG = 1 << 29,
+		SNOWBALL_FLAG = 1 << 30,
+		DETACHABLE_FLAG = 1 << 31
+	};
+
 protected:
 	Agent(int id, Race race, Ogre::Vector3 position, float max_speed, float max_acc, float radius);
 	virtual ~Agent();
 	virtual void Update();
 
 public:
+	bool isDetachable(PxFilterData & filterData);
+	// Implements PxSimulationEventCallback
+	virtual	void							onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs);
+	virtual	void							onTrigger(PxTriggerPair*, PxU32) {}
+	virtual void							onConstraintBreak(PxConstraintInfo*, PxU32) {}
+	virtual void							onWake(PxActor**, PxU32) {}
+	virtual void							onSleep(PxActor**, PxU32) {}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	// Implements PxUserControllerHitReport
+	virtual void							onShapeHit(const PxControllerShapeHit& hit);
+	virtual void							onControllerHit(const PxControllersHit& hit) {}
+	virtual void							onObstacleHit(const PxControllerObstacleHit& hit) {}
+
+	// Implements PxControllerBehaviorCallback
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxShape&, const PxActor&) { return PxControllerBehaviorFlags(0); }
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxController&) { return PxControllerBehaviorFlags(0); }
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxObstacle&) { return PxControllerBehaviorFlags(0); }
+
 	virtual void orderMove(float walk, float strafe);
 	virtual void orderBrake();
 	virtual void orderArrive(Ogre::Vector3 pos);
@@ -98,6 +129,8 @@ public:
 	virtual void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO) = 0;
 
 protected:
+	std::vector<PxShape*>			mDetaching;
+
 	BaseController* controller;
 
 	//visual
@@ -125,6 +158,9 @@ protected:
 	//statistics
 	int shotsFired;
 	int shotsHit;
+
+	//Physx
+	PxActor * mActor;
 };
 
 #endif

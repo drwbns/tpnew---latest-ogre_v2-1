@@ -69,6 +69,8 @@ private:
 	std::vector<physx::PxActor*> hitboxes;
 	physx::PxCapsuleController* phycontrol;
 	bool flying;
+	// setup default material...
+	PxMaterial * mMaterial;
 };
 
 #endif

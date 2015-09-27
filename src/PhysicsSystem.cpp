@@ -22,7 +22,14 @@ THE SOFTWARE.
 
 
 #include "PhysicsSystem.h"
+
 #include "GraphicsSystem.h"
+#include "GlobalVars.h"
+
+#include "foundation\windows\PxWindowsIntrinsics.h"
+
+
+
 using namespace Ogre;
 
 template<> PhysicsSystem* Ogre::Singleton<PhysicsSystem>::msSingleton = 0;
@@ -50,33 +57,71 @@ PhysicsSystem::~PhysicsSystem()
 void PhysicsSystem::Initialize()
 {
 	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
-	if (!mFoundation)
+	if (mFoundation == NULL)
 		OgreAssert("PxCreateFoundation failed!",1);
 
 	bool recordMemoryAllocations = true;
 	mProfileZoneManager = &PxProfileZoneManager::createProfileZoneManager(mFoundation);
-	if (!mProfileZoneManager)
+	if (mProfileZoneManager == NULL)
 		OgreAssert("PxProfileZoneManager::createProfileZoneManager failed!",1);
 
 	mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation,
 		PxTolerancesScale(), recordMemoryAllocations, mProfileZoneManager);
-	if (!mPhysics)
+	if (mPhysics == NULL)
 		OgreAssert("PxCreatePhysics failed!",1);
+
+	if (mPhysics->getPvdConnectionManager())
+	{
+		gConnection = PxVisualDebuggerExt::createConnection(mPhysics->getPvdConnectionManager(), PVD_HOST, 5425, 10);
+	}
+
+	
 	//sdk
 	
 	//@TODO:
 	if(true); // Outdated, marked for removal //gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
 	; // Start Section Outdated, marked for removal 
-	/*
+	
 	//scene
-	PxSceneDesc sceneDesc;
+	PxSceneDesc sceneDesc= physx::PxSceneDesc(physx::PxTolerancesScale());
 	sceneDesc.gravity = PxVec3(0,-10,0);
+
+	if (!sceneDesc.cpuDispatcher)
+	{
+		PxU32 numWorkers = 1;
+		mCpuDispatcher = PxDefaultCpuDispatcherCreate(1);
+		if (!mCpuDispatcher)
+			OgreAssert("PxDefaultCpuDispatcherCreate failed!",1);
+		sceneDesc.cpuDispatcher = mCpuDispatcher;
+	}
+
+	if (!sceneDesc.filterShader)
+		sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+
+	/*
+#ifdef PX_WINDOWS
+	if (!sceneDesc.gpuDispatcher && mCudaContextManager)
+	{
+		sceneDesc.gpuDispatcher = mCudaContextManager->getGpuDispatcher();
+	}
+#endif
+*/
+
+	mScene = mPhysics->createScene(sceneDesc);
+	if (!mScene)
+		OgreAssert("createScene failed!",1);
+
+	mControllerManager = PxCreateControllerManager(*mScene);
+
+	mCooking = PxCreateCooking(PX_PHYSICS_VERSION, *mFoundation, PxCookingParams(PxTolerancesScale()));
+	/*
+	customizeSceneDesc(sceneDesc);
 	sceneDesc.simType = NX_SIMULATION_SW;
 	sceneDesc.userContactReport = &gContactReport;
 	gPhysicsSDK->getFoundationSDK();
 	gScene = gPhysicsSDK->createScene(sceneDesc);
-
+	
 	float timestep = 1.0f/100.0f;
 	gScene->setTiming(timestep, 8, NX_TIMESTEP_FIXED);
 
@@ -92,8 +137,10 @@ void PhysicsSystem::Initialize()
 	defaultMaterial->setRestitution(0.25);
 	defaultMaterial->setStaticFriction(0.60);
 	defaultMaterial->setDynamicFriction(0.40);
+	*/
 
-	//char contrroller manager
+	/*
+	//char controller manager
 	ControllerAllocator* alloc = new ControllerAllocator();
 	gManager = NxCreateControllerManager(alloc);
 
@@ -118,7 +165,7 @@ void PhysicsSystem::Initialize()
 	aabInf.setInfinite();
 	mVisualDebugger->setBoundingBox(aabInf);
 	*/
-	; // End Section Outdated, marked for removal 
+	if (true); // End Section Outdated, marked for removal 
 	//@TODO:
 }
 
@@ -148,6 +195,8 @@ void PhysicsSystem::Finalize()
 
 void PhysicsSystem::Update()
 {
+	mScene->simulate(GlobalVars::Tick);
+	mScene->fetchResults(true);
 	if(true); // Start Section Outdated, marked for removal 
 	  //@TODO:
 	/*

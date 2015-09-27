@@ -51,8 +51,55 @@ THE SOFTWARE.
 
 #include "GraphicsSystem.h"
 
+#include "characterkinematic\PxController.h"
+#include "PxRigidActor.h"
+#include "extensions\PxRigidBodyExt.h"
+#include "PxRigidDynamic.h"
 
 using namespace Ogre;
+
+bool Agent::isDetachable(PxFilterData& filterData)
+{
+	return filterData.word3 & PxU32(DETACHABLE_FLAG) ? true : false;
+}
+
+void Agent::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
+{
+	for(PxU32 i=0; i < nbPairs; i++)
+	{
+		PxU32 n = 2;
+		const PxContactPairFlag::Enum delShapeFlags[] = { PxContactPairFlag::eREMOVED_SHAPE_0, PxContactPairFlag::eREMOVED_SHAPE_1 };
+		const PxContactPair& cp = pairs[i];
+		while(n--)
+		{
+			if(!(cp.flags & delShapeFlags[n]))
+			{
+				PxShape* shape = cp.shapes[n];
+				PxFilterData fd = shape->getSimulationFilterData();
+				if(isDetachable(fd))
+				{
+					mDetaching.push_back(shape);
+				}
+			}
+		}
+	}
+}
+
+void Agent::onShapeHit(const PxControllerShapeHit& hit)
+{
+	PxRigidDynamic* actor = hit.shape->getActor()->is<PxRigidDynamic>();
+	if (actor)
+	{
+		// We only allow horizontal pushes. Vertical pushes when we stand on dynamic objects creates
+		// useless stress on the solver. It would be possible to enable/disable vertical pushes on
+		// particular objects, if the gameplay requires it.
+		if (hit.dir.y == 0.0f)
+		{
+			PxReal coeff = actor->getMass() * hit.length;
+			PxRigidBodyExt::addForceAtLocalPos(*actor, hit.dir*coeff, PxVec3(0, 0, 0), PxForceMode::eIMPULSE);
+		}
+	}
+}
 
 Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc, float radius) : Moving(position, max_speed, max_acc, radius)
 {
