@@ -263,15 +263,16 @@ void Gign::Update()
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	PxU32 collisionFlag;
-	/*
-	phycontrol->move(disp,COLLIDABLE_MASK,0.001,collisionFlag);
-	flying = !(collisionFlag & NXCC_COLLISION_DOWN);
+	
+	phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters());
+	
+	//flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 
 	//alter pos.
-	Position.x = phycontrol->getActor()->getGlobalPosition().x;
-	Position.y = phycontrol->getActor()->getGlobalPosition().y - 1.0;
-	Position.z = phycontrol->getActor()->getGlobalPosition().z;
-	*/
+	Position.x = phycontrol->getActor()->getGlobalPose().p.x;
+	Position.y = phycontrol->getActor()->getGlobalPose().p.y - 1.0;
+	Position.z = phycontrol->getActor()->getGlobalPose().p.z;
+	/**/
 	node->setPosition(Position);
 
 	//update hitbox transform.
