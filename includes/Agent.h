@@ -161,6 +161,7 @@ protected:
 
 	//Physx
 	PxActor * mActor;
+	PxMaterial * mMaterial;
 };
 
 #endif

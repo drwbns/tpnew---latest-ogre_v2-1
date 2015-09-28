@@ -115,6 +115,53 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	deadAnimState->setWeight(1.0);
 
 	//phy controller
+	// setup default material...
+	mMaterial = PHY->getPhysics()->createMaterial(0.5f, 0.5f, 0.1f);
+	if (!mMaterial)
+		OgreAssert("createMaterial failed!", 1);
+
+	PxCapsuleControllerDesc desc;
+	desc.material = mMaterial;
+	desc.slopeLimit = 0.0f;
+	desc.contactOffset = 0.1f;
+	desc.stepOffset = 0.02f;
+	desc.reportCallback = this;
+	desc.behaviorCallback = this;
+	desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
+	desc.stepOffset = 0.25;
+	desc.callback = this;
+	desc.position.x = position.x;
+	desc.position.y = position.y + 2.0;
+	desc.position.z = position.z;
+	desc.height = 1.25;
+	desc.radius = Radius;
+
+	//desc.upDirection	= PX_Y;
+	//desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
+	//desc.skinWidth		= 0.10;
+
+	phycontrol = static_cast<PxCapsuleController*>(PHY->getCManager()->createController(desc));
+	if (phycontrol == NULL)
+		OgreAssert("No capsule controller!", 1);
+	//phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
+	flying = false;
+
+	// remove controller shape from scene query for standup overlap test
+	PxRigidDynamic* actor = phycontrol->getActor();
+	if (actor)
+	{
+		if (actor->getNbShapes())
+		{
+			PxShape* ctrlShape;
+			actor->getShapes(&ctrlShape, 1);
+			ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
+		}
+		else
+			OgreAssert("character actor has no shape", 1);
+	}
+	else
+		OgreAssert("character could not create actor", 1);
+	//phy controller
 	/*
 	PxCapsuleControllerDesc desc;
 	desc.position.x		= position.x;
@@ -213,6 +260,22 @@ void Vip::Update()
 	{
 		node->setOrientation(Rotation);
 	}
+
+	//move phy controller
+	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
+	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
+	PxU32 collisionFlag;
+
+	phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters());
+
+	//flying = !(collisionFlag & NXCC_COLLISION_DOWN);
+
+	//alter pos.
+	Position.x = phycontrol->getActor()->getGlobalPose().p.x;
+	Position.y = phycontrol->getActor()->getGlobalPose().p.y - 1.0;
+	Position.z = phycontrol->getActor()->getGlobalPose().p.z;
+	/**/
+	node->setPosition(Position);
 
 	//move phy controller
 	/*
