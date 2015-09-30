@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "GlobalVars.h"
 
 #include "PxShape.h"
+#include "extensions\PxRigidBodyExt.h"
 
 using namespace Ogre;
 using namespace physx;
@@ -57,9 +58,9 @@ void BlueBullet::Update()
 	
 	//@TODO:
 	if(true); // Start Section Outdated, marked for removal 
-	/*
-	PxMaterial mat;
-	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape, mat);
+	
+	PxMaterial * mat; // Possibly used for material names? Need to check if material names can be done in PhysX3 or if a new enum or struct needs to be made
+	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape);
 	if (normal == Vector3::ZERO)
 	{
 		//show source
@@ -98,7 +99,8 @@ void BlueBullet::Update()
 		{
 			//show impact
 			ebill = BBS->ShowBillboard("BulletSource", Position, EBLUETIME);
-			String mat_name = PHY->getMaterialName(&mat);
+			/*
+			String mat_name = PHY->getMaterialName(mat);
 			if (mat_name.length() > 0)
 			{
 				if (mat_name == "cube")
@@ -118,23 +120,24 @@ void BlueBullet::Update()
 					PTM->ShowParticle("blood", Position, normal);
 				}
 			}
-
+			*/
 			//apply impact
 			if (shape != NULL)
 			{
-				if (shape->getActor().isDynamic())
+				if (shape->getActor()->isRigidDynamic())
 				{
-					shape->getActor().addForceAtPos(TemplateUtils::toPX(Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
+					PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(Direction * Speed * 0.25), TemplateUtils::toNX(Position), PxForceMode::eIMPULSE);
+					//shape->getActor()->addForceAtPos(TemplateUtils::toPX(Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
 				}
-				else if (shape->getActor().userData != NULL)
+				else if (shape->getActor()->userData != NULL)
 				{
-					Agent* a = (Agent*)shape->getActor().userData;
+					Agent* a = (Agent*)shape->getActor()->userData;
 					//warn attacked one
 					a->setAttacker(Owner);
 					//inc. hit score
 					Owner->incShotsHit();
 					//double dmg. if head shot
-					if (shape->getActor().getGlobalPosition() == a->getHitBox(0)->getGlobalPosition())
+					if (shape->getActor()->getGlobalPose().p == a->getHitBox(0)->getLocalPose().p)
 					{
 						a->add2Hp(2 * HitPoint);
 					}
@@ -146,6 +149,6 @@ void BlueBullet::Update()
 			}
 		}
 	}
-	*/
+	
 	if(true); // End Section Outdated, marked for removal 
 }

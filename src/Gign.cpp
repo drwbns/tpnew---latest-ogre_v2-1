@@ -178,6 +178,27 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	else
 		OgreAssert("character could not create actor",1);
 
+	PxShape * hitboxShape = actor->createShape(PxBoxGeometry(1, 1, 1), *mMaterial);
+	hitboxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+	hitboxShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+	PxFilterData fd = hitboxShape->getSimulationFilterData();
+	fd.word0 |= PxU32(NO_COLLIDE);
+	hitboxShape->setSimulationFilterData(fd);
+
+	fd = hitboxShape->getQueryFilterData();
+	fd.word0 |= PxU32(NO_COLLIDE);
+	hitboxShape->setQueryFilterData(fd);
+
+
+	characterFilterData.word0 = 1;
+
+
+	characterControllerFilters.mFilterData = &characterFilterData;
+
+	hitboxShape->setLocalPose(PxTransform(PxIdentity));
+	hitboxes.push_back(hitboxShape);
+
 	/*
 	//material for hit boxes
 	int index = PHY->addNewMaterial("gignbody");
@@ -264,7 +285,8 @@ void Gign::Update()
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	PxU32 collisionFlag;
 	
-	phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters());
+	phycontrol->move(disp, 0.01f, GlobalVars::Tick, characterControllerFilters);
+	//phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters()); // Causes collisions between hitboxes and player itself when moving
 	
 	//flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 

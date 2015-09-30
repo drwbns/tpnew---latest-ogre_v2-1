@@ -73,7 +73,8 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 
 	float range = viewRange / node->getScale().x;//marked
 	//60 degrees left & right, total 120 degrees of sight
-	Quaternion q;q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+	Quaternion q;
+	q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
 	Vector3 direction = GetRotation() * Vector3::UNIT_Z;
 	Vector3 A = Vector3::ZERO;
 	Vector3 B = A + q * (direction * range);
@@ -182,33 +183,64 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	int index = PHY->addNewMaterial("vipbody");
 
 	PxScene * myScene = PHY->getScene();
-
-	//create hitboxes
-	PxActorDesc actorDesc;
-	NxBodyDesc bodyDesc;
-	NxBoxShapeDesc boxDesc;
-	boxDesc.dimensions.set(0.10,0.15,0.10);
-	boxDesc.materialIndex = index;
-	actorDesc.shapes.pushBack(&boxDesc);
-	actorDesc.globalPose.t = TemplateUtils::toNX(position);
-	actorDesc.flags = NX_AF_DISABLE_COLLISION;
-	PxActor* actor = PHY->getScene()->createActor(actorDesc);
-	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
-	hitboxes.push_back(actor);
-	actor->userData = this;
-
-	boxDesc.dimensions.set(0.25,0.80,0.25);
-	actorDesc.shapes.clear();
-	actorDesc.shapes.pushBack(&boxDesc);
-	actorDesc.globalPose.t = TemplateUtils::toNX(position);
-	actor = PHY->getScene()->createActor(actorDesc);
-	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
-	hitboxes.push_back(actor);
-	actor->userData = this;
-
 	*/
+	//create hitboxes
+	//PxRigidDynamic * hitbox = PHY->getPhysics()->createRigidDynamic(PxTransform(TemplateUtils::toNX(GetPosition()))); // Possibly wrong
+
+	if (true); // uncomment below for hitbox creation
+	
+
+	
+	PxShape * hitboxShape = actor->createShape(PxBoxGeometry(1, 1, 1), *mMaterial);
+	hitboxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+	hitboxShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+	PxFilterData fd = hitboxShape->getSimulationFilterData();
+	fd.word0 |= PxU32(NO_COLLIDE);
+	hitboxShape->setSimulationFilterData(fd);
+
+	fd = hitboxShape->getQueryFilterData();
+	fd.word0 |= PxU32(NO_COLLIDE);
+	hitboxShape->setQueryFilterData(fd);
+
+
+	characterFilterData.word0 = 1;
+
+
+	characterControllerFilters.mFilterData = &characterFilterData;
+
+	hitboxShape->setLocalPose(PxTransform(PxIdentity));
+	hitboxes.push_back(hitboxShape);
+	
+
+	//actor->userData = this;
+	
+
+	//PxActorDesc actorDesc;
+	//PxBodyDesc bodyDesc;
+	
+
+	//boxDesc.dimensions.set(0.10,0.15,0.10);
+	//boxDesc.materialIndex = index;
+	//actorDesc.shapes.pushBack(&boxDesc);
+	//actorDesc.globalPose.t = TemplateUtils::toNX(position);
+	//actorDesc.flags = NX_AF_DISABLE_COLLISION;
+	//PxActor* actor = PHY->getScene()->createActor(actorDesc);
+	//actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
+	//actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
+
+
+	//boxDesc.dimensions.set(0.25,0.80,0.25);
+	//actorDesc.shapes.clear();
+	//actorDesc.shapes.pushBack(&boxDesc);
+	//actorDesc.globalPose.t = TemplateUtils::toNX(position);
+	//actor = PHY->getScene()->createActor(actorDesc);
+	//actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
+	//actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
+	//hitboxes.push_back(actor);
+	//actor->userData = this;
+
+	
 	
 }
 
@@ -263,10 +295,12 @@ void Vip::Update()
 
 	//move phy controller
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
-	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
-	PxU32 collisionFlag;
+	if (flying)
+		disp.y -= 10.0 * GlobalVars::Tick;
+	//PxU32 collisionFlag;
 
-	phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters());
+	phycontrol->move(disp, 0.01f, GlobalVars::Tick, characterControllerFilters);
+	//phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters()); // Causes collisions between hitboxes and player itself when moving
 
 	//flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 

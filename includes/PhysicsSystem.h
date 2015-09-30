@@ -66,14 +66,14 @@ public:
 
 	//utility
 	Ogre::Vector3 CastRay1(const Ogre::Vector3 &from, Ogre::Vector3 &dir);
-	Ogre::Vector3 CastRay2(Ogre::Vector3 &from, Ogre::Vector3 &to, PxShape** shape, PxMaterial &mat);
+	Ogre::Vector3 CastRay2(Ogre::Vector3 &from, Ogre::Vector3 &to, PxShape** shape);
 	Ogre::Vector3 CastRay3(Ogre::Vector3 &from, Ogre::Vector3 &to);
 	bool OverlapTest(Ogre::Vector3 *min, Ogre::Vector3 *max);
 
 	//gets & sets
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
 	//@TODO: Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
-	PxScene*      getScene() const { return gScene; }
+	PxScene*      getScene() const { return mScene; }
 	PxPhysics * getPhysics() { return mPhysics; }
 	PxControllerManager* getCManager() const { 
 		return mControllerManager;
@@ -86,7 +86,6 @@ public:
 	
 private:
 	//@TODO: Outdated, marked for removal //PxPhysicsSDK*        gPhysicsSDK;
-    PxScene*	         gScene;
 	//@TODO: Outdated - new implementation needed //PhysicsContactReport * gContactReport;
 	std::vector<Ogre::String> materials;
 

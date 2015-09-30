@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 #include "GraphicsSystem.h"
 #include "GlobalVars.h"
+#include "GUtility.h"
 
 #include "foundation\windows\PxWindowsIntrinsics.h"
 
@@ -44,7 +45,7 @@ PhysicsSystem& PhysicsSystem::getSingleton(void)
 	assert( msSingleton );  return ( *msSingleton );
 }
 
-PhysicsSystem::PhysicsSystem() : /*gPhysicsSDK(NULL),*/ gScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)
+PhysicsSystem::PhysicsSystem() : /*gPhysicsSDK(NULL),*/ mScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)
 {
 	mDebuggerView = false;
 }
@@ -275,11 +276,44 @@ Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 
 	return Ogre::Vector3();
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, PxShape ** shape, PxMaterial & mat)
+Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, PxShape ** shape)
 {
-	//@TODO:
-	if (true);
-	return Ogre::Vector3();
+	//ray cast
+	PxVec3 org = TemplateUtils::toNX(from);
+	Vector3 delta = to - from;
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+	//NxRay ray(org, ndir);
+	//NxRaycastHit hit;
+	//mat = 0;
+
+	PxVec3 origin = org;                 // [in] Ray origin
+	PxVec3 unitDir = ndir;                // [in] Normalized ray direction
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
+	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
+	PxRaycastBuffer buf(hitBuffer, bufferSize); // [out] Blocking and touching hits will be stored here
+
+	// Raycast against all static & dynamic objects (no filtering)
+	// The main result from this call are all hits along the ray, stored in 'hitBuffer'
+	bool hadBlockingHit = mScene->raycast(origin, unitDir, maxDistance, buf);
+	if (hadBlockingHit)
+		//drawWallDecal(buf.block);
+	for (PxU32 i = 0; i < buf.nbTouches; i++)
+		return TemplateUtils::toOgre(buf.touches[i].normal);
+	/*
+	//Get the closest shape
+	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_ALL_SHAPES, hit, -1, delta.length());
+	if (closestShape)
+	{
+		if (shape != NULL)*shape = closestShape;
+		mat = hit.materialIndex;
+		const PxVec3& worldImpact = hit.worldNormal;
+		return TemplateUtils::toOgre(worldImpact);
+	}
+	*/
+	if (shape != NULL)*shape = NULL;
+	return Vector3::ZERO;
 }
 
 Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 & from, Ogre::Vector3 & to)
@@ -389,7 +423,7 @@ Ogre::String PhysicsSystem::getMaterialName(PxMaterialIndex index)
 	if(index == materials.size()) return materials[(int)index - 1];
 	return materials[(int)index];
 }
-
 */
+
 //@TODO:
 // End Section Outdated, marked for removal 

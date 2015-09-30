@@ -87,8 +87,9 @@ void Agent::onContact(const PxContactPairHeader& pairHeader, const PxContactPair
 
 void Agent::onShapeHit(const PxControllerShapeHit& hit)
 {
+	
 	PxRigidDynamic* actor = hit.shape->getActor()->is<PxRigidDynamic>();
-	if (actor)
+	if (actor && hit.shape->getFlags() == PxShapeFlag::eSIMULATION_SHAPE)
 	{
 		// We only allow horizontal pushes. Vertical pushes when we stand on dynamic objects creates
 		// useless stress on the solver. It would be possible to enable/disable vertical pushes on

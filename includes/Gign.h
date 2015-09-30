@@ -54,7 +54,7 @@ public:
 	Ogre::Quaternion GetHeadRotation();
 	Ogre::Vector3 GetBodyPosition();
 	Ogre::Quaternion GetBodyRotation();
-	physx::PxActor* getHitBox(int i) { return hitboxes[i]; }
+	physx::PxShape* getHitBox(int i) { return hitboxes[i]; }
 
 private:
 	Ogre::Entity* mEnt;
@@ -66,7 +66,7 @@ private:
 	bool aimMode;
 
 	//phy
-	std::vector<physx::PxActor*> hitboxes;
+	std::vector<physx::PxShape*> hitboxes;
 	physx::PxCapsuleController* phycontrol;
 	bool flying;
 };

@@ -54,6 +54,7 @@ public:
 
 	enum
 	{
+		NO_COLLIDE = 1 << 28,
 		CCD_FLAG = 1 << 29,
 		SNOWBALL_FLAG = 1 << 30,
 		DETACHABLE_FLAG = 1 << 31
@@ -124,7 +125,7 @@ public:
 	int getShotsHit() { return shotsHit; }
 
 	//pure
-	virtual physx::PxActor* getHitBox(int i) = 0;
+	virtual physx::PxShape* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
 	virtual void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO) = 0;
 
@@ -162,6 +163,9 @@ protected:
 	//Physx
 	PxActor * mActor;
 	PxMaterial * mMaterial;
+
+	PxFilterData characterFilterData;
+	PxControllerFilters characterControllerFilters;
 };
 
 #endif
