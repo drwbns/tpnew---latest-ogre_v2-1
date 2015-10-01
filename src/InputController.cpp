@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include "OIS\OISKeyboard.h"
 
 #include "World.h"
+#include "GraphicsSystem.h"
 
 using namespace Ogre;
 
@@ -58,7 +59,7 @@ void InputController::injectMousePress(int id, bool buffered)
 	}
 	else if (id == OIS::MB_Left)
 	{
-		WORLD->getPlayerAgent()->Shoot(buffered);
+		WORLD->getPlayerAgent()->Shoot(buffered,GSYS->GetCamera()->getDirection().normalisedCopy());
 	}
 }
 

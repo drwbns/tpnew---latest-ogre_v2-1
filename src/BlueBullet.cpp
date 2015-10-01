@@ -39,12 +39,12 @@ using namespace physx;
 
 BlueBullet::BlueBullet() : Projectile()
 {
-	bill = -1;
+	mBill = -1;
 	sbill = -1;
 	ebill = -1;
-	ibill = -1; // impact bill
-	Speed = 1800;
-	HitPoint = -5.5;
+	ibill = -1; // impact mBill
+	mSpeed = 1;
+	mHitPoint = -5.5;
 }
 
 BlueBullet::~BlueBullet()
@@ -54,62 +54,64 @@ BlueBullet::~BlueBullet()
 void BlueBullet::Update()
 {
 	//check if it will hit sth.;
-	Vector3 toAdd = Direction * Speed * GlobalVars::Tick;
+	Vector3 toAdd = mDirection * mSpeed * GlobalVars::Tick;
 	PxShape* shape = NULL;
 	
 	//@TODO:
 	if(true); // Start Section Outdated, marked for removal 
 	
 	PxMaterial * mat; // Possibly used for material names? Need to check if material names can be done in PhysX3 or if a new enum or struct needs to be made
-	Vector3 normal = PHY->CastRay4(Position, Position+toAdd);
+	Vector3 normal = PHY->CastRay4(mPosition, mPosition+toAdd);
 
 	//show source
 	if (sbill == -1)
 	{
-		sbill = BBS->ShowBillboard("BulletSource", Position, SBLUETIME);
+		sbill = BBS->ShowBillboard("BulletSource", mPosition, IMPACTTIME);
 		sbill = 0;
 	}
 
 	//show impact
+	/*
 	if (ibill == -1)
 	{
-		ibill = BBS->ShowBillboard("Flare", Position + toAdd, IMPACTTIME);
+		ibill = BBS->ShowBillboard("Flare", mPosition + toAdd, IMPACTTIME);
 		ibill = 0;
 	}
+	*/
 
 	//move it
-	Position += toAdd;
-	BBS->UpdateBillboard("BulletSource", bill, Position);
-	if (Position.distance(Start) > 100.0)
+	mPosition += toAdd;
+	BBS->UpdateBillboard("BulletSource", mBill, mPosition);
+	if (mPosition.distance(mStart) > maxDistance)
 	{
-		Alive = false;
-		BBS->HideBillboard("BulletSource", bill);
+		mAlive = false;
+		BBS->HideBillboard("BulletSource", mBill);
 	}
 
 	if (ebill == -1)
 	{
 		//show impact
-		ebill = BBS->ShowBillboard("RFlare", Position + toAdd, IMPACTTIME);
-		ibill = BBS->ShowBillboard("TFlare", Position + toAdd, IMPACTTIME);
+		//ebill = BBS->ShowBillboard("RFlare", mPosition + toAdd, IMPACTTIME);
+		//ibill = BBS->ShowBillboard("TFlare", mPosition + toAdd, IMPACTTIME);
 		/*
 		String mat_name = PHY->getMaterialName(mat);
 		if (mat_name.length() > 0)
 		{
 			if (mat_name == "cube")
 			{
-				PTM->ShowParticle("hit2", Position, normal);
+				PTM->ShowParticle("hit2", mPosition, normal);
 			}
 			else if (mat_name == "taban" || mat_name == "tavan" || mat_name == "duvar")
 			{
-				PTM->ShowParticle("spark", Position, normal);
+				PTM->ShowParticle("spark", mPosition, normal);
 			}
 			else if (mat_name == "engel")
 			{
-				PTM->ShowParticle("spark2", Position, normal);
+				PTM->ShowParticle("spark2", mPosition, normal);
 			}
 			else if (mat_name == "vipbody")
 			{
-				PTM->ShowParticle("blood", Position, normal);
+				PTM->ShowParticle("blood", mPosition, normal);
 			}
 		}
 		*/
@@ -118,24 +120,24 @@ void BlueBullet::Update()
 		{
 			if (shape->getActor()->isRigidDynamic())
 			{
-				PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(Direction * Speed * 0.25), TemplateUtils::toNX(Position));
-				//shape->getActor()->addForceAtPos(TemplateUtils::toPX(Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
+				PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(mDirection * mSpeed * 0.25), TemplateUtils::toNX(mPosition));
+				//shape->getActor()->addForceAtPos(TemplateUtils::toPX(mDirection * Speed * 0.25), TemplateUtils::toPX(mPosition), PX_IMPULSE);
 			}
 			else if (shape->getActor()->userData != NULL)
 			{
 				Agent* a = (Agent*)shape->getActor()->userData;
 				//warn attacked one
-				a->setAttacker(Owner);
+				a->setAttacker(mOwner);
 				//inc. hit score
-				Owner->incShotsHit();
+				mOwner->incShotsHit();
 				//double dmg. if head shot
 				if (shape->getActor()->getGlobalPose().p == a->getHitBox(0)->getLocalPose().p)
 				{
-					a->add2Hp(2 * HitPoint);
+					a->add2Hp(2 * mHitPoint);
 				}
 				else
 				{
-					a->add2Hp(HitPoint);
+					a->add2Hp(mHitPoint);
 				}
 			}
 		}

@@ -413,7 +413,7 @@ Ogre::Quaternion Gign::GetBodyRotation()
 	return q * bone->_getDerivedOrientation();
 }
 
-void Gign::Shoot(bool first, Vector3 trg_pos)
+void Gign::Shoot(bool first, Vector3 &trg_pos)
 {
 	if (!dead && aimMode)
 	{

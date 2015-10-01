@@ -127,7 +127,7 @@ public:
 	//pure
 	virtual physx::PxShape* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
-	virtual void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO) = 0;
+	virtual void Shoot(bool first, Ogre::Vector3 &trg_pos) = 0;
 
 protected:
 	std::vector<PxShape*>			mDetaching;

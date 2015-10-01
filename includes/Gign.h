@@ -43,7 +43,7 @@ public:
 	void orderBrake();
 	void orderArrive(Ogre::Vector3 pos);
 	void orderPathFollow();
-	void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO);
+	void Shoot(bool first, Ogre::Vector3 &trg_pos);
 	void Die();
 
 	//get / set

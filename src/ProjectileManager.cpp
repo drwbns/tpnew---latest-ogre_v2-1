@@ -75,27 +75,28 @@ void ProjectileManager::Update()
 {
 	for (int i=0;i<(int)blues.size();i++)
 	{
-		if (blues[i]->Alive)
+		if (blues[i]->mAlive)
 		{
 			blues[i]->Update();
 		}
 	}
 }
 
-void ProjectileManager::Shoot(Type t, Agent* owner, Ogre::Vector3 pos, Ogre::Vector3 dir)
+void ProjectileManager::Shoot(Type t, Agent* owner, Ogre::Vector3 &pos, Ogre::Vector3 &dir)
 {
 	switch (t)
 	{
 		case Blue:
 		{
-			blues[NextBlue]->Owner = owner;
-			blues[NextBlue]->Start = pos;
-			blues[NextBlue]->Position = pos;
-			blues[NextBlue]->Direction = dir;
-			blues[NextBlue]->Alive = true;
-			blues[NextBlue]->bill = BBS->ShowBillboard("Bullet", pos, 100);
+			blues[NextBlue]->mOwner = owner;
+			blues[NextBlue]->mStart = pos;
+			blues[NextBlue]->mPosition = pos;
+			blues[NextBlue]->mDirection = dir;
+			blues[NextBlue]->mAlive = true;
+			blues[NextBlue]->mBill = BBS->ShowBillboard("Bullet", pos, 1.0f);
 			blues[NextBlue]->sbill = -1;
 			blues[NextBlue]->ebill = -1;
+			blues[NextBlue]->ibill = -1;
 			NextBlue++;
 			NextBlue %= blues.size();
 			break;

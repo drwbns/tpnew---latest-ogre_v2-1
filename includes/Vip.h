@@ -44,13 +44,13 @@ public:
 	void orderBrake();
 	void orderArrive(Ogre::Vector3 pos);
 	void orderPathFollow();
-	void Shoot(bool first, Ogre::Vector3 trg_pos = Ogre::Vector3::ZERO);
+	void Shoot(bool first, Ogre::Vector3 &trg_pos);
 	void Die();
 
 	//get / set
 	void SetAimMode(bool b) { aimMode = b; }
 	Ogre::Vector3 GetFirePosition();
-	Ogre::Vector3 GetFireDirection(Ogre::Vector3 trg_pos);
+	Ogre::Vector3 GetFireDirection(Ogre::Vector3 &trg_pos);
 	Ogre::Vector3 GetHeadPosition();
 	Ogre::Quaternion GetHeadRotation();
 	Ogre::Vector3 GetBodyPosition();

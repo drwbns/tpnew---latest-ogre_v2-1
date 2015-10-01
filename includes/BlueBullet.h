@@ -35,10 +35,11 @@ protected:
 	void Update();
 
 private:
-	int bill;
+	int mBill;
 	int sbill;
 	int ebill;
 	int ibill;
+	static const int maxDistance = 10000;
 };
 
 #endif

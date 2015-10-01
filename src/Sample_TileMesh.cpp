@@ -545,7 +545,7 @@ void Sample_TileMesh::GetPath(Ogre::Vector3 from, Ogre::Vector3 to, Path* &path)
 	m_polyPickExt[1] = 4;
 	m_polyPickExt[2] = 2;
 
-	// Start Position
+	// Start mPosition
 	float m_spos[3];
 	m_spos[0] = from.x;
 	m_spos[1] = from.y;

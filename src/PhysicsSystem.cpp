@@ -359,9 +359,9 @@ Ogre::Vector3 PhysicsSystem::CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 
 	// The main result from this call is the closest hit, stored in the 'hit.block' structure
 	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
 
-	if(hadBlockingHit)
-		return TemplateUtils::toOgre(buf.block.position);
-	else
+	//if(hadBlockingHit)
+		//return TemplateUtils::toOgre(buf.block.position);
+	//else
 		return to;
 }
 

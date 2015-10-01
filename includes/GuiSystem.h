@@ -51,7 +51,7 @@ public:
 	void UpdateDebuggers();
 
 	//gets
-	//Gui* GetGUI() { return mGUI; }
+	TextRenderer* GetGUI() { return mTxt; }
 
 	//sets
 	void SetCursor(bool show);

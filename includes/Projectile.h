@@ -39,20 +39,20 @@ protected:
 	virtual ~Projectile();
 	virtual void Update() = 0;
 	
-	void SetOwner(Agent* a) { Owner = a; }
-	void SetPosition(Ogre::Vector3 &v) { Position = v; }
-	void SetDirection(Ogre::Vector3 &v) { Direction = v; }
-	void SetSpeed(float f) { Speed = f; }
-	void SetHitPoint(float f) { HitPoint = f; }
+	void SetOwner(Agent* a) { mOwner = a; }
+	void SetPosition(Ogre::Vector3 &v) { mPosition = v; }
+	void SetDirection(Ogre::Vector3 &v) { mDirection = v; }
+	void SetSpeed(float f) { mSpeed = f; }
+	void SetHitPoint(float f) { mHitPoint = f; }
 
 protected:
-	Agent* Owner;
-	Ogre::Vector3 Start;
-	Ogre::Vector3 Position;
-	Ogre::Vector3 Direction;
-	float Speed;
-	float HitPoint;
-	bool Alive;
+	Agent* mOwner;
+	Ogre::Vector3 mStart;
+	Ogre::Vector3 mPosition;
+	Ogre::Vector3 mDirection;
+	float mSpeed;
+	float mHitPoint;
+	bool mAlive;
 };
 
 #endif

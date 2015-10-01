@@ -27,16 +27,16 @@ using namespace Ogre;
 
 Projectile::Projectile()
 {
-	Owner = NULL;
-	Start = Vector3::ZERO;
-	Position = Vector3::ZERO;
-	Direction = Vector3::ZERO;
-	Speed = 0;
-	HitPoint = 0;
-	Alive = false;
+	mOwner = NULL;
+	mStart = Vector3::ZERO;
+	mPosition = Vector3::ZERO;
+	mDirection = Vector3::ZERO;
+	mSpeed = 0;
+	mHitPoint = 0;
+	mAlive = false;
 }
 
 Projectile::~Projectile()
 {
-	Owner = NULL;
+	mOwner = NULL;
 }

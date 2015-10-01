@@ -320,11 +320,11 @@ void Vip::Update()
 	flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 
 	//alter pos.
-	Position.x = phycontrol->getActor()->getGlobalPosition().x;
-	Position.y = phycontrol->getActor()->getGlobalPosition().y - 1.0;
-	Position.z = phycontrol->getActor()->getGlobalPosition().z;
+	mPosition.x = phycontrol->getActor()->getGlobalPosition().x;
+	mPosition.y = phycontrol->getActor()->getGlobalPosition().y - 1.0;
+	mPosition.z = phycontrol->getActor()->getGlobalPosition().z;
 
-	node->setPosition(Position);
+	node->setPosition(mPosition);
 
 	//update hitbox transform.
 	//head
@@ -421,7 +421,7 @@ Vector3 Vip::GetFirePosition()
 	return wEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
 }
 
-Vector3 Vip::GetFireDirection(Vector3 trg_pos)
+Vector3 Vip::GetFireDirection(Vector3 &trg_pos)
 {
 	if (this == WORLD->getPlayerAgent())
 	{
@@ -456,13 +456,13 @@ Ogre::Quaternion Vip::GetBodyRotation()
 	return q * bone->_getDerivedOrientation();
 }
 
-void Vip::Shoot(bool first, Vector3 trg_pos)
+void Vip::Shoot(bool first, Vector3 &trg_pos)
 {
 	if (!dead && aimMode)
 	{
 		if (shootAnimState->hasEnded())
 		{
-			PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), GetFireDirection(trg_pos));
+			PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), GSYS->GetCamera()->getDirection().normalisedCopy());
 			shootAnimState->setTimePosition(0);
 #ifndef DISABLE_SOUND
 			ZSND->PlaySound("fire");
