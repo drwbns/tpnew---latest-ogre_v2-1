@@ -30,6 +30,7 @@ class BlueBullet;
 
 #define SBLUETIME 0.1f
 #define EBLUETIME 0.1f
+#define IMPACTTIME 10.0f
 
 #include "OgreSingleton.h"
 

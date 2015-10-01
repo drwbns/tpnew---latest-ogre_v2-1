@@ -38,6 +38,7 @@ private:
 	int bill;
 	int sbill;
 	int ebill;
+	int ibill;
 };
 
 #endif

@@ -150,12 +150,12 @@ void ParticleManager::Update()
 
 void ParticleManager::ShowParticle(String name, Vector3 pos, Vector3 dir)
 {
-	/* particle universe removal 
+	/* particle universe removal
 	ParticleUniverse::ParticleSystem* psys = syss[name];
 	psys->getTechnique(0)->getEmitter(0)->position = pos;
 	psys->getTechnique(0)->getEmitter(0)->setParticleDirection(dir);
 	psys->start();
-	*/
+	*/ 
 }
 
 void ParticleManager::HideParticle(Ogre::String name)

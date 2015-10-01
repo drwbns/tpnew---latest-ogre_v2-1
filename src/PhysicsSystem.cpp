@@ -273,7 +273,21 @@ Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 
 {
 	//@TODO:
 	if (true);
-	return Ogre::Vector3();
+	//ray cast
+	PxVec3 org = TemplateUtils::toNX(from);
+	PxVec3 ndir = TemplateUtils::toNX(dir.normalisedCopy());
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
+	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
+	PxRaycastBuffer buf; // [out] Blocking hits will be stored here
+
+	// Raycast against all static & dynamic objects (no filtering)
+	// The main result from this call is the closest hit, stored in the 'hit.block' structure
+	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
+
+	return TemplateUtils::toOgre(buf.block.normal);
+	return Vector3::ZERO;
 }
 
 Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, PxShape ** shape)
@@ -298,9 +312,12 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, 
 	// The main result from this call are all hits along the ray, stored in 'hitBuffer'
 	bool hadBlockingHit = mScene->raycast(origin, unitDir, maxDistance, buf);
 	if (hadBlockingHit)
-		//drawWallDecal(buf.block);
-	for (PxU32 i = 0; i < buf.nbTouches; i++)
-		return TemplateUtils::toOgre(buf.touches[i].normal);
+		shape[0] = buf.block.shape;
+		
+		for (PxU32 i = 0; i < buf.nbTouches; i++) {
+			shape[i] = buf.touches[i].shape;
+			return TemplateUtils::toOgre(buf.touches[i].normal);
+		}
 	/*
 	//Get the closest shape
 	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_ALL_SHAPES, hit, -1, delta.length());
@@ -312,7 +329,8 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, 
 		return TemplateUtils::toOgre(worldImpact);
 	}
 	*/
-	if (shape != NULL)*shape = NULL;
+	if (shape != NULL)
+		*shape = NULL;
 	return Vector3::ZERO;
 }
 
@@ -321,6 +339,51 @@ Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 & from, Ogre::Vector3 & to)
 	//@TODO:
 	if (true);
 	return Ogre::Vector3();
+}
+
+Ogre::Vector3 PhysicsSystem::CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 & to)
+{
+	//@TODO:
+	if (true);
+	//ray cast
+	PxVec3 org = TemplateUtils::toNX(from);
+	Vector3 delta = to - from;
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
+	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
+	PxRaycastBuffer buf; // [out] Blocking hits will be stored here
+
+	// Raycast against all static & dynamic objects (no filtering)
+	// The main result from this call is the closest hit, stored in the 'hit.block' structure
+	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
+
+	if(hadBlockingHit)
+		return TemplateUtils::toOgre(buf.block.position);
+	else
+		return to;
+}
+
+Ogre::Vector3 PhysicsSystem::CastRay5(const Ogre::Vector3 & from, Ogre::Vector3 & dir)
+{
+	//@TODO:
+	if (true);
+	//ray cast
+	PxVec3 org = TemplateUtils::toNX(from);
+	PxVec3 ndir = TemplateUtils::toNX(dir.normalisedCopy());
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
+	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
+	PxRaycastBuffer buf; // [out] Blocking hits will be stored here
+
+						 // Raycast against all static & dynamic objects (no filtering)
+						 // The main result from this call is the closest hit, stored in the 'hit.block' structure
+	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
+
+	return TemplateUtils::toOgre(buf.block.position);
+	return Vector3::ZERO;
 }
 //@TODO:
 ; // Start Section Outdated, marked for removal 

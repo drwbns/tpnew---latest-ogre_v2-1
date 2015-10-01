@@ -42,6 +42,7 @@ BlueBullet::BlueBullet() : Projectile()
 	bill = -1;
 	sbill = -1;
 	ebill = -1;
+	ibill = -1; // impact bill
 	Speed = 1800;
 	HitPoint = -5.5;
 }
@@ -60,91 +61,81 @@ void BlueBullet::Update()
 	if(true); // Start Section Outdated, marked for removal 
 	
 	PxMaterial * mat; // Possibly used for material names? Need to check if material names can be done in PhysX3 or if a new enum or struct needs to be made
-	Vector3 normal = PHY->CastRay2(Position, Position+toAdd, &shape);
-	if (normal == Vector3::ZERO)
+	Vector3 normal = PHY->CastRay4(Position, Position+toAdd);
+
+	//show source
+	if (sbill == -1)
 	{
-		//show source
-		if (sbill == -1)
+		sbill = BBS->ShowBillboard("BulletSource", Position, SBLUETIME);
+		sbill = 0;
+	}
+
+	//show impact
+	if (ibill == -1)
+	{
+		ibill = BBS->ShowBillboard("Flare", Position + toAdd, IMPACTTIME);
+		ibill = 0;
+	}
+
+	//move it
+	Position += toAdd;
+	BBS->UpdateBillboard("BulletSource", bill, Position);
+	if (Position.distance(Start) > 100.0)
+	{
+		Alive = false;
+		BBS->HideBillboard("BulletSource", bill);
+	}
+
+	if (ebill == -1)
+	{
+		//show impact
+		ebill = BBS->ShowBillboard("RFlare", Position + toAdd, IMPACTTIME);
+		ibill = BBS->ShowBillboard("TFlare", Position + toAdd, IMPACTTIME);
+		/*
+		String mat_name = PHY->getMaterialName(mat);
+		if (mat_name.length() > 0)
 		{
-			
-			if(PTM) {
+			if (mat_name == "cube")
+			{
+				PTM->ShowParticle("hit2", Position, normal);
+			}
+			else if (mat_name == "taban" || mat_name == "tavan" || mat_name == "duvar")
+			{
+				PTM->ShowParticle("spark", Position, normal);
+			}
+			else if (mat_name == "engel")
+			{
 				PTM->ShowParticle("spark2", Position, normal);
 			}
-			else {
-				sbill = BBS->ShowBillboard("BulletSource", Position, SBLUETIME);
-				sbill = 0;
+			else if (mat_name == "vipbody")
+			{
+				PTM->ShowParticle("blood", Position, normal);
 			}
 		}
-
-		//move it
-		Position += toAdd;
-		BBS->UpdateBillboard("Bullet", bill, Position);
-		PTM->ShowParticle("spark2", Position, Direction);
-		if (Position.distance(Start) > 100.0)
+		*/
+		//apply impact
+		if (shape != NULL)
 		{
-			Alive = false;
-			BBS->HideBillboard("Bullet", bill);
-		}
-	}
-	else
-	{
-		//hide bullet
-		if (bill != -1)
-		{
-			BBS->HideBillboard("Bullet", bill);
-		}
-		Alive = false;
-
-		if (ebill == -1)
-		{
-			//show impact
-			ebill = BBS->ShowBillboard("BulletSource", Position, EBLUETIME);
-			/*
-			String mat_name = PHY->getMaterialName(mat);
-			if (mat_name.length() > 0)
+			if (shape->getActor()->isRigidDynamic())
 			{
-				if (mat_name == "cube")
-				{
-					PTM->ShowParticle("hit2", Position, normal);
-				}
-				else if (mat_name == "taban" || mat_name == "tavan" || mat_name == "duvar")
-				{
-					PTM->ShowParticle("spark", Position, normal);
-				}
-				else if (mat_name == "engel")
-				{
-					PTM->ShowParticle("spark2", Position, normal);
-				}
-				else if (mat_name == "vipbody")
-				{
-					PTM->ShowParticle("blood", Position, normal);
-				}
+				PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(Direction * Speed * 0.25), TemplateUtils::toNX(Position));
+				//shape->getActor()->addForceAtPos(TemplateUtils::toPX(Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
 			}
-			*/
-			//apply impact
-			if (shape != NULL)
+			else if (shape->getActor()->userData != NULL)
 			{
-				if (shape->getActor()->isRigidDynamic())
+				Agent* a = (Agent*)shape->getActor()->userData;
+				//warn attacked one
+				a->setAttacker(Owner);
+				//inc. hit score
+				Owner->incShotsHit();
+				//double dmg. if head shot
+				if (shape->getActor()->getGlobalPose().p == a->getHitBox(0)->getLocalPose().p)
 				{
-					PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(Direction * Speed * 0.25), TemplateUtils::toNX(Position), PxForceMode::eIMPULSE);
-					//shape->getActor()->addForceAtPos(TemplateUtils::toPX(Direction * Speed * 0.25), TemplateUtils::toPX(Position), PX_IMPULSE);
+					a->add2Hp(2 * HitPoint);
 				}
-				else if (shape->getActor()->userData != NULL)
+				else
 				{
-					Agent* a = (Agent*)shape->getActor()->userData;
-					//warn attacked one
-					a->setAttacker(Owner);
-					//inc. hit score
-					Owner->incShotsHit();
-					//double dmg. if head shot
-					if (shape->getActor()->getGlobalPose().p == a->getHitBox(0)->getLocalPose().p)
-					{
-						a->add2Hp(2 * HitPoint);
-					}
-					else
-					{
-						a->add2Hp(HitPoint);
-					}
+					a->add2Hp(HitPoint);
 				}
 			}
 		}
