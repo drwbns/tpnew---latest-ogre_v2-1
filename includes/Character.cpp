@@ -142,6 +142,14 @@ void OgreCharacter::update(Real elapsedTime, OIS::Keyboard * input, OIS::Mouse *
 			getAnimState()->setTimePosition(0);
 
 	}
+	// Handle movement
+	if (mInput->getMouseState().buttonDown(OIS::MB_Right)) {
+		setAnimationState("Walk");
+		getAnimState()->setLoop(false);
+		if (getAnimState()->hasEnded())
+			getAnimState()->setTimePosition(0);
+
+	}
 	if (input->isKeyDown(OIS::KC_W)) {
 		mMainNode->translate(mPlayerNode->getOrientation() * Vector3(0, 0, -100 * elapsedTime), Node::TS_LOCAL);
 		setAnimationState("Walk");

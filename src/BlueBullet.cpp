@@ -43,7 +43,7 @@ BlueBullet::BlueBullet() : Projectile()
 	sbill = -1;
 	ebill = -1;
 	ibill = -1; // impact mBill
-	mSpeed = 1;
+	mSpeed = 100;
 	mHitPoint = -5.5;
 }
 

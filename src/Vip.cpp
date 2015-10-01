@@ -95,26 +95,32 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	lineofsight->end();
 	lineofsight->setVisible(true);
 
+	
 	idleAnimState = mEnt->getAnimationState("Idle");
 	idleAnimState->setLoop(true);
 	idleAnimState->setEnabled(true);
-	idleAnimState->setWeight(1.0);
+	idleAnimState->setWeight(0.9);
+
+	aimAnimState = mEnt->getAnimationState("Aim");
+	aimAnimState->setLoop(true);
+	aimAnimState->setEnabled(true);
+	aimAnimState->setWeight(1.0);
 
 	runAnimState = mEnt->getAnimationState("Walk");
 	runAnimState->setLoop(true);
-	runAnimState->setEnabled(false);
-	runAnimState->setWeight(0.0);
+	runAnimState->setEnabled(true);
+	runAnimState->setWeight(0.9);
 
 	shootAnimState = mEnt->getAnimationState("Shoot");
 	shootAnimState->setLoop(false);
 	shootAnimState->setEnabled(true);
-	shootAnimState->setWeight(1.0);
+	shootAnimState->setWeight(0.9);
 
 	deadAnimState = mEnt->getAnimationState("Die");
 	deadAnimState->setLoop(false);
 	deadAnimState->setEnabled(false);
 	deadAnimState->setWeight(1.0);
-
+	
 	//phy controller
 	// setup default material...
 	mMaterial = PHY->getPhysics()->createMaterial(0.5f, 0.5f, 0.1f);
@@ -344,19 +350,26 @@ void Vip::Update()
 	float idle_weight = 1.0 - (speed / MaxSpeed);
 	float run_weight = (speed / MaxSpeed);
 
+	float time2add = GlobalVars::Tick * Velocity.length() * 0.4;
+	
 	idleAnimState->setEnabled(idle_weight > 0);
 	idleAnimState->setWeight(idle_weight);
-	idleAnimState->addTime(GlobalVars::Tick);
 
 	runAnimState->setEnabled(run_weight > 0);
-	runAnimState->setWeight(run_weight);
-	float time2add = GlobalVars::Tick * Velocity.length() * 0.4;
-	runAnimState->addTime(time2add);
+	runAnimState->setWeight(run_weight);	
 
 	shootAnimState->setEnabled(aimMode);
 	shootAnimState->setWeight(1.0);
-	shootAnimState->addTime(GlobalVars::Tick*5);
+	
+	idleAnimState->addTime(GlobalVars::Tick);
 
+	aimAnimState->addTime(GlobalVars::Tick); // Time position isnt moving, check shootAnimState for how to play animation
+	
+	runAnimState->addTime(time2add); // Time position isnt moving, check shootAnimState for how to play animation
+
+
+	shootAnimState->addTime(GlobalVars::Tick*5);
+	
 	//step sounds
 	static int scount = 0;
 	if (scount == 0 && runAnimState->getTimePosition() >= 0.5 * runAnimState->getLength())

@@ -28,12 +28,14 @@ THE SOFTWARE.
 #include "TpCamController.h"
 #include "StateSystem.h"
 #include "GameState.h"
+#include "World.h"
+#include "GraphicsSystem.h"
+#include "GlobalVars.h"
 
 #include "OIS\OISMouse.h"
 #include "OIS\OISKeyboard.h"
 
-#include "World.h"
-#include "GraphicsSystem.h"
+
 
 using namespace Ogre;
 
@@ -53,11 +55,15 @@ void InputController::injectMousePress(int id, bool buffered)
 {
 	if (id == OIS::MB_Right && GAMESTATE->GetCurrentCam()->GetType() == CamController::CT_TPS)
 	{
+		if (WORLD->getPlayerAgent()->getRunState()->hasEnded())
+		{
+			WORLD->getPlayerAgent()->getRunState()->setTimePosition(0);
+		}
 		TPCAM->SetAimMode(true);
 		UISYS->SetCrossHair(true);
 		WORLD->getPlayerAgent()->SetAimMode(true);
 	}
-	else if (id == OIS::MB_Left)
+	if (id == OIS::MB_Left)
 	{
 		WORLD->getPlayerAgent()->Shoot(buffered,GSYS->GetCamera()->getDirection().normalisedCopy());
 	}

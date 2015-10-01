@@ -57,14 +57,8 @@ public:
 	Ogre::Quaternion GetBodyRotation();
 	physx::PxShape* getHitBox(int i) { return hitboxes[i]; }
 
-private:
-	Ogre::Entity* mEnt;
-	Ogre::Entity* wEnt;
-	Ogre::AnimationState* idleAnimState;
-	Ogre::AnimationState* runAnimState;
-	Ogre::AnimationState* shootAnimState;
-	Ogre::AnimationState* deadAnimState;
-	bool aimMode;
+protected:
+
 
 	//phy
 	std::vector<physx::PxShape*> hitboxes;

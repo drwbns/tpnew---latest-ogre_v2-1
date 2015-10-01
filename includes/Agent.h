@@ -124,6 +124,11 @@ public:
 	int getShotsFired() { return shotsFired; }
 	int getShotsHit() { return shotsHit; }
 
+	Ogre::AnimationState* getRunState() { return runAnimState; }
+	Ogre::AnimationState* getIdleAnimState() { return idleAnimState; }
+
+
+
 	//pure
 	virtual physx::PxShape* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
@@ -139,6 +144,15 @@ protected:
 	Ogre::ManualObject* lineofsight;
 	Ogre::ManualObject* coverlocs;
 	MovableText* headText;
+
+	Ogre::Entity* mEnt;
+	Ogre::Entity* wEnt;
+	Ogre::AnimationState* aimAnimState;
+	Ogre::AnimationState* idleAnimState;
+	Ogre::AnimationState* runAnimState;
+	Ogre::AnimationState* shootAnimState;
+	Ogre::AnimationState* deadAnimState;
+	bool aimMode;
 
 	//stats & info
 	AIKnowledge* knowledge;
