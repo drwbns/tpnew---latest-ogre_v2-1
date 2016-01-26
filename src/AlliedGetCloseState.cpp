@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedGetCloseState.h"
 #include "GlobalVars.h"
 
@@ -40,7 +39,7 @@ AlliedGetCloseState::~AlliedGetCloseState()
 {
 }
 
-void AlliedGetCloseState::Enter(Agent* agent)
+void AlliedGetCloseState::Enter(Agent * agent)
 {
 	//assumes that 0 is player, allies start with 1 and so on, also max 3 allies
 	Vector3 dest = WORLD->getPlayerAgent()->GetPosition();
@@ -67,7 +66,7 @@ void AlliedGetCloseState::Enter(Agent* agent)
 	agent->orderGoTo(dest);
 }
 
-void AlliedGetCloseState::Execute(Agent* agent)
+void AlliedGetCloseState::Execute(Agent * agent)
 {
 	//set direction
 	if (agent->GetVelocity().squaredLength() >= 0.1)
@@ -86,11 +85,11 @@ void AlliedGetCloseState::Execute(Agent* agent)
 	}
 }
 
-void AlliedGetCloseState::Exit(Agent* agent)
+void AlliedGetCloseState::Exit(Agent * agent)
 {
 }
 
-bool AlliedGetCloseState::isReady(Agent* agent)
+bool AlliedGetCloseState::isReady(Agent * agent)
 {
 	return true;
 }

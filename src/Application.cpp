@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "BillboardSystem.h"
 #include "ParticleManager.h"
 
-template<> Application* Ogre::Singleton<Application>::msSingleton = 0;
+template<> Application* Ogre::Singleton<Application>::msSingleton = nullptr;
 
 Application* Application::getSingletonPtr(void)
 {
@@ -40,11 +40,11 @@ Application* Application::getSingletonPtr(void)
 }
 
 Application& Application::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
-Application::Application() : GS(NULL), IS(NULL), SS(NULL)
+Application::Application() : GS(nullptr), IS(nullptr), SS(nullptr), GU(nullptr), SN(nullptr), PM(nullptr), PS(nullptr), BB(nullptr), PAM(nullptr)
 {
 }
 
@@ -79,7 +79,7 @@ void Application::Initialize()
 	GS->Start();
 }
 
-void Application::Finalize()
+void Application::Finalize() const
 {
 	//PS->Finalize();//do it in states
 	//BB->Finalize();//do it in states
@@ -98,7 +98,7 @@ bool Application::frameStarted(const Ogre::FrameEvent& evt)
 	GlobalVars::Tick = evt.timeSinceLastFrame;
 	if (GlobalVars::Tick > 1.0)
 	{
-		GlobalVars::Tick  = 1.0;
+		GlobalVars::Tick = 1.0;
 	}
 
 	//4 fps tick

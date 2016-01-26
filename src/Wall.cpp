@@ -34,7 +34,7 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-Wall::Wall(Ogre::Vector3 &from, Ogre::Vector3 &to, bool leftnormal)
+Wall::Wall(Vector3 &from, Vector3 &to, bool leftnormal)
 {
 	From = from;
 	To = to;
@@ -62,7 +62,7 @@ Wall::Wall(Ogre::Vector3 &from, Ogre::Vector3 &to, bool leftnormal)
 	markMaterial->getTechnique(0)->setLightingEnabled(false);
 	mark->clear();
 
-	mark->begin("markMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+	mark->begin("markMaterial", RenderOperation::OT_LINE_LIST);
 
 	mark->position(from);	mark->colour(0,0,1);
 	mark->position(to);		mark->colour(0,0,1);
@@ -79,11 +79,11 @@ Wall::~Wall()
 {
 	GSYS->GetSceneMgr()->getRootSceneNode()->detachObject(mark);
 	GSYS->GetSceneMgr()->destroyManualObject(mark);
-	mark = NULL;
+	mark = nullptr;
 }
 
-Ogre::Vector3 & Wall::GetFrom() { return From; }
+Vector3 & Wall::GetFrom() { return From; }
 
-Ogre::Vector3 & Wall::GetTo() { return To; }
+Vector3 & Wall::GetTo() { return To; }
 
-Ogre::Vector3 & Wall::GetNormal() { return Normal; }
+Vector3 & Wall::GetNormal() { return Normal; }

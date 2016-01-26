@@ -20,10 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedKeepCloseState.h"
 #include "World.h"
-#include "AIKnowledge.h"
 #include "AIConsts.h"
 #include "Agent.h"
 
@@ -37,22 +35,22 @@ AlliedKeepCloseState::~AlliedKeepCloseState()
 {
 }
 
-void AlliedKeepCloseState::Enter(Agent* agent)
+void AlliedKeepCloseState::Enter(Agent * agent)
 {
 }
 
-void AlliedKeepCloseState::Execute(Agent* agent)
+void AlliedKeepCloseState::Execute(Agent * agent)
 {
 }
 
-void AlliedKeepCloseState::Exit(Agent* agent)
+void AlliedKeepCloseState::Exit(Agent * agent)
 {
 }
 
-bool AlliedKeepCloseState::isReady(Agent* agent)
+bool AlliedKeepCloseState::isReady(Agent * agent)
 {
 	//waiting and far to player
 	float dist2player = agent->GetPosition().distance(WORLD->getPlayerAgent()->GetPosition());
 	return agent->getKnowledge()->totalVisibleEnemy() == 0 &&
-		   dist2player > AIConsts::PlayerTrackDistance;
+		dist2player > AIConsts::PlayerTrackDistance;
 }

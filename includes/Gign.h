@@ -33,41 +33,42 @@ class Gign : public Agent
 {
 	friend class World;
 
-private:
 	Gign(int id, Race race, Ogre::Vector3 position);
 	~Gign();
-	void Update();
+	void Update() override;
 
 public:
-	void orderMove(float walk, float strafe);
-	void orderBrake();
-	void orderArrive(Ogre::Vector3 pos);
-	void orderPathFollow();
-	void Shoot(bool first, Ogre::Vector3 &trg_pos);
-	void Die();
+	void orderMove(float walk, float strafe) override;
+	void orderBrake() override;
+	void orderArrive(Ogre::Vector3 pos) override;
+	void orderPathFollow() override;
+	void Shoot() override;
+	void Die() override;
 
 	//get / set
-	void SetAimMode(bool b) { aimMode = b; }
-	Ogre::Vector3 GetFirePosition();
+	void SetAimMode(bool b) override
+	{ aimMode = b; }
+	Ogre::Vector3 * GetFirePosition() override;
 	Ogre::Vector3 GetFireDirection(Ogre::Vector3 trg_pos);
-	Ogre::Vector3 GetHeadPosition();
-	Ogre::Quaternion GetHeadRotation();
-	Ogre::Vector3 GetBodyPosition();
-	Ogre::Quaternion GetBodyRotation();
-	physx::PxShape* getHitBox(int i) { return hitboxes[i]; }
+	Ogre::Vector3 GetHeadPosition() const;
+	Ogre::Quaternion GetHeadRotation() const;
+	Ogre::Vector3 GetBodyPosition() const;
+	Ogre::Quaternion GetBodyRotation() const;
+	PxShape* getHitBox(int i) override
+	{ return hitboxes[i]; }
 
 private:
-	Ogre::Entity* mEnt;
-	Ogre::Entity* wEnt;
-	Ogre::AnimationState* idleAnimState;
-	Ogre::AnimationState* runAnimState;
-	Ogre::AnimationState* shootAnimState;
-	Ogre::AnimationState* deadAnimState;
+	Ogre::v1::Entity* mEnt;
+	Ogre::v1::Entity* wEnt;
+	Ogre::v1::AnimationState* idleAnimState;
+	Ogre::v1::AnimationState* runAnimState;
+	Ogre::v1::AnimationState* shootAnimState;
+	Ogre::v1::AnimationState* deadAnimState;
 	bool aimMode;
 
 	//phy
-	std::vector<physx::PxShape*> hitboxes;
-	physx::PxCapsuleController* phycontrol;
+	std::vector<PxShape*> hitboxes;
+	PxCapsuleController* phycontrol;
 	bool flying;
 };
 

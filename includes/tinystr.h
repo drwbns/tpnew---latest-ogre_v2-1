@@ -80,21 +80,21 @@ class TiXmlString
 	}
 
 	// TiXmlString copy constructor
-	TiXmlString ( const TiXmlString & copy) : rep_(0)
+	TiXmlString ( const TiXmlString & copy) : rep_(nullptr)
 	{
 		init(copy.length());
 		memcpy(start(), copy.data(), length());
 	}
 
 	// TiXmlString constructor, based on a string
-	TIXML_EXPLICIT TiXmlString ( const char * copy) : rep_(0)
+	TIXML_EXPLICIT TiXmlString ( const char * copy) : rep_(nullptr)
 	{
 		init( static_cast<size_type>( strlen(copy) ));
 		memcpy(start(), copy, length());
 	}
 
 	// TiXmlString constructor, based on a string
-	TIXML_EXPLICIT TiXmlString ( const char * str, size_type len) : rep_(0)
+	TIXML_EXPLICIT TiXmlString ( const char * str, size_type len) : rep_(nullptr)
 	{
 		init(len);
 		memcpy(start(), str, len);
@@ -109,7 +109,7 @@ class TiXmlString
 	// = operator
 	TiXmlString& operator = (const char * copy)
 	{
-		return assign( copy, (size_type)strlen(copy));
+		return assign( copy, static_cast<size_type>(strlen(copy)));
 	}
 
 	// = operator
@@ -218,7 +218,8 @@ class TiXmlString
   private:
 
 	void init(size_type sz) { init(sz, sz); }
-	void set_size(size_type sz) { rep_->str[ rep_->size = sz ] = '\0'; }
+	void set_size(size_type sz) const
+	{ rep_->str[ rep_->size = sz ] = '\0'; }
 	char* start() const { return rep_->str; }
 	char* finish() const { return rep_->str + rep_->size; }
 
@@ -250,7 +251,7 @@ class TiXmlString
 		}
 	}
 
-	void quit()
+	void quit() const
 	{
 		if (rep_ != &nullrep_)
 		{

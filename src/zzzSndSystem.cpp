@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-template<> zzzSndSystem* Ogre::Singleton<zzzSndSystem>::msSingleton = 0;
+template<> zzzSndSystem* Singleton<zzzSndSystem>::msSingleton = nullptr;
 
 zzzSndSystem* zzzSndSystem::getSingletonPtr(void)
 {
@@ -42,7 +42,7 @@ zzzSndSystem& zzzSndSystem::getSingleton(void)
 	assert( msSingleton );  return ( *msSingleton );
 }
 
-zzzSndSystem::zzzSndSystem()
+zzzSndSystem::zzzSndSystem(): soundsys(nullptr), slistener(nullptr)
 {
 }
 
@@ -56,7 +56,7 @@ void zzzSndSystem::Initialize()
 	soundsys = OGRE_NEW SoundSystem();
 	if (!soundsys->initialize())
 	{
-		throw Ogre::Exception(Ogre::Exception::ERR_INTERNAL_ERROR, "Sound System Init Failed", __FUNCTION__);
+		throw Exception(Exception::ERR_INTERNAL_ERROR, "Sound System Init Failed", __FUNCTION__);
 	}
 	slistener = SoundListener::getSingletonPtr();
 	slistener->setGain(1.0);
@@ -68,7 +68,7 @@ void zzzSndSystem::Finalize()
 	UnloadSounds();
 }
 
-void zzzSndSystem::Update()
+void zzzSndSystem::Update() const
 {
 	slistener->setPosition(0,0,0);
 	slistener->setDirection(0,0,1);
@@ -81,7 +81,7 @@ void zzzSndSystem::PlaySound(std::string name)
 	snds[name]->play();
 }
 
-void zzzSndSystem::PlaySound(std::string name, Ogre::Vector3 pos)
+void zzzSndSystem::PlaySound(std::string name, Vector3 pos)
 {
 	snds[name]->setGain(1);
 	snds[name]->setPosition(pos);
@@ -89,7 +89,7 @@ void zzzSndSystem::PlaySound(std::string name, Ogre::Vector3 pos)
 	snds[name]->play();
 }
 
-void zzzSndSystem::PlaySound(std::string name, Ogre::Vector3 pos, float vol)
+void zzzSndSystem::PlaySound(std::string name, Vector3 pos, float vol)
 {
 	snds[name]->setGain(vol);
 	snds[name]->setPosition(pos);
@@ -102,7 +102,7 @@ void zzzSndSystem::StopSound(std::string name)
 	snds[name]->stop();
 }
 
-void zzzSndSystem::LoadSound(std::string name, std::string file, SceneNode* owner = NULL, bool loop = false, float gain = 1)
+void zzzSndSystem::LoadSound(std::string name, std::string file, SceneNode* owner = nullptr, bool loop = false, float gain = 1)
 {
 	SoundSource* s = soundsys->createSource(name, file);
 	s->setLoop(loop);
@@ -110,7 +110,7 @@ void zzzSndSystem::LoadSound(std::string name, std::string file, SceneNode* owne
 	s->setGain(gain);
 	s->setMaxGain(1);
 	s->setDistanceValues(75.0,0.5,2.5);
-	if (owner != NULL)
+	if (owner != nullptr)
 	{
 		owner->attachObject(s);
 	}
@@ -130,7 +130,7 @@ void zzzSndSystem::LoadSounds()
 		TiXmlNode* node;
 		node=doc.FirstChild();
 		node=node->FirstChild();
-		for (;node!=0;node=node->NextSibling()) 
+		for (;node!=nullptr;node=node->NextSibling()) 
 		{
 			if (node->Type() == TiXmlNode::ELEMENT)
 			{
@@ -176,6 +176,6 @@ void zzzSndSystem::UnloadSounds()
 	{
 		((*it).second)->stop();
 		soundsys->destroySource(((*it).second));
-		it++;
+		++it;
 	}
 }

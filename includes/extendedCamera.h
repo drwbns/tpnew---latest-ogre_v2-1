@@ -18,21 +18,20 @@ using namespace Ogre;
          bool mOwnCamera; // To know if the ogre camera binded has been created outside or inside of this class
  
          Real mTightness; // Determines the movement of the camera - 1 means tight movement, while 0 means no movement
-     public:
- // Methods ---------------------------------------------------------------------------------
-     protected:
-     public:
-         ExtendedCamera (String name, SceneManager *sceneMgr, Camera *camera = 0) {
+	 // Methods ---------------------------------------------------------------------------------
+ public:
+         ExtendedCamera (String name, SceneManager *sceneMgr, Camera *camera = nullptr): mTargetNode(nullptr), mCameraNode(nullptr)
+         {
              // Basic member references setup
              mName = name;
              mSceneMgr = sceneMgr;
 
 				// creating plane
-			Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-			Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-			plane, 12000, 12000, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+			Plane plane(Vector3::UNIT_Y, 0);
+			MeshManager::getSingleton().createPlane("ground", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			plane, 12000, 12000, 20, 20, true, 1, 5, 5, Vector3::UNIT_Z);
 			// placing plane
-			Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+			Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
 			
 			mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
 
@@ -77,7 +76,7 @@ using namespace Ogre;
              mTightness = tightness;
          }
  
-         Real getTightness () {
+         Real getTightness () const {
              return mTightness;
          }
  /*
@@ -96,7 +95,7 @@ using namespace Ogre;
              return mCameraNode;
          }
 		 */
-		 Camera * getCamera() {
+		 Camera * getCamera() const {
 			 return mCamera;
 		 }
 

@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyExploreState.h"
 #include "Path.h"
 #include "NavMesher.h"
@@ -43,11 +42,11 @@ EnemyExploreState::~EnemyExploreState()
 {
 }
 
-void EnemyExploreState::Enter(Agent* agent)
+void EnemyExploreState::Enter(Agent * agent)
 {
 }
 
-void EnemyExploreState::Execute(Agent* agent)
+void EnemyExploreState::Execute(Agent * agent)
 {
 	if (!agent->isActive(Moving::path))
 	{
@@ -70,11 +69,11 @@ void EnemyExploreState::Execute(Agent* agent)
 	}
 }
 
-void EnemyExploreState::Exit(Agent* agent)
+void EnemyExploreState::Exit(Agent * agent)
 {
 }
 
-bool EnemyExploreState::isReady(Agent* agent)
+bool EnemyExploreState::isReady(Agent * agent)
 {
 	return false;
 }

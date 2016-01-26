@@ -69,40 +69,35 @@
 #pragma once
 
 #include "OgrePrerequisites.h"
-#include "tinyxml.h"
 #include "SharedData.h"
 
-#include "characterkinematic\PxCharacter.h"
-#include "characterkinematic\PxController.h"
-#include "characterkinematic\PxCapsuleController.h"
 #include "foundation\PxVec3.h"
 #include "foundation\PxQuat.h"
 
 #include "OgreVector3.h"
 #include "OgreQuaternion.h"
-#include "OgreStringVector.h"
 
 using namespace physx;
 
 class TemplateUtils
 {
-    public:
-        inline static Ogre::Vector3 toOgre(const PxVec3 &vec)
+	public:
+		 static Ogre::Vector3 toOgre(const PxVec3 &vec)
 	{
 		return Ogre::Vector3(vec.x, vec.y, vec.z);
 	}
 
-	inline static Ogre::Quaternion toOgre(const PxQuat &qt)
+	 static Ogre::Quaternion toOgre(const PxQuat &qt)
 	{
 		return Ogre::Quaternion(qt.w, qt.x, qt.y, qt.z);
 	}
 
-	inline static PxVec3 toNX(const Ogre::Vector3 &vec)
+	 static PxVec3 toNX(const Ogre::Vector3 &vec)
 	{
 		return PxVec3(vec.x, vec.y, vec.z);
 	}
 
-	inline static PxQuat toNX(const Ogre::Quaternion &qt)
+	 static PxQuat toNX(const Ogre::Quaternion &qt)
 	{
 		PxQuat nq;
 		//nq.setXYZW(qt.x,qt.y,qt.z,qt.w);
@@ -112,11 +107,12 @@ class TemplateUtils
 	static float clamp (float value, float lowerLimit, float upperLimit)
 	{
 		if (value < lowerLimit){ return lowerLimit; }
-		else if (value > upperLimit){ return upperLimit; }
-		else { return value; }
+		if (value > upperLimit){ return upperLimit; }
+		return value;
 	}
-	inline static float RandFloat(){return ((rand())/(RAND_MAX+1.0));}
-	inline static float RandInRange(float x, float y)
+
+	static float RandFloat(){return ((rand())/(RAND_MAX+1.0));}
+	 static float RandInRange(float x, float y)
 	{
 		return x + RandFloat()*(y-x);
 	}
@@ -135,144 +131,140 @@ class TemplateUtils
 
 		static void getMeshInformationNx(Ogre::Mesh* const mesh,
 							   unsigned int &vertex_count,
-								            unsigned int* &indices,
+											unsigned int* &indices,
 											float* &vertices,
 								unsigned int &index_count,
 								std::vector<Ogre::Vector3*> &normals,
 	//									  std::vector<unsigned short*> &materials,
-										      float* &min,
-										      float* &max,
+											  float* &min,
+											  float* &max,
 								   Ogre::Vector3 position = Ogre::Vector3::ZERO,
 								  Ogre::Quaternion orient = Ogre::Quaternion::IDENTITY,
-								      Ogre::Vector3 scale = Ogre::Vector3(1,1,1));
+									  Ogre::Vector3 scale = Ogre::Vector3(1,1,1));
 
 		 /**
-        * Fetches information about OGRE-based mesh
-        * @param mesh mesh to retrieve information about
-        * @param vertex_count number of vertices to retrieve
-        * @param vertices raw Ogre::Vector3 array pointer to mesh' vertices
-        * @param index_count number of indices to retrieve
-        * @param indices raw ulong array pointer to mesh' indices
-        * @param position mesh position to retrieve
-        * @param orient mesh orientation to retrieve
-        * @param scale mesh scale to retrieve
-        */
-		static void getMeshInformationEX(const Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
-									size_t &index_count, unsigned long* &indices, const Ogre::Vector3 &position = Ogre::Vector3::ZERO, 
-									const Ogre::Quaternion &orient = Ogre::Quaternion::IDENTITY, const Ogre::Vector3 &scale = Ogre::Vector3::UNIT_SCALE);
+		* Fetches information about OGRE-based mesh
+		* @param mesh mesh to retrieve information about
+		* @param vertex_count number of vertices to retrieve
+		* @param vertices raw Ogre::Vector3 array pointer to mesh' vertices
+		* @param index_count number of indices to retrieve
+		* @param indices raw ulong array pointer to mesh' indices
+		* @param position mesh position to retrieve
+		* @param orient mesh orientation to retrieve
+		* @param scale mesh scale to retrieve
+		*/
+		static void getMeshInformationEX();
 
 		 /**
-        * Fetches information about OGRE-based mesh
-        * @param entity entity to retrieve information about
-        * @param vertex_count number of vertices to retrieve
-        * @param vertices raw Ogre::Vector3 array pointer to mesh' vertices
-        * @param index_count number of indices to retrieve
-        * @param indices raw ulong array pointer to mesh' indices
-        * @param position mesh position to retrieve
-        * @param orient mesh orientation to retrieve
-        * @param scale mesh scale to retrieve
-        */
-		static void getMeshInformationEXA(Ogre::Entity &entity, size_t &vertex_count, Ogre::Vector3* &vertices, 
-									size_t &index_count, unsigned long* &indices, const Ogre::Vector3 &position = Ogre::Vector3::ZERO,
-									const Ogre::Quaternion &orient = Ogre::Quaternion::IDENTITY, const Ogre::Vector3 &scale = Ogre::Vector3::UNIT_SCALE);
+		* Fetches information about OGRE-based mesh
+		* @param entity entity to retrieve information about
+		* @param vertex_count number of vertices to retrieve
+		* @param vertices raw Ogre::Vector3 array pointer to mesh' vertices
+		* @param index_count number of indices to retrieve
+		* @param indices raw ulong array pointer to mesh' indices
+		* @param position mesh position to retrieve
+		* @param orient mesh orientation to retrieve
+		* @param scale mesh scale to retrieve
+		*/
+		static void getMeshInformationEXA();
 
 
-        /**
-        * Attempts to pick an entity within scene using ray cast from the mouse
-        * @param mRaySceneQuery a ray scene query object 
-        * @see Ogre::RaySceneQuery
-        * @param ray ray cast from the mouse  
-        * @see COgitorsRoot::GetMouseRay
-        * @param result a result of entities that were intersected with the ray
-        * @param hitpoint a closest point of the ray/entity intersection to the camera
-        * @param max_distance check only objects closer than this value
-        * @param excludeobject the name of the object to exclude from hit test
-        * @return true if any entity was intersected with the ray, otherwise false
-        */
-        static bool PickEntity(Ogre::RaySceneQuery* mRaySceneQuery, Ogre::Ray &ray, Ogre::Entity **result, Ogre::Vector3 &hitpoint, const Ogre::String& excludeobject = "", Ogre::Real max_distance = -1.0f);
-        /**
-        * Attempts to pick an entity within scene using ray cast from the mouse
-        * @param mRaySceneQuery a ray scene query object 
-        * @see Ogre::RaySceneQuery
-        * @param ray ray cast from the mouse  
-        * @see COgitorsRoot::GetMouseRay
-        * @param result a result of entities that were intersected with the ray
-        * @param hitpoint a closest point of the ray/entity intersection to the camera
-        * @param max_distance check only objects closer than this value
-        * @param excludeobjects the list of names of the objects to exclude from hit test
-        * @return true if any entity was intersected with the ray, otherwise false
-        */
-        static bool PickEntity(Ogre::RaySceneQuery* mRaySceneQuery, Ogre::Ray &ray, Ogre::Entity **result, Ogre::Vector3 &hitpoint, const Ogre::StringVector& excludeobjects, Ogre::Real max_distance = -1.0f);
-        /**
-        * Attempts to find the index of the submesh containing the point hitpoint
-        * @param pEntity the parent Entity Object  
-        * @see Ogre::Entity
-         * @param hitpoint the location on the Entity
-        * @return the index of the submesh containing the hitpoint
-        */
-        static int PickSubMesh(Ogre::Ray& ray, Ogre::Entity* pEntity);
-        /**
-        * Test if specified ray has intersected with anything on the scene
-        * @param mRaySceneQuery ray scene query object helper 
-        * @param ray a ray that is to be tested
-        * @param hitposition location of an intersect (if any)
-        * @return true if ray had intersected with anything, otherwise false
-        */
-        static bool WorldIntersect(Ogre::RaySceneQuery* mRaySceneQuery, Ogre::Ray &ray, Ogre::Vector3 &hitposition);
-        /**
-        * Fetches internal vertex and index buffers
-        * @param VertexBuffer address of pointer to vertex buffers to be set
-        * @param IndexBuffer address of pointer to index buffers to be set
-        */
-        static void GetBuffers(Ogre::Vector3 **VertexBuffer, unsigned long **IndexBuffer)
-        {
-            *VertexBuffer = mVertexBuffer;
-            *IndexBuffer = mIndexBuffer;
-        }
-        /**
-        * Frees internal vertex and index buffers
-        */
-        static void FreeBuffers()
-        {
-            OGRE_FREE(mVertexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
-            mVertexBuffer = 0;
-            mVertexBufferSize = 0;
-            OGRE_FREE(mIndexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
-            mIndexBuffer = 0;
-            mIndexBufferSize = 0;
-        }
-        /**
-        * Returns the value of a property as string
-        * @param value the PropertyValue to be converted 
-        * @return the string value
-        */
-        static Ogre::String GetValueString( /* OgitorsPropertyValue& value */ );
-        /**
-        * Returns a string containing xml structure ofa custom property set
-        * @param set the set that will be used to create xml structure
-        * @param indentation space to be left at the beginning of each line
-        */
-        static Ogre::String GetCustomPropertySaveString( /* OgitorsCustomPropertySet *set ,*/ int indentation);
-        /**
-        * Returns a string containing xml structure ofa custom property set
-        * @param set the set that will be used to create xml structure
-        * @param indentation space to be left at the beginning of each line
-        */
-        static void ReadCustomPropertySet(TiXmlElement *element /*, OgitorsCustomPropertySet *set*/ );
-        /**
-        * Returns a string containing xml structure of an object
-        * @param object the object that will be used to create xml structure
-        * @param useobjid will there be a object_id parameter?
-        * @param addparent will there be a parentnode parameter?
-        * @return returns a string containing xml syntax created from the object
-        */
-        static Ogre::String GetObjectSaveStringV2(/* CBaseEditor *object  ,*/ int indentation, bool useobjid, bool addparent);
-        /**
-        * Returns a string containing xml structure ofa custom property set for DotScene Format
-        * @param set the set that will be used to create xml structure
-        * @param indentation space to be left at the beginning of each line
-        */
-        static Ogre::String GetUserDataSaveString(/* OgitorsCustomPropertySet *set ,*/ int indentation);
+		/**
+		* Attempts to pick an entity within scene using ray cast from the mouse
+		* @param mRaySceneQuery a ray scene query object 
+		* @see Ogre::RaySceneQuery
+		* @param ray ray cast from the mouse  
+		* @see COgitorsRoot::GetMouseRay
+		* @param result a result of entities that were intersected with the ray
+		* @param hitpoint a closest point of the ray/entity intersection to the camera
+		* @param max_distance check only objects closer than this value
+		* @param excludeobject the name of the object to exclude from hit test
+		* @return true if any entity was intersected with the ray, otherwise false
+		*/
+		static bool PickEntity();
+		/**
+		* Attempts to pick an entity within scene using ray cast from the mouse
+		* @param mRaySceneQuery a ray scene query object 
+		* @see Ogre::RaySceneQuery
+		* @param ray ray cast from the mouse  
+		* @see COgitorsRoot::GetMouseRay
+		* @param result a result of entities that were intersected with the ray
+		* @param hitpoint a closest point of the ray/entity intersection to the camera
+		* @param max_distance check only objects closer than this value
+		* @param excludeobjects the list of names of the objects to exclude from hit test
+		* @return true if any entity was intersected with the ray, otherwise false
+		*/
+		//static bool PickEntity();
+		/**
+		* Attempts to find the index of the submesh containing the point hitpoint
+		* @param pEntity the parent Entity Object  
+		* @see Ogre::v1::Entity
+		 * @param hitpoint the location on the Entity
+		* @return the index of the submesh containing the hitpoint
+		*/
+		static int PickSubMesh();
+		/**
+		* Test if specified ray has intersected with anything on the scene
+		* @param mRaySceneQuery ray scene query object helper 
+		* @param ray a ray that is to be tested
+		* @param hitposition location of an intersect (if any)
+		* @return true if ray had intersected with anything, otherwise false
+		*/
+		static bool WorldIntersect(Ogre::RaySceneQuery* mRaySceneQuery, Ogre::Ray &ray, Ogre::Vector3 &hitposition);
+		/**
+		* Fetches internal vertex and index buffers
+		* @param VertexBuffer address of pointer to vertex buffers to be set
+		* @param IndexBuffer address of pointer to index buffers to be set
+		*/
+		static void GetBuffers(Ogre::Vector3 **VertexBuffer, unsigned long **IndexBuffer)
+		{
+			*VertexBuffer = mVertexBuffer;
+			*IndexBuffer = mIndexBuffer;
+		}
+		/**
+		* Frees internal vertex and index buffers
+		*/
+		static void FreeBuffers()
+		{
+			OGRE_FREE(mVertexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
+			mVertexBuffer = 0;
+			mVertexBufferSize = 0;
+			OGRE_FREE(mIndexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
+			mIndexBuffer = 0;
+			mIndexBufferSize = 0;
+		}
+		/**
+		* Returns the value of a property as string
+		* @param value the PropertyValue to be converted 
+		* @return the string value
+		*/
+		static Ogre::String GetValueString( /* OgitorsPropertyValue& value */ );
+		/**
+		* Returns a string containing xml structure ofa custom property set
+		* @param set the set that will be used to create xml structure
+		* @param indentation space to be left at the beginning of each line
+		*/
+		static Ogre::String GetCustomPropertySaveString();
+		/**
+		* Returns a string containing xml structure ofa custom property set
+		* @param set the set that will be used to create xml structure
+		* @param indentation space to be left at the beginning of each line
+		*/
+		static void ReadCustomPropertySet();
+		/**
+		* Returns a string containing xml structure of an object
+		* @param object the object that will be used to create xml structure
+		* @param useobjid will there be a object_id parameter?
+		* @param addparent will there be a parentnode parameter?
+		* @return returns a string containing xml syntax created from the object
+		*/
+		static Ogre::String GetObjectSaveStringV2();
+		/**
+		* Returns a string containing xml structure ofa custom property set for DotScene Format
+		* @param set the set that will be used to create xml structure
+		* @param indentation space to be left at the beginning of each line
+		*/
+		static Ogre::String GetUserDataSaveString();
 
 		//-----------------------------------------------------------------------
 		// CHEAP VECTOR MANIPULATION METHODS
@@ -332,68 +324,68 @@ class TemplateUtils
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueObjName(Ogre::String prefix);
+		static Ogre::String GetUniqueObjName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueMtlName(Ogre::String prefix);
+		static Ogre::String GetUniqueMtlName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueName(Ogre::String prefix);
+		static Ogre::String GetUniqueName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueEntityLabelName(Ogre::String prefix);
+		static Ogre::String GetUniqueEntityLabelName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueBodyEntityName(Ogre::String prefix);
+		static Ogre::String GetUniqueBodyEntityName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueRibbonTrailName(Ogre::String prefix);
+		static Ogre::String GetUniqueRibbonTrailName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueBodyNodeName(Ogre::String prefix);
+		static Ogre::String GetUniqueBodyNodeName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueLeftSwordName(Ogre::String prefix);
+		static Ogre::String GetUniqueLeftSwordName();
 
 		/**
 		*	Get an application unique Ogre::String name
 		*	@param : prefix - Ogre::String that need not be unique
 		*   @return : Ogre::String - in the forum of "prefix00". 00 is app independant.
 		*/
-		static Ogre::String GetUniqueRightSwordName(Ogre::String prefix);
+		static Ogre::String GetUniqueRightSwordName();
 
 
 
 
-    protected:
+	protected:
 
 		static int				mObjCount;
 		static int				mMtlCount;
@@ -406,13 +398,13 @@ class TemplateUtils
 		static int				mLeftSwordCount;
 		static int				mRightSwordCount;
 
-        static Ogre::String		mExePath;
-        static unsigned int		mVertexBufferSize;
-        static unsigned int		mIndexBufferSize;
-        static Ogre::Vector3*	mVertexBuffer;
-        static unsigned long*	mIndexBuffer;
+		static Ogre::String		mExePath;
+		static unsigned int		mVertexBufferSize;
+		static unsigned int		mIndexBufferSize;
+		static Ogre::Vector3*	mVertexBuffer;
+		static unsigned long*	mIndexBuffer;
 
-    private:
-        TemplateUtils();
-        ~TemplateUtils();
+	private:
+		TemplateUtils();
+		~TemplateUtils();
 };

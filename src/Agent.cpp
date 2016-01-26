@@ -24,7 +24,6 @@ THE SOFTWARE.
 #include "Level.h"
 #include "World.h"
 
-
 #include "GameState.h"
 #include "StateSystem.h"
 
@@ -63,20 +62,20 @@ bool Agent::isDetachable(PxFilterData& filterData)
 	return filterData.word3 & PxU32(DETACHABLE_FLAG) ? true : false;
 }
 
-void Agent::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
+void Agent::onContact(const PxContactPair* pairs, PxU32 nbPairs)
 {
-	for(PxU32 i=0; i < nbPairs; i++)
+	for (PxU32 i = 0; i < nbPairs; i++)
 	{
 		PxU32 n = 2;
 		const PxContactPairFlag::Enum delShapeFlags[] = { PxContactPairFlag::eREMOVED_SHAPE_0, PxContactPairFlag::eREMOVED_SHAPE_1 };
 		const PxContactPair& cp = pairs[i];
-		while(n--)
+		while (n--)
 		{
-			if(!(cp.flags & delShapeFlags[n]))
+			if (!(cp.flags & delShapeFlags[n]))
 			{
 				PxShape* shape = cp.shapes[n];
 				PxFilterData fd = shape->getSimulationFilterData();
-				if(isDetachable(fd))
+				if (isDetachable(fd))
 				{
 					mDetaching.push_back(shape);
 				}
@@ -87,7 +86,6 @@ void Agent::onContact(const PxContactPairHeader& pairHeader, const PxContactPair
 
 void Agent::onShapeHit(const PxControllerShapeHit& hit)
 {
-	
 	PxRigidDynamic* actor = hit.shape->getActor()->is<PxRigidDynamic>();
 	if (actor && hit.shape->getFlags() == PxShapeFlag::eSIMULATION_SHAPE)
 	{
@@ -106,8 +104,8 @@ Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc
 {
 	this->id = id;
 	this->race = race;
-	attacker = NULL;
-	controller = NULL;
+	attacker = nullptr;
+	controller = nullptr;
 	hp = 100;
 	dead = false;
 
@@ -116,17 +114,17 @@ Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc
 	node->setOrientation(Rotation);
 
 	//lineofsight
-	lineofsight =  GSYS->GetSceneMgr()->createManualObject();
+	lineofsight = GSYS->GetSceneMgr()->createManualObject();
 	lineofsight->setCastShadows(false);
-	MaterialPtr lineofsightMaterial = MaterialManager::getSingleton().create("lineofsightMaterial","General");
+	MaterialPtr lineofsightMaterial = MaterialManager::getSingleton().create("lineofsightMaterial", "General");
 	lineofsightMaterial->setReceiveShadows(false);
-	lineofsightMaterial->getTechnique(0)->setLightingEnabled(false);
+	//lineofsightMaterial->getTechnique(0)->setLightingEnabled(false);
 
 	//attach to this node
 	node->attachObject(lineofsight);
 
 	//coverlocs
-	coverlocs =  GSYS->GetSceneMgr()->createManualObject();
+	coverlocs = GSYS->GetSceneMgr()->createManualObject();
 	coverlocs->setCastShadows(false);
 
 	//attach to root node
@@ -156,28 +154,28 @@ Agent::Agent(int id, Race race, Vector3 position, float max_speed, float max_acc
 Agent::~Agent()
 {
 	node->detachAllObjects();
-	node->getParentSceneNode()->removeAndDestroyChild(node->getName());
-	node = NULL;
+	node->getParentSceneNode()->removeAndDestroyChild(node);
+	node = nullptr;
 
 	lineofsight->clear();
 	GSYS->GetSceneMgr()->destroyManualObject(lineofsight);
-	lineofsight = NULL;
+	lineofsight = nullptr;
 
-	GSYS->GetSceneMgr()->getRootSceneNode()->detachObject(coverlocs->getName());
+	GSYS->GetSceneMgr()->getRootSceneNode()->detachObject(coverlocs);
 	coverlocs->clear();
 	GSYS->GetSceneMgr()->destroyManualObject(coverlocs);
-	coverlocs = NULL;
+	coverlocs = nullptr;
 
 	delete headText;
-	headText = NULL;
-	
+	headText = nullptr;
+
 	delete controller;
-	controller = NULL;
+	controller = nullptr;
 
 	delete knowledge;
-	knowledge = NULL;
+	knowledge = nullptr;
 
-	attacker = NULL;
+	attacker = nullptr;
 }
 
 void Agent::Update()
@@ -187,7 +185,7 @@ void Agent::Update()
 		//gather knowledge
 		PRC->UpdateKnowledge(this);
 
-		if (controller != NULL)
+		if (controller != nullptr)
 		{
 			controller->Update();
 		}
@@ -202,13 +200,13 @@ void Agent::Update()
 
 void Agent::orderMove(float walk, float strafe)
 {
-	Ogre::Vector3 dest = Position;
+	Vector3 dest = Position;
 	dest += Vector3(strafe, 0, walk);
 	SetDest(dest);
 
 	this->resetBehavior();
 	this->seekOn();//seek target
-	if(this->getID() != 0) this->SetMaxSpeed(10);
+	if (this->getID() != 0) this->SetMaxSpeed(10);
 
 	//avoid obstacles,walls & seperate
 	//this->avoid1On();
@@ -229,7 +227,7 @@ void Agent::orderBrake()
 	//this->seperateOn();
 }
 
-void Agent::orderArrive(Ogre::Vector3 pos)
+void Agent::orderArrive(Vector3 pos)
 {
 	SetDest(pos);
 	this->SetMaxSpeed(6);
@@ -243,7 +241,7 @@ void Agent::orderArrive(Ogre::Vector3 pos)
 	//this->seperateOn();
 }
 
-void Agent::orderGoTo(Ogre::Vector3 pos)
+void Agent::orderGoTo(Vector3 pos)
 {
 	this->SetMaxSpeed(10);
 	SetDest(pos);
@@ -253,13 +251,12 @@ void Agent::orderGoTo(Ogre::Vector3 pos)
 
 void Agent::orderPathFollow()
 {
-
 	if (mPath->GetLength() > 0)
 	{
 		this->SetMaxSpeed(10);
 		//find closest node
 		float min = 999999;
-		for (int i=0;i<mPath->GetLength();i++)
+		for (int i = 0; i < mPath->GetLength(); i++)
 		{
 			Vector3 delta = Position - *mPath->GetNode(i).getPos();
 			if (delta.length() < min)
@@ -292,16 +289,16 @@ void Agent::orderNextPathNode()
 	}
 }
 
-void Agent::add2Hp(int i) 
-{ 
+void Agent::add2Hp(int i)
+{
 	hp += i;
-	if (hp<=0)
+	if (hp <= 0)
 	{
 		Die();
 	}
 	if (this == WORLD->getPlayerAgent())
 	{
-		headText->setCaption(Ogre::StringConverter::toString(hp));
+		headText->setCaption(StringConverter::toString(hp));
 	}
 }
 
@@ -318,7 +315,7 @@ void Agent::ChangeController(BaseController* ct)
 {
 	delete controller;
 	controller = ct;
-	if (controller != NULL)
+	if (controller != nullptr)
 	{
 		controller->SetAgent(this);
 	}

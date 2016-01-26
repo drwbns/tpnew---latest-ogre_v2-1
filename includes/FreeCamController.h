@@ -33,8 +33,8 @@ public:
 	~FreeCamController();
 	void Initialize(Ogre::Camera* camera);
 	void Finalize();
-	void UpdateLocation(float mWalk, float mStrafe, float mUp);
-	void UpdateRotation(float mPitch, float mYaw);
+	void UpdateLocation();
+	void UpdateRotation();
 };
 
 #endif

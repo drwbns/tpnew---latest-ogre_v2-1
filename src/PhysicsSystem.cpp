@@ -20,20 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "PhysicsSystem.h"
 
-#include "GraphicsSystem.h"
 #include "GlobalVars.h"
 #include "GUtility.h"
 
-#include "foundation\windows\PxWindowsIntrinsics.h"
-
-
-
 using namespace Ogre;
 
-template<> PhysicsSystem* Ogre::Singleton<PhysicsSystem>::msSingleton = 0;
+template<> PhysicsSystem* Ogre::Singleton<PhysicsSystem>::msSingleton = nullptr;
 
 PhysicsSystem* PhysicsSystem::getSingletonPtr(void)
 {
@@ -41,11 +35,12 @@ PhysicsSystem* PhysicsSystem::getSingletonPtr(void)
 }
 
 PhysicsSystem& PhysicsSystem::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
-PhysicsSystem::PhysicsSystem() : /*gPhysicsSDK(NULL),*/ mScene(NULL), mVisualDebugger(NULL), mVisualDebuggerNode(NULL)
+PhysicsSystem::PhysicsSystem() : /*gPhysicsSDK(NULL),*/ mVisualDebugger(nullptr), mVisualDebuggerNode(nullptr), mFoundation(nullptr), mProfileZoneManager(nullptr),
+mCpuDispatcher(nullptr), mPhysics(nullptr), gConnection(nullptr), mScene(nullptr), mCooking(nullptr), mControllerManager(nullptr), mController(nullptr), mMaterial(nullptr)
 {
 	mDebuggerView = false;
 }
@@ -58,42 +53,41 @@ PhysicsSystem::~PhysicsSystem()
 void PhysicsSystem::Initialize()
 {
 	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
-	if (mFoundation == NULL)
-		OgreAssert("PxCreateFoundation failed!",1);
+	if (mFoundation == nullptr)
+		OgreAssert("PxCreateFoundation failed!", 1);
 
 	bool recordMemoryAllocations = true;
 	mProfileZoneManager = &PxProfileZoneManager::createProfileZoneManager(mFoundation);
-	if (mProfileZoneManager == NULL)
-		OgreAssert("PxProfileZoneManager::createProfileZoneManager failed!",1);
+	if (mProfileZoneManager == nullptr)
+		OgreAssert("PxProfileZoneManager::createProfileZoneManager failed!", 1);
 
 	mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation,
 		PxTolerancesScale(), recordMemoryAllocations, mProfileZoneManager);
-	if (mPhysics == NULL)
-		OgreAssert("PxCreatePhysics failed!",1);
+	if (mPhysics == nullptr)
+		OgreAssert("PxCreatePhysics failed!", 1);
 
 	if (mPhysics->getPvdConnectionManager())
 	{
 		gConnection = PxVisualDebuggerExt::createConnection(mPhysics->getPvdConnectionManager(), PVD_HOST, 5425, 10);
 	}
 
-	
 	//sdk
-	
-	//@TODO:
-	if(true); // Outdated, marked for removal //gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 
-	; // Start Section Outdated, marked for removal 
-	
+	//@TODO:
+	// @TODO // Outdated, marked for removal //gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
+
+	; // Start Section Outdated, marked for removal
+
 	//scene
-	PxSceneDesc sceneDesc= physx::PxSceneDesc(physx::PxTolerancesScale());
-	sceneDesc.gravity = PxVec3(0,-10,0);
+	PxSceneDesc sceneDesc = PxSceneDesc(PxTolerancesScale());
+	sceneDesc.gravity = PxVec3(0, -10, 0);
 
 	if (!sceneDesc.cpuDispatcher)
 	{
 		PxU32 numWorkers = 1;
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(1);
 		if (!mCpuDispatcher)
-			OgreAssert("PxDefaultCpuDispatcherCreate failed!",1);
+			OgreAssert("PxDefaultCpuDispatcherCreate failed!", 1);
 		sceneDesc.cpuDispatcher = mCpuDispatcher;
 	}
 
@@ -111,7 +105,7 @@ void PhysicsSystem::Initialize()
 
 	mScene = mPhysics->createScene(sceneDesc);
 	if (!mScene)
-		OgreAssert("createScene failed!",1);
+		OgreAssert("createScene failed!", 1);
 
 	mControllerManager = PxCreateControllerManager(*mScene);
 
@@ -122,7 +116,7 @@ void PhysicsSystem::Initialize()
 	sceneDesc.userContactReport = &gContactReport;
 	gPhysicsSDK->getFoundationSDK();
 	gScene = gPhysicsSDK->createScene(sceneDesc);
-	
+
 	float timestep = 1.0f/100.0f;
 	gScene->setTiming(timestep, 8, NX_TIMESTEP_FIXED);
 
@@ -150,11 +144,11 @@ void PhysicsSystem::Initialize()
 	mVisualDebugger->setCastShadows(false);
 	mVisualDebuggerNode = GSYS->GetSceneMgr()->getRootSceneNode()->createChildSceneNode();
 	mVisualDebuggerNode->attachObject(mVisualDebugger);
-	MaterialPtr mVisualDebuggerMaterial = MaterialManager::getSingleton().create("mVisualDebuggerMaterial","General"); 
-	mVisualDebuggerMaterial->setReceiveShadows(false); 
+	MaterialPtr mVisualDebuggerMaterial = MaterialManager::getSingleton().create("mVisualDebuggerMaterial","General");
+	mVisualDebuggerMaterial->setReceiveShadows(false);
 	mVisualDebuggerMaterial->getTechnique(0)->setLightingEnabled(false);
 	mVisualDebugger->clear();
-	mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::RenderOperation::OT_LINE_LIST); 
+	mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::v1::RenderOperation::OT_LINE_LIST);
 	mVisualDebugger->position(Vector3(0,0,0));
 	mVisualDebugger->position(Vector3(0,1.8,0));
 	mVisualDebugger->position(Vector3(0,1.8,0));
@@ -166,15 +160,15 @@ void PhysicsSystem::Initialize()
 	aabInf.setInfinite();
 	mVisualDebugger->setBoundingBox(aabInf);
 	*/
-	if (true); // End Section Outdated, marked for removal 
+	// @TODO // End Section Outdated, marked for removal
 	//@TODO:
 }
 
-void PhysicsSystem::Finalize()
+void PhysicsSystem::Finalize() const
 {
 	//debugger
 	//@TODO:
-	if(true); // Start Section Outdated, marked for removal 
+	// @TODO // Start Section Outdated, marked for removal
 	/*
 	mVisualDebuggerNode->detachAllObjects();
 	mVisualDebuggerNode->getParentSceneNode()->removeAndDestroyChild(mVisualDebuggerNode->getName());
@@ -189,16 +183,16 @@ void PhysicsSystem::Finalize()
 	gPhysicsSDK->releaseScene(*gScene);
 	gPhysicsSDK->release();
 	*/
-	; // End Section Outdated, marked for removal 
+	; // End Section Outdated, marked for removal
 	mPhysics->release();
 	mFoundation->release();
 }
 
-void PhysicsSystem::Update()
+void PhysicsSystem::Update() const
 {
 	mScene->simulate(GlobalVars::Tick);
 	mScene->fetchResults(true);
-	if(true); // Start Section Outdated, marked for removal 
+	// @TODO // Start Section Outdated, marked for removal
 	  //@TODO:
 	/*
 	gScene->simulate(GlobalVars::Tick);
@@ -213,9 +207,9 @@ void PhysicsSystem::Update()
 		if (data)NbLines = data->getNbLines();
 		const NxDebugLine* Lines;
 		if (data)Lines = data->getLines();
-		
+
 		mVisualDebugger->clear();
-		mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+		mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::v1::RenderOperation::OT_LINE_LIST);
 		while(NbLines--)
 		{
 			mVisualDebugger->position(Lines->p0.x,Lines->p0.y,Lines->p0.z);
@@ -227,35 +221,34 @@ void PhysicsSystem::Update()
 		mVisualDebugger->end();
 	}
 	*/
-	; // End Section Outdated, marked for removal 
+	; // End Section Outdated, marked for removal
 	  //@TODO:
 }
 
-; // Start Section Outdated, marked for removal 
+; // Start Section Outdated, marked for removal
 /*
 void PhysicsSystem::SetActorCollisionGroup(PxActor* actor, PxCollisionGroup group)
 {
-
-    PxShape*const* shapes = actor->getShapes();
-    PxU32 nShapes = actor->getNbShapes();
-    while (nShapes--)
-    {
-        shapes[nShapes]->setGroup(group);
+	PxShape*const* shapes = actor->getShapes();
+	PxU32 nShapes = actor->getNbShapes();
+	while (nShapes--)
+	{
+		shapes[nShapes]->setGroup(group);
 	}
 }
 */
-; // End Section Outdated, marked for removal 
+; // End Section Outdated, marked for removal
 
 void PhysicsSystem::FlipDebug()
 {
 	mDebuggerView = !mDebuggerView;
 	//@TODO:
-	if(true); // Start Section Outdated, marked for removal 
+	// @TODO // Start Section Outdated, marked for removal
 	/*
 	if (!mDebuggerView)
 	{
 		mVisualDebugger->clear();
-		mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::RenderOperation::OT_LINE_LIST); 
+		mVisualDebugger->begin("mVisualDebuggerMaterial", Ogre::v1::RenderOperation::OT_LINE_LIST);
 		mVisualDebugger->position(Vector3(0,0,0));
 		mVisualDebugger->position(Vector3(0,1.8,0));
 		mVisualDebugger->position(Vector3(0,1.8,0));
@@ -269,10 +262,10 @@ void PhysicsSystem::FlipDebug()
 	  //@TODO:
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 & dir)
+Vector3 PhysicsSystem::CastRay1(const Vector3 & from, Vector3 & dir) const
 {
 	//@TODO:
-	if (true);
+	// @TODO
 	//ray cast
 	PxVec3 org = TemplateUtils::toNX(from);
 	PxVec3 ndir = TemplateUtils::toNX(dir.normalisedCopy());
@@ -287,10 +280,9 @@ Ogre::Vector3 PhysicsSystem::CastRay1(const Ogre::Vector3 & from, Ogre::Vector3 
 	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
 
 	return TemplateUtils::toOgre(buf.block.normal);
-	return Vector3::ZERO;
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, PxShape ** shape)
+Vector3 PhysicsSystem::CastRay2(Vector3 & from, Vector3 & to) const
 {
 	//ray cast
 	PxVec3 org = TemplateUtils::toNX(from);
@@ -312,11 +304,10 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, 
 	// The main result from this call are all hits along the ray, stored in 'hitBuffer'
 	bool hadBlockingHit = mScene->raycast(origin, unitDir, maxDistance, buf);
 	if (hadBlockingHit)
-		shape[0] = buf.block.shape;
-		
-		for (PxU32 i = 0; i < buf.nbTouches; i++) {
-			shape[i] = buf.touches[i].shape;
-			return TemplateUtils::toOgre(buf.touches[i].normal);
+		//shape = buf.block.shape;
+		for (PxU32 i = 0; i < buf.nbTouches;) {
+			//shape = buf.touches[i].shape;
+			return TemplateUtils::toOgre(buf.touches[i].position);
 		}
 	/*
 	//Get the closest shape
@@ -329,22 +320,54 @@ Ogre::Vector3 PhysicsSystem::CastRay2(Ogre::Vector3 & from, Ogre::Vector3 & to, 
 		return TemplateUtils::toOgre(worldImpact);
 	}
 	*/
-	if (shape != NULL)
-		*shape = NULL;
 	return Vector3::ZERO;
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay3(Ogre::Vector3 & from, Ogre::Vector3 & to)
+Vector3 PhysicsSystem::CastRay6(Vector3 & from, Vector3 & to, PxRaycastBuffer &buf) const
 {
-	//@TODO:
-	if (true);
-	return Ogre::Vector3();
+	//ray cast
+	PxVec3 org = TemplateUtils::toNX(from);
+	Vector3 delta = to - from;
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+	//NxRay ray(org, ndir);
+	//NxRaycastHit hit;
+	//mat = 0;
+
+	PxVec3 origin = org;                 // [in] Ray origin
+	PxVec3 unitDir = ndir;                // [in] Normalized ray direction
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+												// Raycast against all static & dynamic objects (no filtering)
+												// The main result from this call are all hits along the ray, stored in 'hitBuffer'
+	bool hadBlockingHit = mScene->raycast(origin, unitDir, maxDistance, buf);
+	if (hadBlockingHit)
+		return TemplateUtils::toOgre(buf.touches[0].position);
+
+	/*
+	//Get the closest shape
+	PxShape* closestShape = gScene->raycastClosestShape(ray, NX_ALL_SHAPES, hit, -1, delta.length());
+	if (closestShape)
+	{
+	if (shape != NULL)*shape = closestShape;
+	mat = hit.materialIndex;
+	const PxVec3& worldImpact = hit.worldNormal;
+	return TemplateUtils::toOgre(worldImpact);
+	}
+	*/
+	return Vector3::ZERO;
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 & to)
+Vector3 PhysicsSystem::CastRay3()
 {
 	//@TODO:
-	if (true);
+	// @TODO
+	return Vector3();
+}
+
+Vector3 PhysicsSystem::CastRay4(const Vector3 & from, Vector3 & to) const
+{
+	//@TODO:
+	// @TODO
 	//ray cast
 	PxVec3 org = TemplateUtils::toNX(from);
 	Vector3 delta = to - from;
@@ -362,31 +385,50 @@ Ogre::Vector3 PhysicsSystem::CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 
 	//if(hadBlockingHit)
 		//return TemplateUtils::toOgre(buf.block.position);
 	//else
-		return to;
+	return to;
 }
 
-Ogre::Vector3 PhysicsSystem::CastRay5(const Ogre::Vector3 & from, Ogre::Vector3 & dir)
+Vector3 PhysicsSystem::CastRay5(const Vector3 & from, Vector3 & to) const
 {
 	//@TODO:
-	if (true);
+	// @TODO
 	//ray cast
 	PxVec3 org = TemplateUtils::toNX(from);
-	PxVec3 ndir = TemplateUtils::toNX(dir.normalisedCopy());
+	Vector3 delta = to - from;
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
 	PxReal maxDistance = 10000;            // [in] Raycast max distance
 
 	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
 	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
 	PxRaycastBuffer buf; // [out] Blocking hits will be stored here
 
-						 // Raycast against all static & dynamic objects (no filtering)
-						 // The main result from this call is the closest hit, stored in the 'hit.block' structure
+	// Raycast against all static & dynamic objects (no filtering)
+	// The main result from this call is the closest hit, stored in the 'hit.block' structure
 	bool hadBlockingHit = mScene->raycast(org, ndir, maxDistance, buf);
 
-	return TemplateUtils::toOgre(buf.block.position);
+	if (hadBlockingHit)
+		return TemplateUtils::toOgre(buf.block.position);
+	//else
 	return Vector3::ZERO;
 }
+
+bool PhysicsSystem::OverlapTest()
+{
+	return false;
+}
+
+PxMaterial* PhysicsSystem::addNewMaterial()
+{
+	return nullptr;
+}
+
+Ogre::String PhysicsSystem::getMaterialName()
+{
+	return {};
+}
+
 //@TODO:
-; // Start Section Outdated, marked for removal 
+; // Start Section Outdated, marked for removal
 /*
 
 Ogre::Vector3 PhysicsSystem::CastRay1(Ogre::Vector3 from, Ogre::Vector3 dir)

@@ -30,12 +30,11 @@ THE SOFTWARE.
 #include "Level.h"
 
 #include <vector>
-#include "OgreString.h"
 #include "OgreSingleton.h"
 
 #define GAMESTATE GameState::getSingletonPtr()
 
-class GameState : public Ogre::Singleton<GameState>, public State
+class GameState : public Singleton<GameState>, public State
 {
 public:
 	GameState();
@@ -46,11 +45,14 @@ public:
 	void Update();
 
 	//gets & sets
-	Ogre::String GetName() { return "game"; }
+	static String GetName()
+	{ return "game"; }
 	CamController* GetCurrentCam() { return cams[ccam]; }
 	void NextCamera() { ++ccam %= cams.size(); }
-	World* getWorld() { return mWorld; }
-	Level* getLevel() { return mLevel; }
+	World* getWorld() const 
+	{ return mWorld; }
+	Level* getLevel() const 
+	{ return mLevel; }
 
 private:
 	int ccam;

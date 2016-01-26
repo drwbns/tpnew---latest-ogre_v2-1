@@ -24,9 +24,8 @@ THE SOFTWARE.
 #include "MenuState.h"
 #include "GameState.h"
 #include "StateSystem.h"
-#include "GraphicsSystem.h"
 
-template<> StateSystem* Ogre::Singleton<StateSystem>::msSingleton = 0;
+template<> StateSystem* Singleton<StateSystem>::msSingleton = nullptr;
 
 StateSystem* StateSystem::getSingletonPtr(void)
 {
@@ -38,7 +37,7 @@ StateSystem& StateSystem::getSingleton(void)
 	assert( msSingleton );  return ( *msSingleton );
 }
 
-StateSystem::StateSystem() : mState(NULL)
+StateSystem::StateSystem() : mState(nullptr)
 {
 }
 
@@ -47,7 +46,7 @@ StateSystem::~StateSystem()
 	UnloadCurrentState();
 }
 
-void StateSystem::LoadState(Ogre::String Name)
+void StateSystem::LoadState(String Name)
 {
 	UnloadCurrentState();
 
@@ -69,11 +68,11 @@ void StateSystem::UnloadCurrentState()
 	{
 		mState->Finalize();
 		delete mState;
-		mState = NULL;
+		mState = nullptr;
 	}
 }
 	
-void StateSystem::Update()
+void StateSystem::Update() const
 {
 	if (mState)
 	{

@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "SoundSystem.h"
 #include "SoundSource.h"
 #include "SoundListener.h"
+#include <OGRE/OgreSingleton.h>
 
 #define ZSND zzzSndSystem::getSingletonPtr()
 
@@ -41,10 +42,10 @@ public:
 	
 	void Initialize();
 	void Finalize();
-	void Update();
+	void Update() const;
 
 	//snds
-	void LoadSounds();
+	static void LoadSounds();
 	void UnloadSounds();
 	void LoadSound(std::string name, std::string file, Ogre::SceneNode* owner, bool loop, float gain);
 	void PlaySound(std::string name);
@@ -54,7 +55,8 @@ public:
 
 	//gets & sets
 	SoundSystem* GetSoundSys() const { return soundsys; }
-	SoundListener* GetListener() { return slistener; }
+	SoundListener* GetListener() const
+	{ return slistener; }
 	SoundSource* GetSound(std::string s) { return snds[s]; }
 
 private:

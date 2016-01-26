@@ -20,9 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedOffensiveState.h"
-#include "AIKnowledge.h"
 #include "Agent.h"
 
 using namespace Ogre;
@@ -35,19 +33,19 @@ AlliedOffensiveState::~AlliedOffensiveState()
 {
 }
 
-void AlliedOffensiveState::Enter(Agent* agent)
+void AlliedOffensiveState::Enter(Agent * agent)
 {
 }
 
-void AlliedOffensiveState::Execute(Agent* agent)
+void AlliedOffensiveState::Execute(Agent * agent)
 {
 }
 
-void AlliedOffensiveState::Exit(Agent* agent)
+void AlliedOffensiveState::Exit(Agent * agent)
 {
 }
 
-bool AlliedOffensiveState::isReady(Agent* agent)
+bool AlliedOffensiveState::isReady(Agent * agent)
 {
 	return agent->getKnowledge()->totalEnemy() > 0;
 	//return agent->getKnowledge()->totalVisibleEnemy() != 0 && agent->getHP() >= 0;//50

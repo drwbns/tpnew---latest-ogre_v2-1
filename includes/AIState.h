@@ -23,29 +23,34 @@ THE SOFTWARE.
 #ifndef AIState_h_
 #define AIState_h_
 
-#include "prereqs.h"
-
 #include <vector>
+
+class AIStateMachine;
+class Agent;
 
 class AIState
 {
 public:
 	AIState(int id);
 	virtual ~AIState();
-	virtual void Enter(Agent* agent);
-	virtual void Execute(Agent* agent);
-	virtual void Exit(Agent* agent);
-	virtual bool isReady(Agent* agent) { return false; }
+	virtual void Enter(Agent * agent);
+	virtual void Execute(Agent * agent);
+	virtual void Exit(Agent * agent);
+	virtual bool isReady() { return false; }
 	void GetAvailables(AIStateMachine* sm, Agent* agent, std::vector<AIState*> &list);
 
-	int GetId() { return id; }
+	int GetId() const
+	{ return id; }
 	void AddChild(AIState* s) { children.push_back(s);s->SetParent(this); }
 	AIState* GetChild(int i) { return children[i]; }
 	void ClearChildren() { children.clear(); }
-	int GetTotalChildren() { return (int)children.size(); }
+	int GetTotalChildren() const
+	{ return (int)children.size(); }
 	void SetParent(AIState* s) { parent = s; }
-	AIState* GetParent() { return parent; }
-	bool IsLeaf() { return children.empty(); }
+	AIState* GetParent() const
+	{ return parent; }
+	bool IsLeaf() const
+	{ return children.empty(); }
 
 protected:
 	int id;

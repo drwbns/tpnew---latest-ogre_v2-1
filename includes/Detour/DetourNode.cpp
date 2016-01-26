@@ -24,12 +24,12 @@
 
 inline unsigned int dtHashRef(dtPolyRef a)
 {
-	a += ~(a<<15);
-	a ^=  (a>>10);
-	a +=  (a<<3);
-	a ^=  (a>>6);
-	a += ~(a<<11);
-	a ^=  (a>>16);
+	a += ~(a << 15);
+	a ^= (a >> 10);
+	a += (a << 3);
+	a ^= (a >> 6);
+	a += ~(a << 11);
+	a ^= (a >> 16);
 	return (unsigned int)a;
 }
 
@@ -70,9 +70,9 @@ void dtNodePool::clear()
 	m_nodeCount = 0;
 }
 
-dtNode* dtNodePool::findNode(dtPolyRef id)
+dtNode* dtNodePool::findNode(dtPolyRef id) const
 {
-	unsigned int bucket = dtHashRef(id) & (m_hashSize-1);
+	unsigned int bucket = dtHashRef(id) & (m_hashSize - 1);
 	dtNodeIndex i = m_first[bucket];
 	while (i != DT_NULL_IDX)
 	{
@@ -85,22 +85,22 @@ dtNode* dtNodePool::findNode(dtPolyRef id)
 
 dtNode* dtNodePool::getNode(dtPolyRef id)
 {
-	unsigned int bucket = dtHashRef(id) & (m_hashSize-1);
+	unsigned int bucket = dtHashRef(id) & (m_hashSize - 1);
 	dtNodeIndex i = m_first[bucket];
-	dtNode* node = 0;
+	dtNode* node;
 	while (i != DT_NULL_IDX)
 	{
 		if (m_nodes[i].id == id)
 			return &m_nodes[i];
 		i = m_next[i];
 	}
-	
+
 	if (m_nodeCount >= m_maxNodes)
-		return 0;
-	
-	i = (dtNodeIndex)m_nodeCount;
+		return nullptr;
+
+	i = static_cast<dtNodeIndex>(m_nodeCount);
 	m_nodeCount++;
-	
+
 	// Init node
 	node = &m_nodes[i];
 	node->pidx = 0;
@@ -108,23 +108,22 @@ dtNode* dtNodePool::getNode(dtPolyRef id)
 	node->total = 0;
 	node->id = id;
 	node->flags = 0;
-	
+
 	m_next[i] = m_first[bucket];
 	m_first[bucket] = i;
-	
+
 	return node;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////
 dtNodeQueue::dtNodeQueue(int n) :
-	m_heap(0),
+	m_heap(nullptr),
 	m_capacity(n),
 	m_size(0)
 {
 	dtAssert(m_capacity > 0);
-	
-	m_heap = (dtNode**)dtAlloc(sizeof(dtNode*)*(m_capacity+1), DT_ALLOC_PERM);
+
+	m_heap = static_cast<dtNode**>(dtAlloc(sizeof(dtNode*)*(m_capacity + 1), DT_ALLOC_PERM));
 	dtAssert(m_heap);
 }
 
@@ -133,32 +132,32 @@ dtNodeQueue::~dtNodeQueue()
 	dtFree(m_heap);
 }
 
-void dtNodeQueue::bubbleUp(int i, dtNode* node)
+void dtNodeQueue::bubbleUp(int i, dtNode* node) const
 {
-	int parent = (i-1)/2;
+	int parent = (i - 1) / 2;
 	// note: (index > 0) means there is a parent
 	while ((i > 0) && (m_heap[parent]->total > node->total))
 	{
 		m_heap[i] = m_heap[parent];
 		i = parent;
-		parent = (i-1)/2;
+		parent = (i - 1) / 2;
 	}
 	m_heap[i] = node;
 }
 
-void dtNodeQueue::trickleDown(int i, dtNode* node)
+void dtNodeQueue::trickleDown(int i, dtNode* node) const
 {
-	int child = (i*2)+1;
+	int child = (i * 2) + 1;
 	while (child < m_size)
 	{
-		if (((child+1) < m_size) && 
-			(m_heap[child]->total > m_heap[child+1]->total))
+		if (((child + 1) < m_size) &&
+			(m_heap[child]->total > m_heap[child + 1]->total))
 		{
 			child++;
 		}
 		m_heap[i] = m_heap[child];
 		i = child;
-		child = (i*2)+1;
+		child = (i * 2) + 1;
 	}
 	bubbleUp(i, node);
 }

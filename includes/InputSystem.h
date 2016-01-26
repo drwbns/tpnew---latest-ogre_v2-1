@@ -46,9 +46,9 @@ public:
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	bool keyPressed(const OIS::KeyEvent &arg);
 	bool keyReleased(const OIS::KeyEvent &arg);
-	bool processUnbufferedKeyInput(const Ogre::FrameEvent& evt);
-	bool processUnbufferedMouseInput(const Ogre::FrameEvent& evt);
-	void Update(const Ogre::FrameEvent& evt);
+	bool processUnbufferedKeyInput(const Ogre::FrameEvent& evt) const;
+	bool processUnbufferedMouseInput(const Ogre::FrameEvent& evt) const;
+	void Update(const Ogre::FrameEvent& evt) const;
 	
 private:
 	OIS::InputManager* mInputManager;

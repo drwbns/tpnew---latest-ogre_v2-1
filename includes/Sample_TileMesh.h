@@ -27,7 +27,7 @@
 
 #define SMPL Sample_TileMesh::getSingletonPtr()
 
-class Sample_TileMesh : public Ogre::Singleton<Sample_TileMesh>, public Sample, public DebugDrawOgre
+class Sample_TileMesh : public Singleton<Sample_TileMesh>, public Sample
 {
 protected:
 	bool m_keepInterResults;
@@ -81,19 +81,19 @@ protected:
 	int tileTriCount;
 
 	//debugging
-	Ogre::ManualObject*	mNavMeshDebugger;
-	Ogre::SceneNode*	mDebuggerNode;
+	ManualObject*	mNavMeshDebugger;
+	SceneNode*	mDebuggerNode;
 	
 	BuildContext * ctx;
 	
 	void cleanup();
-	void CleanupAfterBuild();
+	void CleanupAfterBuild() const;
 	void CleanupAfterTileBuild();
-	void saveAll(const char* path, const dtNavMesh* mesh);
-	dtNavMesh* loadAll(const char* path);
+	static void saveAll(const char* path, const dtNavMesh* mesh);
+	static dtNavMesh* loadAll(const char* path);
 
 	bool mResizedMap;
-	std::vector<Ogre::Vector3> allPositions;
+	std::vector<Vector3> allPositions;
 	// TileGrid multi-d array [][]
 	std::vector< std::vector<int> > mymap;
 	std::string filepath;
@@ -108,33 +108,40 @@ public:
 		boost::mutex::scoped_lock lock(myMutex);
 		m_numTiles++;
 	}
-	bool getResizedBool() { return mResizedMap; }
+	bool getResizedBool() const
+	{ return mResizedMap; }
 	void setResizedBool(bool myBool) { mResizedMap = myBool; }
 
-	BuildContext * getBC() { return ctx; }
-	rcConfig getRcConfig() { return m_cfg; }
-	int getTileWidth() { return mTileWidth; }
-	int getTileHeight() { return mTileHeight; }
+	BuildContext * getBC() const
+	{ return ctx; }
+	rcConfig getRcConfig() const
+	{ return m_cfg; }
+	int getTileWidth() const
+	{ return mTileWidth; }
+	int getTileHeight() const
+	{ return mTileHeight; }
 	std::vector< std::vector<int> >& getMap() { return mymap; }
 	virtual void handleSettings();
 	virtual void handleRender();
-	virtual bool handleBuild();
+	virtual bool handleBuild() override;
 	void DrawDebug();
 	
-	void getTilePos(const float* pos, int& tx, int& ty);
+	void getTilePos(const float* pos, int& tx, int& ty) const;
 	
 	void buildTile(const float* pos);
 	void removeTile(const float* pos);
 	void buildAllTiles();
-	void removeAllTiles();
-	
-	void QuadrantTilerFunc();
+	void removeAllTiles() const;
 
-	int GetTotalPos() { return (int)allPositions.size(); }
-	Ogre::Vector3 GetPos(int i) { return allPositions[i]; }
-	const char * getFilePath() { return filepath.c_str(); }
-	void GetPath(Ogre::Vector3 from, Ogre::Vector3 to, Path* &path);
-	bool CanBeWalkedTo(Ogre::Vector3 to, Ogre::Vector3 extents);
+	static void QuadrantTilerFunc();
+
+	int GetTotalPos() const
+	{ return static_cast<int>(allPositions.size()); }
+	Vector3 GetPos(int i) { return allPositions[i]; }
+	const char * getFilePath() const
+	{ return filepath.c_str(); }
+	void GetPath(Vector3 from, Vector3 to, Path* &path) const;
+	bool CanBeWalkedTo(Vector3 to, Vector3 extents) const;
 
 	dtNavMesh* buildMesh(int numCores, BuildContext* ctx = SMPL->getBC());
 	unsigned char* buildTileMesh2(const int tx, const int ty, const float* bmin, const float* bmax, int& dataSize,BuildContext* ctx = SMPL->getBC());

@@ -13,30 +13,22 @@
 
 #include "OGRE\OgrePrerequisites.h"
 
-/*
-#include <Ogre/Overlay/OgreFontManager.h>
-
-#include "OGRE\OgreString.h"
-#include "OGRE\OgreColourValue.h"
-
-#include "OGRE\OgreAxisAlignedBox.h"
-#include "OGRE\OgreCommon.h"
-#include "OGRE\OgreCamera.h"
-#include "OGRE\OgreRenderWindow.h"
-
-*/
-
 #include "OGRE\OgreRenderable.h"
 #include <OGRE/OgreUTFString.h>
 #include "OGRE\OgreMovableObject.h"
 #include "OGRE\OgreRenderOperation.h"
-#include "OGRE\Overlay\OgreFont.h"
+
+//#include "OGRE\Overlay\OgreFont.h"
+
+namespace Ogre{
+	//class RenderOperation;
+}
 
 class MovableText : public Ogre::MovableObject, public Ogre::Renderable
 {
 public:
-    enum HorizontalAlignment    {H_LEFT, H_CENTER};
-    enum VerticalAlignment      {V_BELOW, V_ABOVE};
+	enum HorizontalAlignment    {H_LEFT, H_CENTER};
+	enum VerticalAlignment      {V_BELOW, V_ABOVE};
 
 protected:
 	Ogre::String			mFontName;
@@ -47,7 +39,7 @@ protected:
 	VerticalAlignment		mVerticalAlignment;
 
 	Ogre::ColourValue		mColor;
-	Ogre::RenderOperation	mRenderOp;
+	Ogre::v1::RenderOperation	mRenderOp;
 	Ogre::AxisAlignedBox	mAABB;
 	Ogre::LightList			mLList;
 
@@ -60,24 +52,24 @@ protected:
 
 	float					mTimeUntilNextToggle;
 	float					mRadius;
-    float					mAdditionalHeight;
+	float					mAdditionalHeight;
 	float					mAdditionalLeft;
 	float					mAdditionalFront;
 
 	Ogre::Camera		  * mpCam;
 	Ogre::RenderWindow	  * mpWin;
-	Ogre::Font			  * mpFont;
+	//Ogre::Font			  * mpFont;
 	Ogre::MaterialPtr		mpMaterial;
-    Ogre::MaterialPtr		mpBackgroundMaterial;
+	Ogre::MaterialPtr		mpBackgroundMaterial;
 
-    /******************************** public methods ******************************/
+	/******************************** public methods ******************************/
 public:
 	MovableText(const Ogre::String & name, const Ogre::UTFString & caption,
 		const Ogre::String & fontName = "BlueHighway", int charHeight = 32,
 		const Ogre::ColourValue & color = Ogre::ColourValue::White);
 	virtual ~MovableText();
 
-    // Set settings
+	// Set settings
 	void    setFontName(const Ogre::String & fontName);
 	void    setCaption(const Ogre::UTFString & caption);
 	void    setColor(const Ogre::ColourValue & color);
@@ -87,48 +79,56 @@ public:
 	void    setAdditionalHeight( float height );
 	void    setAdditionalLeft( float left );
 	void	setAdditionalFront( float front );
-    void    showOnTop(bool show = true);
+	void    showOnTop(bool show = true);
 
-    // Get settings
+	// Get settings
 	const   Ogre::String		& getFontName() const {return mFontName;}
 	const   Ogre::UTFString     & getCaption() const {return mCaption;}
 	const   Ogre::ColourValue	& getColor() const {return mColor;}
 	
-    unsigned int				getCharacterHeight() const {return mCharHeight;}
+	unsigned int				getCharacterHeight() const {return mCharHeight;}
 	unsigned int				getSpaceWidth() const {return mSpaceWidth;}
-    float						getAdditionalHeight() const {return mAdditionalHeight;}
+	float						getAdditionalHeight() const {return mAdditionalHeight;}
 	float                       getRadius() const { return mRadius; }
-    bool						getShowOnTop() const {return mOnTop;}
-    Ogre::AxisAlignedBox		&GetAABB(void) { return mAABB; }
+	bool						getShowOnTop() const {return mOnTop;}
+	Ogre::AxisAlignedBox		&GetAABB(void) { return mAABB; }
 
-	virtual void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables = false) {}
+	virtual void visitRenderables()
+	{}
 
-    /******************************** protected methods and overload **************/
+	/******************************** protected methods and overload **************/
 protected:
 
 	float	mViewportAspectCoef;
 
-    // from MovableText, create the object
+	// from MovableText, create the object
 	void	_setupGeometry();
 	void	_updateColors();
 
 	// from MovableObject
-	void    getWorldTransforms(Ogre::Matrix4 *xform) const;
-    float   getBoundingRadius(void) const {return mRadius;};
-	float   getSquaredViewDepth(const Ogre::Camera *cam) const {return 0;};
-    const   Ogre::Quaternion        & getWorldOrientation(void) const;
-    const   Ogre::Vector3           & getWorldPosition(void) const;
-	const   Ogre::AxisAlignedBox    & getBoundingBox(void) const {return mAABB;};
-	const   Ogre::String            & getName(void) const {return mName;};
-	const   Ogre::String            & getMovableType(void) const {static Ogre::String movType = "MovableText"; return movType;};
+	void    getWorldTransforms(Ogre::Matrix4 *xform) const override;
+	float   getBoundingRadius(void) const
+	{return mRadius;};
+	float   getSquaredViewDepth(const Ogre::Camera *cam) const
+	{return 0;};
+	const   Ogre::Quaternion        & getWorldOrientation(void) const;
+	const   Ogre::Vector3           & getWorldPosition(void) const;
+	const   Ogre::AxisAlignedBox    & getBoundingBox(void) const
+	{return mAABB;};
+	const   Ogre::String            & getName(void) const
+	{return mName;};
+	const   Ogre::String            & getMovableType(void) const override
+	{static Ogre::String movType = "MovableText"; return movType;};
 
-    void    _notifyCurrentCamera(Ogre::Camera *cam);
+	void    _notifyCurrentCamera(Ogre::Camera *cam);
 	void    _updateRenderQueue(Ogre::RenderQueue* queue);
 
 	// from renderable
-	void    getRenderOperation(Ogre::RenderOperation &op);
-	const   Ogre::MaterialPtr       &getMaterial(void) const {assert(!mpMaterial.isNull());return mpMaterial;};
-	const   Ogre::LightList         &getLights(void) const {return mLList;};
+	void    getRenderOperation(Ogre::v1::RenderOperation &op,bool b) override;
+	const   Ogre::MaterialPtr       &getMaterial(void) const
+	{assert(!mpMaterial.isNull());return mpMaterial;};
+	const   Ogre::LightList         &getLights(void) const override
+	{return mLList;};
 };
 
 #endif /* __MovableText_H__ */

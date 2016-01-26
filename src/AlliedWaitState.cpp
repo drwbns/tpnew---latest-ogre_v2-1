@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedWaitState.h"
 #include "Agent.h"
 
@@ -34,19 +33,19 @@ AlliedWaitState::~AlliedWaitState()
 {
 }
 
-void AlliedWaitState::Enter(Agent* agent)
+void AlliedWaitState::Enter(Agent * agent)
 {
 }
 
-void AlliedWaitState::Execute(Agent* agent)
+void AlliedWaitState::Execute(Agent * agent)
 {
 }
 
-void AlliedWaitState::Exit(Agent* agent)
+void AlliedWaitState::Exit(Agent * agent)
 {
 }
 
-bool AlliedWaitState::isReady(Agent* agent)
+bool AlliedWaitState::isReady(Agent * agent)
 {
 	return agent->isOnDest();
 }

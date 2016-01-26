@@ -20,11 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AIConsts.h"
 
-const float AIConsts::PlayerTrackDistance  = 4.0f;
-const float AIConsts::PlayerCloseDistance  = 2.0f;
-const float AIConsts::PlayerTouchDistance  = 0.40f;//added to radiuses
+const float AIConsts::PlayerTrackDistance = 4.0f;
+const float AIConsts::PlayerCloseDistance = 2.0f;
+const float AIConsts::PlayerTouchDistance = 0.40f;//added to radiuses
 const float AIConsts::PlayerTouchDistance2 = 0.10f;//added to radiuses
 const float AIConsts::PlayerOutOfWayDistance = 3.0f;//multiplied with player radius

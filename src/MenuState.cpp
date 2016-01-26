@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "MenuState.h"
 
 #include "StateSystem.h"
@@ -41,8 +40,8 @@ MenuState::~MenuState()
 
 void MenuState::Initialize()
 {
-	UISYS->LoadLayout("main");
-	UISYS->SetCursor(true);
+	UISYS->LoadLayout();
+	UISYS->SetCursor();
 	UISYS->SetCrossHair(true);
 	//button callbacks
 	//MyGUI::ButtonPtr btnPlay = UISYS->GetGUI()->findWidget<MyGUI::Button>("btnPlay");

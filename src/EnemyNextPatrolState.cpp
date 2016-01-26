@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyNextPatrolState.h"
 #include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
 using namespace Ogre;
 
 EnemyNextPatrolState::EnemyNextPatrolState(int id) : AIState(id)
@@ -36,19 +32,19 @@ EnemyNextPatrolState::~EnemyNextPatrolState()
 {
 }
 
-void EnemyNextPatrolState::Enter(Agent* agent)
+void EnemyNextPatrolState::Enter(Agent * agent)
 {
 	agent->orderNextPathNode();
 }
 
-void EnemyNextPatrolState::Execute(Agent* agent)
+void EnemyNextPatrolState::Execute(Agent * agent)
 {
 	//set direction
 	if (agent->GetVelocity().squaredLength() >= 0.1)
 	{
 		agent->SetDirection(agent->GetVelocity().getRotationTo(Vector3::UNIT_Z).Inverse());
 	}
-	
+
 	//goto wait if dest reached
 	if (agent->isOnDest())
 	{
@@ -56,11 +52,11 @@ void EnemyNextPatrolState::Execute(Agent* agent)
 	}
 }
 
-void EnemyNextPatrolState::Exit(Agent* agent)
+void EnemyNextPatrolState::Exit(Agent * agent)
 {
 }
 
-bool EnemyNextPatrolState::isReady(Agent* agent)
+bool EnemyNextPatrolState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() == agent->getMwaitTime();
 }

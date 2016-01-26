@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 
 #include "SoundTimer.h"
+#include <OGRE/OgrePrerequisites.h>
 
 //----------------------------------------------------------------------------//
 SoundTimer::SoundTimer()
@@ -53,7 +54,7 @@ void SoundTimer::pause()
 	switch (mState)
 	{
 	case AL_PLAYING:
-		mSecOffset += mPitch * (float)mTimer.getMilliseconds() / 1000.0f;
+		mSecOffset += mPitch * static_cast<float>(mTimer.getMilliseconds()) / 1000.0f;
 		break;
 
 	case AL_STOPPED:
@@ -89,17 +90,14 @@ Ogre::Real SoundTimer::getPosition() const
 	switch(mState)
 	{
 	case AL_PLAYING:
-		return mSecOffset + mPitch * (Ogre::Real)mTimer.getMilliseconds() /  1000.0;
+		return mSecOffset + mPitch * static_cast<Ogre::Real>(mTimer.getMilliseconds()) /  1000.0;
 	case AL_PAUSED:
 		return mSecOffset;
-		break;
 	case AL_INITIAL:
 	case AL_STOPPED:
 		return 0;
-		break;
 	default:
 		return 0;
-		break;
 	}
 }
 //----------------------------------------------------------------------------//

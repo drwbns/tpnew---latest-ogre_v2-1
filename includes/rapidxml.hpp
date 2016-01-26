@@ -8,9 +8,7 @@
 
 // If standard library is disabled, user must provide implementations of required functions and typedefs
 #if !defined(RAPIDXML_NO_STDLIB)
-    #include <cstdlib>      // For std::size_t
-    #include <cassert>      // For assert
-    #include <new>          // For placement new
+#include <cassert>      // For assert
 #endif
 
 // On MSVC, disable "conditional expression is constant" warning (level 4). 
@@ -307,7 +305,7 @@ namespace rapidxml
 
         // Find length of the string
         template<class Ch>
-        inline std::size_t measure(const Ch *p)
+        inline size_t measure(const Ch *p)
         {
             const Ch *tmp = p;
             while (*tmp) 
@@ -317,7 +315,7 @@ namespace rapidxml
 
         // Compare strings for equality
         template<class Ch>
-        inline bool compare(const Ch *p1, std::size_t size1, const Ch *p2, std::size_t size2, bool case_sensitive)
+        inline bool compare(const Ch *p1, size_t size1, const Ch *p2, size_t size2, bool case_sensitive)
         {
             if (size1 != size2)
                 return false;
@@ -382,7 +380,7 @@ namespace rapidxml
     public:
 
         //! \cond internal
-        typedef void *(alloc_func)(std::size_t);       // Type of user-defined function used to allocate memory
+        typedef void *(alloc_func)(size_t);       // Type of user-defined function used to allocate memory
         typedef void (free_func)(void *);              // Type of user-defined function used to free memory
         //! \endcond
         
@@ -414,7 +412,7 @@ namespace rapidxml
         //! \return Pointer to allocated node. This pointer will never be NULL.
         xml_node<Ch> *allocate_node(node_type type, 
                                     const Ch *name = 0, const Ch *value = 0, 
-                                    std::size_t name_size = 0, std::size_t value_size = 0)
+                                    size_t name_size = 0, size_t value_size = 0)
         {
             void *memory = allocate_aligned(sizeof(xml_node<Ch>));
             xml_node<Ch> *node = new(memory) xml_node<Ch>(type);
@@ -445,7 +443,7 @@ namespace rapidxml
         //! \param value_size Size of value to assign, or 0 to automatically calculate size from value string.
         //! \return Pointer to allocated attribute. This pointer will never be NULL.
         xml_attribute<Ch> *allocate_attribute(const Ch *name = 0, const Ch *value = 0, 
-                                              std::size_t name_size = 0, std::size_t value_size = 0)
+                                              size_t name_size = 0, size_t value_size = 0)
         {
             void *memory = allocate_aligned(sizeof(xml_attribute<Ch>));
             xml_attribute<Ch> *attribute = new(memory) xml_attribute<Ch>;
@@ -473,14 +471,14 @@ namespace rapidxml
         //! \param source String to initialize the allocated memory with, or 0 to not initialize it.
         //! \param size Number of characters to allocate, or zero to calculate it automatically from source string length; if size is 0, source string must be specified and null terminated.
         //! \return Pointer to allocated char array. This pointer will never be NULL.
-        Ch *allocate_string(const Ch *source = 0, std::size_t size = 0)
+        Ch *allocate_string(const Ch *source = 0, size_t size = 0)
         {
             assert(source || size);     // Either source or size (or both) must be specified
             if (size == 0)
                 size = internal::measure(source) + 1;
             Ch *result = static_cast<Ch *>(allocate_aligned(size * sizeof(Ch)));
             if (source)
-                for (std::size_t i = 0; i < size; ++i)
+                for (size_t i = 0; i < size; ++i)
                     result[i] = source[i];
             return result;
         }
@@ -572,11 +570,11 @@ namespace rapidxml
         
         char *align(char *ptr)
         {
-            std::size_t alignment = ((RAPIDXML_ALIGNMENT - (std::size_t(ptr) & (RAPIDXML_ALIGNMENT - 1))) & (RAPIDXML_ALIGNMENT - 1));
+            size_t alignment = ((RAPIDXML_ALIGNMENT - (size_t(ptr) & (RAPIDXML_ALIGNMENT - 1))) & (RAPIDXML_ALIGNMENT - 1));
             return ptr + alignment;
         }
         
-        char *allocate_raw(std::size_t size)
+        char *allocate_raw(size_t size) const
         {
             // Allocate
             void *memory;   
@@ -596,7 +594,7 @@ namespace rapidxml
             return static_cast<char *>(memory);
         }
         
-        void *allocate_aligned(std::size_t size)
+        void *allocate_aligned(size_t size)
         {
             // Calculate aligned pointer
             char *result = align(m_ptr);
@@ -605,12 +603,12 @@ namespace rapidxml
             if (result + size > m_end)
             {
                 // Calculate required pool size (may be bigger than RAPIDXML_DYNAMIC_POOL_SIZE)
-                std::size_t pool_size = RAPIDXML_DYNAMIC_POOL_SIZE;
+                size_t pool_size = RAPIDXML_DYNAMIC_POOL_SIZE;
                 if (pool_size < size)
                     pool_size = size;
                 
                 // Allocate
-                std::size_t alloc_size = sizeof(header) + (2 * RAPIDXML_ALIGNMENT - 2) + pool_size;     // 2 alignments required in worst case: one for header, one for actual allocation
+                size_t alloc_size = sizeof(header) + (2 * RAPIDXML_ALIGNMENT - 2) + pool_size;     // 2 alignments required in worst case: one for header, one for actual allocation
                 char *raw_memory = allocate_raw(alloc_size);
                     
                 // Setup new pool in allocated memory
@@ -656,8 +654,8 @@ namespace rapidxml
         // Construct a base with empty name, value and parent
         xml_base()
             : m_name(0)
-            , m_value(0)
-            , m_parent(0)
+            , m_value(0), m_name_size(0), m_value_size(0)
+              , m_parent(0)
         {
         }
 
@@ -678,7 +676,7 @@ namespace rapidxml
         //! Gets size of node name, not including terminator character.
         //! This function works correctly irrespective of whether name is or is not zero terminated.
         //! \return Size of node name, in characters.
-        std::size_t name_size() const
+        size_t name_size() const
         {
             return m_name ? m_name_size : 0;
         }
@@ -697,7 +695,7 @@ namespace rapidxml
         //! Gets size of node value, not including terminator character.
         //! This function works correctly irrespective of whether value is or is not zero terminated.
         //! \return Size of node value, in characters.
-        std::size_t value_size() const
+        size_t value_size() const
         {
             return m_value ? m_value_size : 0;
         }
@@ -718,7 +716,7 @@ namespace rapidxml
         //! Use name(const Ch *) function to have the length automatically calculated (string must be zero terminated).
         //! \param name Name of node to set. Does not have to be zero terminated.
         //! \param size Size of name, in characters. This does not include zero terminator, if one is present.
-        void name(const Ch *name, std::size_t size)
+        void name(const Ch *name, size_t size)
         {
             m_name = const_cast<Ch *>(name);
             m_name_size = size;
@@ -748,7 +746,7 @@ namespace rapidxml
         //! If you want to manipulate data of elements using values, use parser flag rapidxml::parse_no_data_nodes to prevent creation of data nodes by the parser.
         //! \param value value of node to set. Does not have to be zero terminated.
         //! \param size Size of value, in characters. This does not include zero terminator, if one is present.
-        void value(const Ch *value, std::size_t size)
+        void value(const Ch *value, size_t size)
         {
             m_value = const_cast<Ch *>(value);
             m_value_size = size;
@@ -783,8 +781,8 @@ namespace rapidxml
 
         Ch *m_name;                         // Name of node, or 0 if no name
         Ch *m_value;                        // Value of node, or 0 if no value
-        std::size_t m_name_size;            // Length of node name, or undefined of no name
-        std::size_t m_value_size;           // Length of node value, or undefined if no value
+        size_t m_name_size;            // Length of node name, or undefined of no name
+        size_t m_value_size;           // Length of node value, or undefined if no value
         xml_node<Ch> *m_parent;             // Pointer to parent node, or 0 if none
 
     };
@@ -833,7 +831,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found attribute, or 0 if not found.
-        xml_attribute<Ch> *previous_attribute(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_attribute<Ch> *previous_attribute(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             if (name)
             {
@@ -853,7 +851,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found attribute, or 0 if not found.
-        xml_attribute<Ch> *next_attribute(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_attribute<Ch> *next_attribute(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             if (name)
             {
@@ -933,7 +931,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found child, or 0 if not found.
-        xml_node<Ch> *first_node(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_node<Ch> *first_node(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             if (name)
             {
@@ -955,7 +953,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found child, or 0 if not found.
-        xml_node<Ch> *last_node(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_node<Ch> *last_node(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             assert(m_first_node);  // Cannot query for last child if node has no children
             if (name)
@@ -978,7 +976,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found sibling, or 0 if not found.
-        xml_node<Ch> *previous_sibling(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_node<Ch> *previous_sibling(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             assert(this->m_parent);     // Cannot query for siblings if node has no parent
             if (name)
@@ -1001,7 +999,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found sibling, or 0 if not found.
-        xml_node<Ch> *next_sibling(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_node<Ch> *next_sibling(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             assert(this->m_parent);     // Cannot query for siblings if node has no parent
             if (name)
@@ -1022,7 +1020,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found attribute, or 0 if not found.
-        xml_attribute<Ch> *first_attribute(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_attribute<Ch> *first_attribute(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             if (name)
             {
@@ -1042,7 +1040,7 @@ namespace rapidxml
         //! \param name_size Size of name, in characters, or 0 to have size calculated automatically from string
         //! \param case_sensitive Should name comparison be case-sensitive; non case-sensitive comparison works properly only for ASCII characters
         //! \return Pointer to found attribute, or 0 if not found.
-        xml_attribute<Ch> *last_attribute(const Ch *name = 0, std::size_t name_size = 0, bool case_sensitive = true) const
+        xml_attribute<Ch> *last_attribute(const Ch *name = 0, size_t name_size = 0, bool case_sensitive = true) const
         {
             if (name)
             {

@@ -33,13 +33,11 @@ public:
 	InputController();
 	~InputController();
 	void Update();
-	void injectMousePress(int id, bool buffered);
-	void injectMouseRelease(int id);
-	void injectKeyPress(int key);
-	void injectKeyRelease(int key);
-	void injectKeyboardState(OIS::Keyboard* mKeyboard);
-
-private:
+	static void injectMousePress(int id, bool buffered);
+	static void injectMouseRelease(int id);
+	static void injectKeyPress();
+	static void injectKeyRelease(int key);
+	static void injectKeyboardState(OIS::Keyboard* mKeyboard);
 };
 
 #endif

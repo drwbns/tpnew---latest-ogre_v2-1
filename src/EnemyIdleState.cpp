@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyIdleState.h"
 #include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
 using namespace Ogre;
 
 EnemyIdleState::EnemyIdleState(int id) : AIState(id)
@@ -36,19 +32,19 @@ EnemyIdleState::~EnemyIdleState()
 {
 }
 
-void EnemyIdleState::Enter(Agent* agent)
+void EnemyIdleState::Enter(Agent * agent)
 {
 }
 
-void EnemyIdleState::Execute(Agent* agent)
+void EnemyIdleState::Execute(Agent * agent)
 {
 }
 
-void EnemyIdleState::Exit(Agent* agent)
+void EnemyIdleState::Exit(Agent * agent)
 {
 }
 
-bool EnemyIdleState::isReady(Agent* agent)
+bool EnemyIdleState::isReady(Agent * agent)
 {
 	return agent->getKnowledge()->totalEnemy() == 0;
 }

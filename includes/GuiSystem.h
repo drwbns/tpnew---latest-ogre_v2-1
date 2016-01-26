@@ -27,7 +27,6 @@ THE SOFTWARE.
 #include "OgreSingleton.h"
 
 class TextRenderer;
-class Ogre::ManualObject;
 
 #define UISYS GuiSystem::getSingletonPtr()
 
@@ -41,21 +40,22 @@ public:
 
 	void Initialize();
 	void Finalize();
-	void Update();
-	void LoadLayout(std::string name);
-	void UnloadLayout();
+	void Update() const;
+	static void LoadLayout();
+	static void UnloadLayout();
 
 	//debug txt
 	void InitDebuggers();
 	void DeinitDebuggers();
-	void UpdateDebuggers();
+	void UpdateDebuggers() const;
 
 	//gets
-	TextRenderer* GetGUI() { return mTxt; }
+	TextRenderer* GetGUI() const
+	{ return mTxt; }
 
 	//sets
-	void SetCursor(bool show);
-	void SetCrossHair(bool show);
+	static void SetCursor();
+	void SetCrossHair(bool show) const;
 
 private:
 	TextRenderer* mTxt;

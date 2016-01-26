@@ -24,7 +24,7 @@ THE SOFTWARE.
 #define _SOUNDTIMER_H
 
 #include <OgreTimer.h>
-#include "SoundBuffer.h"
+#include <al.h>
 
 class SoundTimer
 {

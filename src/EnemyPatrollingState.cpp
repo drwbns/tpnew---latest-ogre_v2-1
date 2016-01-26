@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyPatrollingState.h"
 #include "Agent.h"
 #include "GlobalVars.h"
@@ -35,7 +34,7 @@ EnemyPatrollingState::~EnemyPatrollingState()
 {
 }
 
-void EnemyPatrollingState::Enter(Agent* agent)
+void EnemyPatrollingState::Enter(Agent * agent)
 {
 	agent->setWaitTime(0);
 	//turn around randomly
@@ -45,17 +44,17 @@ void EnemyPatrollingState::Enter(Agent* agent)
 	agent->SetDirection(mq * aq);
 }
 
-void EnemyPatrollingState::Execute(Agent* agent)
+void EnemyPatrollingState::Execute(Agent * agent)
 {
 	agent->add2WaitTime(GlobalVars::Tick);
 }
 
-void EnemyPatrollingState::Exit(Agent* agent)
+void EnemyPatrollingState::Exit(Agent * agent)
 {
 	agent->setWaitTime(agent->getMwaitTime());
 }
 
-bool EnemyPatrollingState::isReady(Agent* agent)
+bool EnemyPatrollingState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() < agent->getMwaitTime();
 }

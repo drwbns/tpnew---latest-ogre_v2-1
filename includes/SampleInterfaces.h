@@ -19,7 +19,6 @@
 #ifndef SAMPLEINTERFACES_H
 #define SAMPLEINTERFACES_H
 
-#include "DebugDrawOgre.h"
 #include "Recast/Recast.h"
 #include "Recast/RecastDump.h"
 #include "PerfTimer.h"
@@ -44,23 +43,23 @@ public:
 	virtual ~BuildContext();
 	
 	/// Dumps the log to stdout.
-	void dumpLog(const char* format, ...);
+	void dumpLog(const char* format, ...) const;
 	void dumpLogToFile(const char*);
 	/// Returns number of log messages.
 	int getLogCount() const;
 	/// Returns log message text.
 	const char* getLogText(const int i) const;
-	void log(const rcLogCategory category, const char* format, ...);
+	void log(const rcLogCategory category, const char* format, ...) override;
 	
 protected:	
 	/// Virtual functions for custom implementations.
 	///@{
-	virtual void doResetLog();
-	virtual void doLog(const rcLogCategory /*category*/, const char* /*msg*/, const int /*len*/);
-	virtual void doResetTimers();
-	virtual void doStartTimer(const rcTimerLabel /*label*/);
-	virtual void doStopTimer(const rcTimerLabel /*label*/);
-	virtual int doGetAccumulatedTime(const rcTimerLabel /*label*/) const;
+	virtual void doResetLog() override;
+	virtual void doLog(const rcLogCategory /*category*/, const char* /*msg*/, const int /*len*/) override;
+	virtual void doResetTimers() override;
+	virtual void doStartTimer(const rcTimerLabel /*label*/) override;
+	virtual void doStopTimer(const rcTimerLabel /*label*/) override;
+	virtual int doGetAccumulatedTime(const rcTimerLabel /*label*/) const override;
 	///@}
 };
 /*
@@ -88,10 +87,10 @@ public:
 	virtual ~FileIO();
 	bool openForWrite(const char* path);
 	bool openForRead(const char* path);
-	virtual bool isWriting() const;
-	virtual bool isReading() const;
-	virtual bool write(const void* ptr, const size_t size);
-	virtual bool read(void* ptr, const size_t size);
+	virtual bool isWriting() const override;
+	virtual bool isReading() const override;
+	virtual bool write(const void* ptr, const size_t size) override;
+	virtual bool read(void* ptr, const size_t size) override;
 };
 
 #endif // SAMPLEINTERFACES_H

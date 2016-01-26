@@ -39,7 +39,8 @@ public:
     void parseDotScene(const Ogre::String &SceneName, const Ogre::String &groupName, Ogre::SceneManager *yourSceneMgr, Ogre::SceneNode *pAttachNode = NULL, const Ogre::String &sPrependNode = "");
     Ogre::String getProperty(const Ogre::String &ndNm, const Ogre::String &prop);
 
-    Ogre::TerrainGroup* getTerrainGroup() { return mTerrainGroup; }
+    Ogre::TerrainGroup* getTerrainGroup() const 
+	{ return mTerrainGroup; }
 
     std::vector<nodeProperty> nodeProperties;
     std::vector<Ogre::String> staticObjects;
@@ -49,41 +50,41 @@ protected:
     void processScene(rapidxml::xml_node<>* XMLRoot);
 
     void processNodes(rapidxml::xml_node<>* XMLNode);
-    void processExternals(rapidxml::xml_node<>* XMLNode);
-    void processEnvironment(rapidxml::xml_node<>* XMLNode);
+	static void processExternals();
+    void processEnvironment(rapidxml::xml_node<>* XMLNode) const;
     void processTerrain(rapidxml::xml_node<>* XMLNode);
     void processTerrainPage(rapidxml::xml_node<>* XMLNode);
-    void processBlendmaps(rapidxml::xml_node<>* XMLNode);
-    void processUserDataReference(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0);
-    void processUserDataReference(rapidxml::xml_node<>* XMLNode, Ogre::Entity *pEntity);
-    void processOctree(rapidxml::xml_node<>* XMLNode);
+    void processBlendmaps(rapidxml::xml_node<>* XMLNode) const;
+	static void processUserDataReference();
+	static void processUserDataReference(rapidxml::xml_node<>* XMLNode, Ogre::v1::Entity *pEntity);
+	static void processOctree();
     void processLight(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0);
-    void processCamera(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0);
+    void processCamera(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0) const;
 
     void processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0);
-    void processLookTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
-    void processTrackTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
+    void processLookTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent) const;
+    void processTrackTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent) const;
     void processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
-    void processParticleSystem(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
-    void processBillboardSet(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
-    void processPlane(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
+    void processParticleSystem(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent) const;
+	static void processBillboardSet();
+	static void processPlane();
 
-    void processFog(rapidxml::xml_node<>* XMLNode);
-    void processSkyBox(rapidxml::xml_node<>* XMLNode);
-    void processSkyDome(rapidxml::xml_node<>* XMLNode);
-    void processSkyPlane(rapidxml::xml_node<>* XMLNode);
-    void processClipping(rapidxml::xml_node<>* XMLNode);
+    void processFog(rapidxml::xml_node<>* XMLNode) const;
+    void processSkyBox(rapidxml::xml_node<>* XMLNode) const;
+    void processSkyDome(rapidxml::xml_node<>* XMLNode) const;
+    void processSkyPlane(rapidxml::xml_node<>* XMLNode) const;
+	static void processClipping(rapidxml::xml_node<>* XMLNode);
 
-    void processLightRange(rapidxml::xml_node<>* XMLNode, Ogre::Light *pLight);
-    void processLightAttenuation(rapidxml::xml_node<>* XMLNode, Ogre::Light *pLight);
+	static void processLightRange(rapidxml::xml_node<>* XMLNode, Ogre::Light *pLight);
+	static void processLightAttenuation(rapidxml::xml_node<>* XMLNode, Ogre::Light *pLight);
 
-    Ogre::String getAttrib(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, const Ogre::String &defaultValue = "");
-    Ogre::Real getAttribReal(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, Ogre::Real defaultValue = 0);
-    bool getAttribBool(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, bool defaultValue = false);
+	static Ogre::String getAttrib(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, const Ogre::String &defaultValue = "");
+	static Ogre::Real getAttribReal(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, Ogre::Real defaultValue = 0);
+	static bool getAttribBool(rapidxml::xml_node<>* XMLNode, const Ogre::String &parameter, bool defaultValue = false);
 
-    Ogre::Vector3 parseVector3(rapidxml::xml_node<>* XMLNode);
-    Ogre::Quaternion parseQuaternion(rapidxml::xml_node<>* XMLNode);
-    Ogre::ColourValue parseColour(rapidxml::xml_node<>* XMLNode);
+	static Ogre::Vector3 parseVector3(rapidxml::xml_node<>* XMLNode);
+	static Ogre::Quaternion parseQuaternion(rapidxml::xml_node<>* XMLNode);
+	static Ogre::ColourValue parseColour(rapidxml::xml_node<>* XMLNode);
 
     Ogre::SceneManager *mSceneMgr;
     Ogre::SceneNode *mAttachNode;

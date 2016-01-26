@@ -23,8 +23,6 @@ THE SOFTWARE.
 #ifndef EnemyFireState_h_
 #define EnemyFireState_h_
 
-#include "prereqs.h"
-
 #include "AIState.h"
 
 class EnemyFireState : public AIState
@@ -32,10 +30,10 @@ class EnemyFireState : public AIState
 public:
 	EnemyFireState(int id);
 	~EnemyFireState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

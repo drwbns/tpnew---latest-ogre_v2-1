@@ -37,15 +37,12 @@
 #ifndef __H_SHAREDDATA_H__
 #define __H_SHAREDDATA_H__
 
-#include <assert.h>
-
 #include "OGRE\OgrePrerequisites.h"
 #include "OGRE\OgreUTFString.h"
 #include "OGRE\OgreSingleton.h"
 
 #include "OIS/OIS.h"
 #include "Recast\RecastLog.h"
-#include "Detour\DetourNavMesh.h"
 #include "Detour\DetourNavMeshQuery.h"
 
 #define g_time Time::GetSingleton()
@@ -197,17 +194,17 @@ class SharedData : public Ogre::Singleton<SharedData>
 public:
 
 	SharedData()
-		: iRoot(0),
-		  iCamera(0),
-		  iWindow(0),
-		  mMLAnimState(0),
-		  iMainLight(0),
+		: iLastFrameTime(0), iRoot(nullptr),
+		  iCamera(nullptr),
+		  iWindow(nullptr), iSceneMgr(nullptr), iGlobalActivate(false), iInputManager(nullptr), iMouse(nullptr), iKeyboard(nullptr),
+		  mMLAnimState(nullptr),
+		  iMainLight(nullptr),
 		  m_toolMode(TOOLMODE_PATHFIND_ITER),
+		  m_AppMode(APPMODE_MESHSCENE),
 		  m_bidir(true),
 		  m_areaType(SAMPLE_POLYAREA_GRASS),
 		  m_boxHeight(6.0f),
-		  m_boxDescent(1.0f),
-		  m_AppMode(APPMODE_MESHSCENE)
+		  m_boxDescent(1.0f)
 	{
 		iActivate = false;
 
@@ -279,7 +276,7 @@ public:
 
 
 		// Animation state for light swarm
-		Ogre::AnimationState*				mMLAnimState;
+		Ogre::v1::AnimationState*				mMLAnimState;
 
 		// pointer to the scene's main light/current active light
 		Ogre::Light*						iMainLight;

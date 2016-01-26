@@ -40,13 +40,15 @@ public:
 	virtual ~CamController();
 	virtual void Initialize(Ogre::Camera* camera);
 	virtual void Finalize();
-	virtual void UpdateLocation(float mWalk, float mStrafe, float mUp) = 0;
-	virtual void UpdateRotation(float mPitch, float mYaw) = 0;
+	virtual void UpdateLocation() = 0;
+	virtual void UpdateRotation() = 0;
 
 	void SetSpeed(float f)     { mSpeed = f; }
 	void SetSensivity(float f) { mSensivity = f; }
-	Type GetType() { return type; }
-	Ogre::Camera* GetCamera() { return mCamera; }
+	Type GetType() const
+	{ return type; }
+	Ogre::Camera* GetCamera() const
+	{ return mCamera; }
 
 protected:
 	Type type;

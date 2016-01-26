@@ -20,11 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedWaitIdlingState.h"
 #include "GlobalVars.h"
 #include "Agent.h"
-
 
 using namespace Ogre;
 
@@ -36,22 +34,22 @@ AlliedWaitIdlingState::~AlliedWaitIdlingState()
 {
 }
 
-void AlliedWaitIdlingState::Enter(Agent* agent)
+void AlliedWaitIdlingState::Enter(Agent * agent)
 {
 	agent->setWaitTime(0);
 }
 
-void AlliedWaitIdlingState::Execute(Agent* agent)
+void AlliedWaitIdlingState::Execute(Agent * agent)
 {
 	agent->add2WaitTime(GlobalVars::Tick);
 }
 
-void AlliedWaitIdlingState::Exit(Agent* agent)
+void AlliedWaitIdlingState::Exit(Agent * agent)
 {
 	agent->setWaitTime(agent->getMwaitTime());
 }
 
-bool AlliedWaitIdlingState::isReady(Agent* agent)
+bool AlliedWaitIdlingState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() < agent->getMwaitTime();
 }

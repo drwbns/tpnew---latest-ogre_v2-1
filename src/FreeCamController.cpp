@@ -20,15 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
-
 #include "FreeCamController.h"
 
 #include "GlobalVars.h"
+#include <OGRE/OgreVector3.h>
 
 using namespace Ogre;
 
-template<> FreeCamController* Ogre::Singleton<FreeCamController>::msSingleton = 0;
+template<> FreeCamController* Ogre::Singleton<FreeCamController>::msSingleton = nullptr;
 
 FreeCamController::FreeCamController() : CamController()
 {
@@ -37,7 +36,7 @@ FreeCamController::FreeCamController() : CamController()
 
 FreeCamController::~FreeCamController()
 {
-	Finalize();
+	FreeCamController::Finalize();
 }
 
 void FreeCamController::Initialize(Ogre::Camera* camera)
@@ -50,15 +49,15 @@ void FreeCamController::Finalize()
 	CamController::Finalize();
 }
 
-void FreeCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
+void FreeCamController::UpdateLocation()
 {
-	Vector3 mVelocity(0,0,0);
+	Vector3 mVelocity(0, 0, 0);
 	mVelocity.z = mSpeed * mWalk * GlobalVars::Tick;
 	mVelocity.x = mSpeed * mStrafe * GlobalVars::Tick;
 	mCamera->moveRelative(mVelocity);
 }
 
-void FreeCamController::UpdateRotation(float mPitch, float mYaw)
+void FreeCamController::UpdateRotation()
 {
 	Radian mRotX = Radian(mPitch * mSensivity);
 	Radian mRotY = Radian(mYaw   * mSensivity);

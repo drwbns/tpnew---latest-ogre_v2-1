@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "SoundSystem.h"
 
 //----------------------------------------------------------------------------//
-StreamingBuffer::StreamingBuffer(const Ogre::String& name, SoundSource* source,  int bufferCount)
+StreamingBuffer::StreamingBuffer(const Ogre::String&, SoundSource* source,  int bufferCount): mLoop(false)
 {
 	mBufferCount = bufferCount;
 	mBuffers = new ALuint[bufferCount];
@@ -44,10 +44,10 @@ bool StreamingBuffer::play(ALuint source)
 	case AL_INITIAL:
 	case AL_STOPPED:
 	case AL_PLAYING:
-		seek(source, 0);
+		seek();
 		break;
 	case AL_PAUSED:
-		seek(source, mSource->getTimer()->getPosition());
+		seek();
 		break;
 	}
 
@@ -98,7 +98,7 @@ bool StreamingBuffer::stop(ALuint source)
 	return true;
 }
 //----------------------------------------------------------------------------//
-void StreamingBuffer::update(ALuint source, Ogre::Real elapsedTime)
+void StreamingBuffer::update()
 {
 	ALint mState;
 	ALint processed;
@@ -107,7 +107,7 @@ void StreamingBuffer::update(ALuint source, Ogre::Real elapsedTime)
 	alGetSourcei(source, AL_SOURCE_STATE, &mState);
 	if (mState == AL_STOPPED && ! mStopRequested)
 	{
-		seek(source, mSource->getTimer()->getPosition());
+		seek();
 		alSourcePlay(source);
 		SoundSystem::checkError(__FUNCTION__);
 		mState= AL_PLAYING;
@@ -126,7 +126,7 @@ void StreamingBuffer::update(ALuint source, Ogre::Real elapsedTime)
 		alSourceUnqueueBuffers(source, 1, &buffer);
 		SoundSystem::checkError(__FUNCTION__);
  
-		active = stream(buffer);
+		active = stream();
  
 		alSourceQueueBuffers(source, 1, &buffer);
 		SoundSystem::checkError(__FUNCTION__);
@@ -135,8 +135,7 @@ void StreamingBuffer::update(ALuint source, Ogre::Real elapsedTime)
 		{
 			if(mLoop)
 			{
-				active = true;
-				seek(source, 0);
+				seek();
 			}
 			else
 			{
@@ -146,16 +145,22 @@ void StreamingBuffer::update(ALuint source, Ogre::Real elapsedTime)
 	}
 }
 //----------------------------------------------------------------------------//
-bool StreamingBuffer::stream(ALuint buffer)
+bool StreamingBuffer::stream()
 {
 	return false;
 }
+
+bool OgSream::stream()
+{
+	return false;
+}
+
 //----------------------------------------------------------------------------//
-void StreamingBuffer::seek(ALuint source, float position)
+void StreamingBuffer::seek()
 {
 }
 //----------------------------------------------------------------------------//
-OgGAMESTATEream::OgGAMESTATEream(const Ogre::String& name, SoundSource* source, int bufferCount) : 
+OgSream::OgSream(const Ogre::String& name, SoundSource* source, int bufferCount) :
 	StreamingBuffer(name, source, bufferCount)
 {
 	ov_callbacks vorbisCallbacks;
@@ -185,15 +190,15 @@ OgGAMESTATEream::OgGAMESTATEream(const Ogre::String& name, SoundSource* source, 
 		mFormat = AL_FORMAT_MONO16;
 	else
 		mFormat = AL_FORMAT_STEREO16;
-	mSize = mDuration * (float)( mBits * mFrequency * mChannels) /  8.0f;
+	mSize = mDuration * static_cast<float>(mBits * mFrequency * mChannels) /  8.0f;
 }
 //----------------------------------------------------------------------------//
-OgGAMESTATEream::~OgGAMESTATEream()
+OgSream::~OgSream()
 {
 	mStream.setNull();
 }
 //----------------------------------------------------------------------------//
-void OgGAMESTATEream::seek(ALuint source, float position)
+void OgSream::seek()
 {
 	ALint mState;
 	ALuint mBuffer;
@@ -216,7 +221,7 @@ void OgGAMESTATEream::seek(ALuint source, float position)
 	ov_time_seek(&mOgGAMESTATEream, position);
 
 	for(int i = 0; i < mBufferCount; i++)
-		stream(mBuffers[i]);
+		stream();
 
 	alSourceQueueBuffers(source, mBufferCount, mBuffers);
 
@@ -232,7 +237,7 @@ void OgGAMESTATEream::seek(ALuint source, float position)
 	}
 }
 //----------------------------------------------------------------------------//
-bool OgGAMESTATEream::stream(ALuint buffer)
+bool OgSream::stream()
 {
 	char data[SOUND_BUFFER_SIZE];
 	int  size = 0;

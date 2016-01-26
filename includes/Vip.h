@@ -37,32 +37,32 @@ class Vip : public Agent
 private:
 	Vip(int id, Race race, Ogre::Vector3 position);
 	~Vip();
-	void Update();
+	void Update() override;
 
 public:
-	void orderMove(float walk, float strafe);
-	void orderBrake();
-	void orderArrive(Ogre::Vector3 pos);
-	void orderPathFollow();
-	void Shoot(bool first, Ogre::Vector3 &trg_pos);
-	void Die();
+	void orderMove(float walk, float strafe) override;
+	void orderBrake() override;
+	void orderArrive(Ogre::Vector3 pos) override;
+	void orderPathFollow() override;
+	void Shoot() override;
+	void Die() override;
 
 	//get / set
-	void SetAimMode(bool b) { aimMode = b; }
-	Ogre::Vector3 GetFirePosition();
+	void SetAimMode(bool b)  override { aimMode = b; }
+	Ogre::Vector3 *GetFirePosition() override;
 	Ogre::Vector3 GetFireDirection(Ogre::Vector3 &trg_pos);
-	Ogre::Vector3 GetHeadPosition();
-	Ogre::Quaternion GetHeadRotation();
-	Ogre::Vector3 GetBodyPosition();
-	Ogre::Quaternion GetBodyRotation();
-	physx::PxShape* getHitBox(int i) { return hitboxes[i]; }
+	Ogre::Vector3 GetHeadPosition() const;
+	Ogre::Quaternion GetHeadRotation() const;
+	Ogre::Vector3 GetBodyPosition() const;
+	Ogre::Quaternion GetBodyRotation() const;
+	PxShape* getHitBox(int i)  override { return hitboxes[i]; }
 
 protected:
 
 
 	//phy
-	std::vector<physx::PxShape*> hitboxes;
-	physx::PxCapsuleController* phycontrol;
+	std::vector<PxShape*> hitboxes;
+	PxCapsuleController* phycontrol;
 	bool flying;
 };
 

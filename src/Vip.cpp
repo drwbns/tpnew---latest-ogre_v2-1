@@ -22,14 +22,12 @@ THE SOFTWARE.
 #include "Vip.h"
 
 #include "World.h"
-#include "AIKnowledge.h"
 #include "GameState.h"
-#include "StateSystem.h"
 #include "GraphicsSystem.h"
-#include "CamController.h"
 #include "zzzSndSystem.h"
 #include "ProjectileManager.h"
 #include "PhysicsSystem.h"
+#include "BillboardSystem.h"
 
 #include "GlobalVars.h"
 #include "GUtility.h"
@@ -45,6 +43,7 @@ THE SOFTWARE.
 
 #include "characterkinematic\PxCapsuleController.h"
 #include "characterkinematic\PxControllerManager.h"
+#include <OGRE/OgreCamera.h>
 
 using namespace Ogre;
 using namespace physx;
@@ -53,14 +52,14 @@ using namespace physx;
 
 // Get the mesh information for the given mesh.
 // Code found in Wiki: www.ogre3d.org/wiki/index.php/RetrieveVertexData
-void GetMeshInformation(const Ogre::MeshPtr mesh,
+void GetMeshInformation(const MeshPtr mesh,
 	size_t &vertex_count,
-	Ogre::Vector3* &vertices,
+	Vector3* &vertices,
 	size_t &index_count,
 	unsigned long* &indices,
-	const Ogre::Vector3 &position,
-	const Ogre::Quaternion &orient,
-	const Ogre::Vector3 &scale)
+	const Vector3 &position,
+	const Quaternion &orient,
+	const Vector3 &scale)
 {
 	bool added_shared = false;
 	size_t current_offset = 0;
@@ -73,7 +72,7 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 	// Calculate how many vertices and indices we're going to need
 	for (unsigned short i = 0; i < mesh.getPointer()->getNumSubMeshes(); ++i)
 	{
-		Ogre::SubMesh* submesh = mesh->getSubMesh(i);
+		SubMesh* submesh = mesh->getSubMesh(i);
 
 		// We only need to add the shared vertices once
 		if (submesh->useSharedVertices)
@@ -95,7 +94,7 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 
 
 	// Allocate space for the vertices and indices
-	vertices = new Ogre::Vector3[vertex_count];
+	vertices = new Vector3[vertex_count];
 	indices = new unsigned long[index_count];
 
 	added_shared = false;
@@ -103,9 +102,9 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 	// Run through the submeshes again, adding the data into the arrays
 	for (unsigned short i = 0; i < mesh->getNumSubMeshes(); ++i)
 	{
-		Ogre::SubMesh* submesh = mesh->getSubMesh(i);
+		SubMesh* submesh = mesh->getSubMesh(i);
 
-		Ogre::VertexData* vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData : submesh->vertexData;
+		VertexData* vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData : submesh->vertexData;
 
 		if ((!submesh->useSharedVertices) || (submesh->useSharedVertices && !added_shared))
 		{
@@ -115,14 +114,14 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 				shared_offset = current_offset;
 			}
 
-			const Ogre::VertexElement* posElem =
-				vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_POSITION);
+			const VertexElement* posElem =
+				vertex_data->vertexDeclaration->findElementBySemantic(VES_POSITION);
 
-			Ogre::HardwareVertexBufferSharedPtr vbuf =
+			HardwareVertexBufferSharedPtr vbuf =
 				vertex_data->vertexBufferBinding->getBuffer(posElem->getSource());
 
 			unsigned char* vertex =
-				static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+				static_cast<unsigned char*>(vbuf->lock(HardwareBuffer::HBL_READ_ONLY));
 
 			// There is _no_ baseVertexPointerToElement() which takes an Ogre::Real or a double
 			//  as second argument. So make it float, to avoid trouble when Ogre::Real will
@@ -134,7 +133,7 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 			{
 				posElem->baseVertexPointerToElement(vertex, &pReal);
 
-				Ogre::Vector3 pt(pReal[0], pReal[1], pReal[2]);
+				Vector3 pt(pReal[0], pReal[1], pReal[2]);
 
 				vertices[current_offset + j] = (orient * (pt * scale)) + position;
 			}
@@ -144,14 +143,14 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 		}
 
 
-		Ogre::IndexData* index_data = submesh->indexData;
+		IndexData* index_data = submesh->indexData;
 		size_t numTris = index_data->indexCount / 3;
-		Ogre::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
+		HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
 		if (ibuf.isNull()) continue; // need to check if index buffer is valid (which will be not if the mesh doesn't have triangles like a pointcloud)
 
-		bool use32bitindexes = (ibuf->getType() == Ogre::HardwareIndexBuffer::IT_32BIT);
+		bool use32bitindexes = (ibuf->getType() == HardwareIndexBuffer::IT_32BIT);
 
-		unsigned long*  pLong = static_cast<unsigned long*>(ibuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+		unsigned long*  pLong = static_cast<unsigned long*>(ibuf->lock(HardwareBuffer::HBL_READ_ONLY));
 		unsigned short* pShort = reinterpret_cast<unsigned short*>(pLong);
 
 
@@ -180,12 +179,12 @@ void GetMeshInformation(const Ogre::MeshPtr mesh,
 bool RaycastFromPoint(Vector3 &result)
 {
 	// create the ray to test
-	Ogre::Ray ray = GSYS->GetCamera()->getCameraToViewportRay(0.5, 0.5);
+	Ray ray = GSYS->GetCamera()->getCameraToViewportRay(0.5, 0.5);
 
 	RaySceneQuery * m_pray_scene_query = GSYS->GetSceneMgr()->createRayQuery(ray);
 
 	// check we are initialised
-	if (m_pray_scene_query != NULL)
+	if (m_pray_scene_query != nullptr)
 	{
 		// create a query object
 		m_pray_scene_query->setRay(ray);
@@ -208,8 +207,8 @@ bool RaycastFromPoint(Vector3 &result)
 	// there are some minor optimizations (distance based) that mean we wont have to
 	// check all of the objects most of the time, but the worst case scenario is that
 	// we need to test every triangle of every object.
-	Ogre::Real closest_distance = -1.0f;
-	Ogre::Vector3 closest_result;
+	Real closest_distance = -1.0f;
+	Vector3 closest_result;
 	Ogre::RaySceneQueryResult &query_result = m_pray_scene_query->getLastResults();
 	for (size_t qr_idx = 0; qr_idx < query_result.size(); qr_idx++)
 	{
@@ -222,16 +221,16 @@ bool RaycastFromPoint(Vector3 &result)
 		}
 
 		// only check this result if its a hit against an entity
-		if ((query_result[qr_idx].movable != NULL) &&
+		if ((query_result[qr_idx].movable != nullptr) &&
 			(query_result[qr_idx].movable->getMovableType().compare("Entity") == 0))
 		{
 			// get the entity to check
-			Ogre::Entity *pentity = static_cast<Ogre::Entity*>(query_result[qr_idx].movable);
+			Entity *pentity = static_cast<Entity*>(query_result[qr_idx].movable);
 
 			// mesh data to retrieve         
 			size_t vertex_count;
 			size_t index_count;
-			Ogre::Vector3 *vertices;
+			Vector3 *vertices;
 			unsigned long *indices;
 
 			// get the mesh information
@@ -245,7 +244,7 @@ bool RaycastFromPoint(Vector3 &result)
 			for (int i = 0; i < static_cast<int>(index_count); i += 3)
 			{
 				// check for a hit against this triangle
-				std::pair<bool, Ogre::Real> hit = Ogre::Math::intersects(ray, vertices[indices[i]],
+				std::pair<bool, Real> hit = Math::intersects(ray, vertices[indices[i]],
 					vertices[indices[i + 1]], vertices[indices[i + 2]], true, false);
 
 				// if it was a hit check if its the closest
@@ -301,14 +300,14 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	wEnt = GSYS->GetSceneMgr()->createEntity(name,"ak47.mesh");
 
 	//attach weapon
-	mEnt->attachObjectToBone("Bip01 R Hand",(MovableObject*)wEnt);
+	mEnt->attachObjectToBone("Bip01 R Hand",static_cast<MovableObject*>(wEnt));
 
 	node->attachObject(mEnt);
 	node->setScale(0.03,0.03,0.03);
 
 	//show line of sight
 	lineofsight->clear();
-	lineofsight->begin("lineofsightMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+	lineofsight->begin("lineofsightMaterial", RenderOperation::OT_LINE_LIST);
 
 	float range = viewRange / node->getScale().x;//marked
 	//60 degrees left & right, total 120 degrees of sight
@@ -381,13 +380,14 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	desc.position.z = position.z;
 	desc.height = 1.25;
 	desc.radius = Radius;
+	desc.userData = this;
 
 	//desc.upDirection	= PX_Y;
 	//desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
 	//desc.skinWidth		= 0.10;
 
 	phycontrol = static_cast<PxCapsuleController*>(PHY->getCManager()->createController(desc));
-	if (phycontrol == NULL)
+	if (phycontrol == nullptr)
 		OgreAssert("No capsule controller!", 1);
 	//phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	flying = false;
@@ -400,7 +400,7 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 		{
 			PxShape* ctrlShape;
 			actor->getShapes(&ctrlShape, 1);
-			ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
+			//ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
 		}
 		else
 			OgreAssert("character actor has no shape", 1);
@@ -432,9 +432,9 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	//create hitboxes
 	//PxRigidDynamic * hitbox = PHY->getPhysics()->createRigidDynamic(PxTransform(TemplateUtils::toNX(GetPosition()))); // Possibly wrong
 
-	if (true); // uncomment below for hitbox creation
+	// @TODO // uncomment below for hitbox creation
 	
-
+	/*
 	
 	PxShape * hitboxShape = actor->createShape(PxBoxGeometry(1, 1, 1), *mMaterial);
 	hitboxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
@@ -485,21 +485,21 @@ Vip::Vip(int id, Race race, Vector3 position) : Agent(id, race, position, 3, 40,
 	//hitboxes.push_back(actor);
 	//actor->userData = this;
 
-	
+	*/
 	
 }
 
 Vip::~Vip()
 {
 	//graphics
-	idleAnimState = NULL;
-	runAnimState = NULL;
-	shootAnimState = NULL;
-	deadAnimState = NULL;
+	idleAnimState = nullptr;
+	runAnimState = nullptr;
+	shootAnimState = nullptr;
+	deadAnimState = nullptr;
 	GSYS->GetSceneMgr()->destroyEntity(mEnt);
-	mEnt = NULL;
+	mEnt = nullptr;
 	GSYS->GetSceneMgr()->destroyEntity(wEnt);
-	wEnt = NULL;
+	wEnt = nullptr;
 
 	//phy
 	/*
@@ -633,7 +633,7 @@ void Vip::Update()
 	//show cover locs
 	/*
 	coverlocs->clear();
-	coverlocs->begin("lineofsightMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+	coverlocs->begin("lineofsightMaterial", Ogre::v1::RenderOperation::OT_LINE_LIST);
 
 	for (int i=0;i<knowledge->totalCover();i++)
 	{
@@ -657,7 +657,7 @@ void Vip::orderBrake()
 	Agent::orderBrake();
 }
 
-void Vip::orderArrive(Ogre::Vector3 pos)
+void Vip::orderArrive(Vector3 pos)
 {
 	Agent::orderArrive(pos);
 }
@@ -667,10 +667,11 @@ void Vip::orderPathFollow()
 	Agent::orderPathFollow();
 }
 
-Vector3 Vip::GetFirePosition()
+Vector3 *Vip::GetFirePosition()
 { 
 	Bone* bone = wEnt->getSkeleton()->getBone("firing");
-	return wEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
+	Vector3 vec = wEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
+	return &vec;
 }
 
 Vector3 Vip::GetFireDirection(Vector3 &trg_pos)
@@ -679,36 +680,36 @@ Vector3 Vip::GetFireDirection(Vector3 &trg_pos)
 	{
 		trg_pos = PHY->CastRay1(GSYS->GetCamera()->getPosition(), GSYS->GetCamera()->getDirection());
 	}
-	return (trg_pos - GetFirePosition()).normalisedCopy(); 
+	return (trg_pos - GetFirePosition()->normalisedCopy()); 
 }
 
-Ogre::Vector3 Vip::GetHeadPosition()
+Vector3 Vip::GetHeadPosition() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bone01");
 	return mEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
 }
 
-Ogre::Quaternion Vip::GetHeadRotation()
+Quaternion Vip::GetHeadRotation() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bone01");
 	Quaternion q = mEnt->_getParentNodeFullTransform().extractQuaternion();
 	return q * bone->_getDerivedOrientation();
 }
 
-Ogre::Vector3 Vip::GetBodyPosition()
+Vector3 Vip::GetBodyPosition() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bip01");
 	return mEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
 }
 
-Ogre::Quaternion Vip::GetBodyRotation()
+Quaternion Vip::GetBodyRotation() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bip01");
 	Quaternion q = mEnt->_getParentNodeFullTransform().extractQuaternion();
 	return q * bone->_getDerivedOrientation();
 }
 
-void Vip::Shoot(bool first, Vector3 &trg_pos)
+void Vip::Shoot()
 {
 	if (!dead && aimMode)
 	{
@@ -725,8 +726,10 @@ void Vip::Shoot(bool first, Vector3 &trg_pos)
 			Vector3 result;
 			bool bResult = RaycastFromPoint(result);
 			if (bResult) {
-				Vector3 dir = result - GetFirePosition();
-				PJM->Shoot(ProjectileManager::Blue, this, GetFirePosition(), dir.normalisedCopy());
+				BBS->ShowBillboard("RFlare", result, IMPACTTIME);
+				Vector3 dir = result - *GetFirePosition();
+				Vector3 dirNorm = dir.normalisedCopy();
+				PJM->Shoot(ProjectileManager::Blue, this, *GetFirePosition(), &dirNorm);
 				shootAnimState->setTimePosition(0);
 #ifndef DISABLE_SOUND
 				ZSND->PlaySound("fire");

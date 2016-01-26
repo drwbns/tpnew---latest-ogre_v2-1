@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AIStateMachine.h"
 
 #include "GlobalVars.h"
@@ -28,7 +27,6 @@ THE SOFTWARE.
 #include "AIState.h"
 
 #include "OgreStringConverter.h"
-
 
 using namespace Ogre;
 
@@ -43,10 +41,10 @@ AIStateMachine::AIStateMachine(Agent* owner, AIState* base, float lockTime) : ow
 
 AIStateMachine::~AIStateMachine()
 {
-	owner = NULL;
+	owner = nullptr;
 
 	delete baseState;
-	baseState = NULL;
+	baseState = nullptr;
 
 	cstates.clear();
 	pstates.clear();
@@ -54,7 +52,7 @@ AIStateMachine::~AIStateMachine()
 
 void AIStateMachine::Update()
 {
-	if (baseState != NULL)
+	if (baseState != nullptr)
 	{
 		if (!locked)
 		{
@@ -67,10 +65,10 @@ void AIStateMachine::Update()
 			SetLock(cstate != pstate);
 
 			//exit disappeared ones
-			for (size_t i=0;i<pstates.size();i++)
+			for (size_t i = 0; i < pstates.size(); i++)
 			{
 				bool exist = false;
-				for (size_t j=0;j<cstates.size();j++)
+				for (size_t j = 0; j < cstates.size(); j++)
 				{
 					if (pstates[i]->GetId() == cstates[j]->GetId())
 					{
@@ -80,15 +78,15 @@ void AIStateMachine::Update()
 				}
 				if (!exist)
 				{
-					pstates[i]->Exit(owner);
+					pstates[i]->Exit();
 				}
 			}
 
 			//enter newly appeared
-			for (size_t i=0;i<cstates.size();i++)
+			for (size_t i = 0; i < cstates.size(); i++)
 			{
 				bool exist = false;
-				for (size_t j=0;j<pstates.size();j++)
+				for (size_t j = 0; j < pstates.size(); j++)
 				{
 					if (cstates[i]->GetId() == pstates[j]->GetId())
 					{
@@ -98,7 +96,7 @@ void AIStateMachine::Update()
 				}
 				if (!exist)
 				{
-					cstates[i]->Enter(owner);
+					cstates[i]->Enter();
 				}
 			}
 		}
@@ -116,13 +114,13 @@ void AIStateMachine::Update()
 
 		//update current
 		String states = "/";
-		for (size_t i=0;i<cstates.size();i++)
+		for (size_t i = 0; i < cstates.size(); i++)
 		{
-			cstates[i]->Execute(owner);
+			cstates[i]->Execute();
 			states += StringConverter::toString(cstates[i]->GetId());
-			if (i < cstates.size()-1)states += "-";
+			if (i < cstates.size() - 1)states += "-";
 		}
 
-		owner->setHeadText(Ogre::StringConverter::toString(owner->getHP()) + states);
+		owner->setHeadText(StringConverter::toString(owner->getHP()) + states);
 	}
 }

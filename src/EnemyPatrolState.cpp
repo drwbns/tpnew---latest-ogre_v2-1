@@ -20,10 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyPatrolState.h"
 #include "Agent.h"
-#include "Path.h"
 
 using namespace Ogre;
 
@@ -35,19 +33,19 @@ EnemyPatrolState::~EnemyPatrolState()
 {
 }
 
-void EnemyPatrolState::Enter(Agent* agent)
+void EnemyPatrolState::Enter(Agent * agent)
 {
 }
 
-void EnemyPatrolState::Execute(Agent* agent)
+void EnemyPatrolState::Execute(Agent * agent)
 {
 }
 
-void EnemyPatrolState::Exit(Agent* agent)
+void EnemyPatrolState::Exit(Agent * agent)
 {
 }
 
-bool EnemyPatrolState::isReady(Agent* agent)
+bool EnemyPatrolState::isReady(Agent * agent)
 {
 	return agent->GetPatrolPath()->GetLength() > 0;
 }

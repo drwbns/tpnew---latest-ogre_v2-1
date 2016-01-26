@@ -20,12 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyInspectState.h"
 #include "World.h"
 #include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
 using namespace Ogre;
 
 EnemyInspectState::EnemyInspectState(int id) : AIState(id)
@@ -36,7 +33,7 @@ EnemyInspectState::~EnemyInspectState()
 {
 }
 
-void EnemyInspectState::Enter(Agent* agent)
+void EnemyInspectState::Enter(Agent * agent)
 {
 	//goto last known enemy location
 	int id = agent->getKnowledge()->getClosestEnemy();
@@ -47,7 +44,7 @@ void EnemyInspectState::Enter(Agent* agent)
 	}
 }
 
-void EnemyInspectState::Execute(Agent* agent)
+void EnemyInspectState::Execute(Agent * agent)
 {
 	//set direction
 	if (agent->GetVelocity().length() > 0.1)
@@ -66,11 +63,11 @@ void EnemyInspectState::Execute(Agent* agent)
 	}
 }
 
-void EnemyInspectState::Exit(Agent* agent)
+void EnemyInspectState::Exit(Agent * agent)
 {
 }
 
-bool EnemyInspectState::isReady(Agent* agent)
+bool EnemyInspectState::isReady(Agent * agent)
 {
 	return true;
 }

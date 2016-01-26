@@ -20,24 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
-
 #include "RtsCamController.h"
 
 #include "GlobalVars.h"
+#include <OGRE/OgreVector3.h>
 
 using namespace Ogre;
 
-template<> RtsCamController* Ogre::Singleton<RtsCamController>::msSingleton = 0;
+template<> RtsCamController* Ogre::Singleton<RtsCamController>::msSingleton = nullptr;
 
-RtsCamController::RtsCamController() : CamController()
+RtsCamController::RtsCamController() : CamController(), mWalk(0), mStrafe(0), mUp(0)
 {
 	type = CT_RTS;
 }
 
 RtsCamController::~RtsCamController()
 {
-	Finalize();
+	RtsCamController::Finalize();
 }
 
 void RtsCamController::Initialize(Ogre::Camera* camera)
@@ -50,17 +49,17 @@ void RtsCamController::Finalize()
 	CamController::Finalize();
 }
 
-void RtsCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
+void RtsCamController::UpdateLocation()
 {
-	Vector3 mVelocity(0,0,0);
+	Vector3 mVelocity(0, 0, 0);
 	mVelocity.z = -mSpeed * mWalk * GlobalVars::Tick;
 	mVelocity.x = -mSpeed * mStrafe * GlobalVars::Tick;
 	mVelocity.y = mSpeed * mUp * GlobalVars::Tick;
 	mCamera->move(mVelocity);
 }
 
-void RtsCamController::UpdateRotation(float mPitch, float mYaw)
+void RtsCamController::UpdateRotation()
 {
-	Vector3 mDelta(0,-1,1);
+	Vector3 mDelta(0, -1, 1);
 	mCamera->lookAt(mCamera->getPosition() + mDelta);
 }

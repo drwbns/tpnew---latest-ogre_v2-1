@@ -40,19 +40,35 @@ public:
 
 	AgentInfo(Agent* a);
 	~AgentInfo();
-	void Update();
+	static void Update();
 
 	void SetAgent(Agent* a) { agent = a; }
-	Agent* GetAgent() { return agent; }
-	int GetID() { return agent->getID(); }
+
+	Agent* GetAgent() const 
+	{ return agent; }
+
+	int GetID() const
+	{ return agent->getID(); }
+
 	void SetPosition(Ogre::Vector3 p) { position = p; }
-	Ogre::Vector3 GetPosition() { return position; }
+
+	Ogre::Vector3 GetPosition() const 
+	{ return position; }
+
 	void SetHP(int i) { hp = i; }
-	int GetHP() { return hp; }
+
+	int GetHP() const 
+	{ return hp; }
+
 	void SetVisible(bool b) { visible = b; }
-	bool IsVisible() { return visible; }
+
+	bool IsVisible() const 
+	{ return visible; }
+
 	void SetFlag(Flag f) { flag = f; }
-	Flag GetFlag() { return flag; }
+
+	Flag GetFlag() const
+	{ return flag; }
 
 private:
 	Agent* agent;

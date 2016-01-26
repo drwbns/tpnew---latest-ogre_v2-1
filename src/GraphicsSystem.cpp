@@ -20,10 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "GraphicsSystem.h"
 
-#include "StateSystem.h"
 #include "GameState.h"
 #include "SharedData.h"
 #include "Application.h"
@@ -32,12 +30,11 @@ THE SOFTWARE.
 #include "OgreTextureManager.h"
 #include "OgreViewport.h"
 #include "OgreLogManager.h"
-
-
+#include <OGRE/OgreMemoryAllocatorConfig.h>
 
 using namespace Ogre;
 
-template<> GraphicsSystem* Ogre::Singleton<GraphicsSystem>::msSingleton = 0;
+template<> GraphicsSystem* Singleton<GraphicsSystem>::msSingleton = nullptr;
 
 GraphicsSystem* GraphicsSystem::getSingletonPtr(void)
 {
@@ -45,11 +42,11 @@ GraphicsSystem* GraphicsSystem::getSingletonPtr(void)
 }
 
 GraphicsSystem& GraphicsSystem::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
-GraphicsSystem::GraphicsSystem() : mRoot(NULL), mWindow(NULL), mSceneMgr(NULL), mCamera(NULL)
+GraphicsSystem::GraphicsSystem() : mRoot(nullptr), mWindow(nullptr), mSceneMgr(nullptr), mCamera(nullptr), mOverlayMgr(nullptr), mOverlaySystem(nullptr)
 {
 }
 
@@ -61,38 +58,37 @@ GraphicsSystem::~GraphicsSystem()
 void GraphicsSystem::Initialize()
 {
 	//init root
-	mRoot = new Ogre::Root();
+	mRoot = new Root();
 
 	//add resource locations
-	Ogre::ConfigFile cf;
+	ConfigFile cf;
 	cf.load("resources.cfg");
-	Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-	Ogre::String secName, typeName, archName;
-
+	ConfigFile::SectionIterator seci = cf.getSectionIterator();
+	String secName, typeName, archName;
 
 	while (seci.hasMoreElements())
 	{
 		secName = seci.peekNextKey();
-		Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-		Ogre::ConfigFile::SettingsMultiMap::iterator i;
+		ConfigFile::SettingsMultiMap *settings = seci.getNext();
+		ConfigFile::SettingsMultiMap::iterator i;
 		for (i = settings->begin(); i != settings->end(); ++i)
 		{
 			typeName = i->first;
 			archName = i->second;
-			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
+			ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
 		}
 	}
 
-	if(mRoot->showConfigDialog())
-    {
-        // If returned true, user clicked OK so initialise
-        // Here we choose to let the system create a default rendering window by passing 'true'
-        mWindow = mRoot->initialise(true, "TutorialApplication Render Window");
-    }
-    else
+	if (mRoot->showConfigDialog())
+	{
+		// If returned true, user clicked OK so initialise
+		// Here we choose to let the system create a default rendering window by passing 'true'
+		mWindow = mRoot->initialise(true, "TutorialApplication Render Window");
+	}
+	else
 	{
 		//init core
-		Ogre::RenderSystem* mRenderSys = mRoot->getRenderSystemByName("Direct3D9 Rendering Subsystem");
+		RenderSystem* mRenderSys = mRoot->getRenderSystemByName("Direct3D9 Rendering Subsystem");
 		mRenderSys->setConfigOption("Video Mode", "1024 x 768 @ 32-bit colour");
 		//mRenderSys->setConfigOption("Anti aliasing", "No");
 		mRenderSys->setConfigOption("VSync", "No");
@@ -100,7 +96,7 @@ void GraphicsSystem::Initialize()
 		mRenderSys->setConfigOption("Floating-point mode", "Fastest");
 		mRenderSys->setConfigOption("Allow NVPerfHUD", "No");
 		mRoot->setRenderSystem(mRenderSys);
-		mWindow = mRoot->initialise(true,"Whatever");
+		mWindow = mRoot->initialise(true, "Whatever");
 	}
 	mOverlaySystem = OGRE_NEW(OverlaySystem);
 	mOverlayMgr = OverlayManager::getSingletonPtr();
@@ -115,12 +111,12 @@ void GraphicsSystem::Initialize()
 	mCamera->setNearClipDistance(0.1f);
 	mCamera->setFarClipDistance(2048);
 	mCamera->setAutoAspectRatio(true);
-	mCamera->setPosition(Ogre::Vector3(0,1,0));
-	mCamera->lookAt(Ogre::Vector3(0,1,1));
+	mCamera->setPosition(Vector3(0, 1, 0));
+	mCamera->lookAt(Vector3(0, 1, 1));
 
 	//create view ports
 	Viewport* vp = mWindow->addViewport(mCamera);
-	vp->setBackgroundColour(ColourValue(0,0,0));
+	vp->setBackgroundColour(ColourValue(0, 0, 0));
 	mCamera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
 	//set default mipmap level (NB some APIs ignore this)
@@ -129,8 +125,8 @@ void GraphicsSystem::Initialize()
 	//set ambient light & skybox
 	mSceneMgr->setAmbientLight(ColourValue(1.0, 1.0, 1.0));
 
-	Ogre::StringVectorPtr missions = 
-	Ogre::ResourceGroupManager::getSingleton().findResourceNames("General", "*.material");
+	StringVectorPtr missions =
+		ResourceGroupManager::getSingleton().findResourceNames("General", "*.material");
 
 	for (StringVector::iterator i = missions->begin(); i != missions->end(); ++i)
 	{
@@ -176,18 +172,18 @@ void GraphicsSystem::Finalize()
 	//delete mWindow;
 }
 
-void GraphicsSystem::windowResized(Ogre::RenderWindow* rw)
+void GraphicsSystem::windowResized()
 {
 }
 
-void GraphicsSystem::windowClosed(Ogre::RenderWindow* rw)
+void GraphicsSystem::windowClosed()
 {
 }
 
-void GraphicsSystem::windowFocusChange(Ogre::RenderWindow* rw)
+void GraphicsSystem::windowFocusChange()
 {
 }
 
-void GraphicsSystem::eventOccurred(const Ogre::String& eventName, const Ogre::NameValuePairList* parameters)
+void GraphicsSystem::eventOccurred()
 {
 }

@@ -30,7 +30,6 @@ class Wall
 {
 	friend class World;
 
-private:
 	Wall(Ogre::Vector3 & from, Ogre::Vector3 & to, bool leftnormal);
 	~Wall();
 	

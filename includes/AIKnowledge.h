@@ -23,8 +23,6 @@ THE SOFTWARE.
 #ifndef AIKnowledge_H_
 #define AIKnowledge_H_
 
-#include "prereqs.h"
-
 #include "AgentInfo.h"
 #include "PositionalInfo.h"
 
@@ -37,18 +35,22 @@ public:
 	~AIKnowledge();
 	void Update();
 
-	Agent* getOwner() { return owner; }
+	Agent* getOwner() const
+	{ return owner; }
 	AgentInfo& getAlly(int i) { return allies[i]; }
 	AgentInfo& getEnemy(int i) { return enemies[i]; }
 	int allyExists(int id);
 	int enemyExists(int id);
 	PositionalInfo getCover(int i) { return coverPositions[i]; }
-	int totalAlly() { return (int)allies.size(); }
-	int totalEnemy() { return (int)enemies.size(); }
-	int totalCover() { return (int)coverPositions.size(); }
+	int totalAlly() const
+	{ return static_cast<int>(allies.size()); }
+	int totalEnemy() const
+	{ return static_cast<int>(enemies.size()); }
+	int totalCover() const
+	{ return static_cast<int>(coverPositions.size()); }
 	int totalVisibleAlly();
 	int totalVisibleEnemy();
-	int totalVisibleCover();
+	int totalVisibleCover() const;
 	int getClosestEnemy();
 	int getClosestVisibleEnemy();
 	int getClosestCover();

@@ -59,13 +59,15 @@ public:
 	const Ogre::Vector3& getDerivedPosition() const;
 	const Ogre::Vector3& getDerivedDirection() const;
 
-	const Ogre::String& getMovableType() const;
-	const Ogre::AxisAlignedBox& getBoundingBox() const;
+	const Ogre::String& getMovableType() const override;
+	const Ogre::AxisAlignedBox& getBoundingBox() const override;
 
-	Ogre::Real getBoundingRadius() const {return 0; /* Not Visible */} 
-	void _updateRenderQueue(Ogre::RenderQueue* queue);
-	void _notifyAttached(Ogre::Node* parent, bool isTagPoint = false);
-	void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables = false) { }
+	Ogre::Real getBoundingRadius() const override
+	{return 0; /* Not Visible */} 
+	void _updateRenderQueue() override;
+	void _notifyAttached(Ogre::Node* parent) override;
+	void visitRenderables() override
+	{ }
 
 	void updateListener();
 
@@ -98,12 +100,11 @@ public:
 
 	static Ogre::String FACTORY_TYPE_NAME;
 
-	const Ogre::String& getType() const;
-	void destroyInstance(Ogre::MovableObject* obj);
+	const Ogre::String& getType() const override;
+	void destroyInstance(Ogre::MovableObject* obj) override;
 
 protected:
-	Ogre::MovableObject* createInstanceImpl(const Ogre::String& name, 
-		const Ogre::NameValuePairList* params = 0);
+	Ogre::MovableObject* createInstanceImpl(const Ogre::String& name) override;
 };
 
 #endif

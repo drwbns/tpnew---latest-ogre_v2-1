@@ -20,15 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "BaseController.h"
 using namespace Ogre;
 
-BaseController::BaseController()
+BaseController::BaseController(): agent(nullptr)
 {
 }
 
 BaseController::~BaseController()
 {
-	agent = NULL;
+	agent = nullptr;
 }

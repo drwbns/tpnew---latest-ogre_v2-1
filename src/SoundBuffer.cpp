@@ -20,14 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include <OgreResourceGroupManager.h>
 #include <OgreException.h>
 #include "SoundBuffer.h"
 #include "SoundSystem.h"
 
 //----------------------------------------------------------------------------//
-SoundBuffer::SoundBuffer(const Ogre::String& name)
+SoundBuffer::SoundBuffer(const Ogre::String&) : mDuration(0), mChannels(0), mFrequency(0), mSize(0), mBits(0)
 {
 	mBuffers = new ALuint[1];
 	alGenBuffers(1, mBuffers);
@@ -36,14 +35,14 @@ SoundBuffer::SoundBuffer(const Ogre::String& name)
 SoundBuffer::~SoundBuffer()
 {
 	alDeleteBuffers(1, mBuffers);
-	delete [] mBuffers;
+	delete[] mBuffers;
 }
 //----------------------------------------------------------------------------//
 bool SoundBuffer::play(ALuint source)
 {
 	ALint buffer;
 	alGetSourcei(source, AL_BUFFER, &buffer);
-	if ( buffer != mBuffers[0])
+	if (buffer != mBuffers[0])
 		alSourcei(source, AL_BUFFER, mBuffers[0]);
 
 	alSourcePlay(source);
@@ -65,11 +64,11 @@ bool SoundBuffer::stop(ALuint source)
 	return true;
 }
 //----------------------------------------------------------------------------//
-void SoundBuffer::update(ALuint source, Ogre::Real elapsedTime)
+void SoundBuffer::update()
 {
 }
 //----------------------------------------------------------------------------//
-void SoundBuffer::setLoop(ALuint source, bool loop)
+void SoundBuffer::setLoop(bool loop)
 {
 	alSourcei(source, AL_LOOPING, loop);
 	SoundSystem::checkError(__FUNCTION__);
@@ -83,11 +82,11 @@ void SoundBuffer::updateInfo()
 	alGetBufferi(mBuffers[0], AL_CHANNELS, &mChannels);
 	SoundSystem::checkError(__FUNCTION__);
 
-	mDuration = 8.0f * (float)mSize / (float)( mBits * mFrequency * mChannels);
+	mDuration = 8.0f * static_cast<float>(mSize) / static_cast<float>(mBits * mFrequency * mChannels);
 }
 
 //----------------------------------------------------------------------------//
-void SoundBuffer::seek(ALuint source, float position)
+void SoundBuffer::seek()
 {
 	alSourcef(source, AL_SEC_OFFSET, position);
 	SoundSystem::checkError(__FUNCTION__);
@@ -101,23 +100,23 @@ WavBuffer::WavBuffer(const Ogre::String &name)
 	Ogre::DataStreamPtr dstream = Ogre::ResourceGroupManager::getSingleton().openResource(name);
 	Ogre::MemoryDataStream stream(dstream);
 
-	mBuffers[0] = alutCreateBufferFromFileImage((ALbyte *)stream.getPtr(), static_cast<ALsizei>(stream.size()));
+	mBuffers[0] = alutCreateBufferFromFileImage(reinterpret_cast<ALbyte *>(stream.getPtr()), static_cast<ALsizei>(stream.size()));
 	SoundSystem::checkError(__FUNCTION__);
 	updateInfo();
 }
 //----------------------------------------------------------------------------//
-OggBuffer::OggBuffer(const Ogre::String &name) 
+OggBuffer::OggBuffer(const Ogre::String &name)
 	: SoundBuffer(name)
 {
 	int currSection;
-	long size = 0;
+	long size;
 	char data[SOUND_BUFFER_SIZE];
 	std::vector<char> buffer;
 
-    OggVorbis_File  mOgGAMESTATEream;
+	OggVorbis_File  mOgGAMESTATEream;
 	ov_callbacks vorbisCallbacks;
 	vorbis_info* mVorbisInfo;
-    vorbis_comment* mVorbisComment;
+	vorbis_comment* mVorbisComment;
 	ALenum mFormat;
 
 	// read file to memory
@@ -130,13 +129,12 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 	vorbisCallbacks.tell_func = vorbisTell;
 	if (ov_open_callbacks(&mStream, &mOgGAMESTATEream, NULL, 0, vorbisCallbacks) < 0)
 	{
-		throw Ogre::Exception(1, "Could not open Ogg stream.",__FUNCTION__);
+		throw Ogre::Exception(1, "Could not open Ogg stream.", __FUNCTION__);
 	}
 
 	mVorbisInfo = ov_info(&mOgGAMESTATEream, -1);
-	mVorbisComment = ov_comment(&mOgGAMESTATEream, -1);
 
-	if(mVorbisInfo->channels == 1)
+	if (mVorbisInfo->channels == 1)
 		mFormat = AL_FORMAT_MONO16;
 	else
 		mFormat = AL_FORMAT_STEREO16;
@@ -145,7 +143,7 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 	{
 		size = ov_read(&mOgGAMESTATEream, data, sizeof(data), 0, 2, 1, &currSection);
 		buffer.insert(buffer.end(), data, data + size);
-	}while(size > 0);
+	} while (size > 0);
 
 	alBufferData(mBuffers[0], mFormat, &buffer[0], static_cast<ALsizei>(buffer.size()), mVorbisInfo->rate);
 	SoundSystem::checkError(__FUNCTION__);
@@ -154,22 +152,22 @@ OggBuffer::OggBuffer(const Ogre::String &name)
 	updateInfo();
 }
 //----------------------------------------------------------------------------//
-size_t OggBuffer::vorbisRead(void *ptr, size_t byteSize, size_t sizeToRead, void *datasource )
+size_t OggBuffer::vorbisRead(void *ptr, size_t byteSize, size_t sizeToRead, void *datasource)
 {
 	size_t				spaceToEOF;			// How much more we can read till we hit the EOF marker
 	size_t				actualSizeToRead;	// How much data we are actually going to read from memory
 	Ogre::DataStreamPtr	vorbisData;			// Our vorbis data, for the typecast
 
 	// Get the data in the right format
-	vorbisData = *(Ogre::DataStreamPtr*)datasource;
+	vorbisData = *static_cast<Ogre::DataStreamPtr*>(datasource);
 
 	// Calculate how much we need to read.  This can be sizeToRead*byteSize or less depending on how near the EOF marker we are
 	spaceToEOF = vorbisData->size() - vorbisData->tell();
 	if ((sizeToRead * byteSize) < spaceToEOF)
 		actualSizeToRead = (sizeToRead * byteSize);
 	else
-		actualSizeToRead = spaceToEOF;	
-	
+		actualSizeToRead = spaceToEOF;
+
 	// A simple copy of the data from memory to the datastruct that the vorbis libs will use
 	if (actualSizeToRead)
 	{
@@ -188,7 +186,7 @@ int OggBuffer::vorbisSeek(void *datasource, ogg_int64_t offset, int whence)
 	ogg_int64_t			actualOffset;
 	Ogre::DataStreamPtr	vorbisData;
 
-	vorbisData = *(Ogre::DataStreamPtr*)datasource;
+	vorbisData = *static_cast<Ogre::DataStreamPtr*>(datasource);
 
 	switch (whence)
 	{
@@ -197,15 +195,15 @@ int OggBuffer::vorbisSeek(void *datasource, ogg_int64_t offset, int whence)
 			actualOffset = offset;
 		else
 			actualOffset = vorbisData->size();
-		vorbisData->seek((int)actualOffset);
+		vorbisData->seek(static_cast<int>(actualOffset));
 		break;
 	case SEEK_CUR:
 		spaceToEOF = vorbisData->size() - vorbisData->tell();
 		if (offset < spaceToEOF)
 			actualOffset = (offset);
 		else
-			actualOffset = spaceToEOF;	
-		vorbisData->seek( static_cast<size_t>(vorbisData->tell() + actualOffset));
+			actualOffset = spaceToEOF;
+		vorbisData->seek(static_cast<size_t>(vorbisData->tell() + actualOffset));
 		break;
 	case SEEK_END:
 		vorbisData->seek(vorbisData->size());
@@ -226,7 +224,7 @@ int OggBuffer::vorbisClose(void *datasource)
 //----------------------------------------------------------------------------//
 long OggBuffer::vorbisTell(void *datasource)
 {
-	Ogre::DataStreamPtr vorbisData = *(Ogre::DataStreamPtr*)datasource;
+	Ogre::DataStreamPtr vorbisData = *static_cast<Ogre::DataStreamPtr*>(datasource);
 	return static_cast<long>(vorbisData->tell());
 }
 //----------------------------------------------------------------------------//

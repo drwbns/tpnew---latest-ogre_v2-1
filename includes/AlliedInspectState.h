@@ -30,10 +30,10 @@ class AlliedInspectState : public AIState
 public:
 	AlliedInspectState(int id);
 	~AlliedInspectState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

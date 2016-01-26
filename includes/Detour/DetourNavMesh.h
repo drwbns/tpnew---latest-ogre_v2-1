@@ -19,7 +19,6 @@
 #ifndef DETOURNAVMESH_H
 #define DETOURNAVMESH_H
 
-#include "DetourAlloc.h"
 #include "DetourStatus.h"
 
 
@@ -274,26 +273,26 @@ public:
 	const dtOffMeshConnection* getOffMeshConnectionByRef(dtPolyRef ref) const;
 	
 	/// Sets polygon flags.
-	dtStatus setPolyFlags(dtPolyRef ref, unsigned short flags);
+	dtStatus setPolyFlags(dtPolyRef ref, unsigned short flags) const;
 
 	/// Return polygon flags.
 	dtStatus getPolyFlags(dtPolyRef ref, unsigned short* resultFlags) const;
 
 	/// Set polygon type.
-	dtStatus setPolyArea(dtPolyRef ref, unsigned char area);
+	dtStatus setPolyArea(dtPolyRef ref, unsigned char area) const;
 
 	/// Return polygon area type.
 	dtStatus getPolyArea(dtPolyRef ref, unsigned char* resultArea) const;
 
 
 	/// Returns number of bytes required to store tile state.
-	int getTileStateSize(const dtMeshTile* tile) const;
+	static int getTileStateSize(const dtMeshTile* tile);
 	
 	/// Stores tile state to buffer.
 	dtStatus storeTileState(const dtMeshTile* tile, unsigned char* data, const int maxDataSize) const;
 	
 	/// Restores tile state.
-	dtStatus restoreTileState(dtMeshTile* tile, const unsigned char* data, const int maxDataSize);
+	dtStatus restoreTileState(dtMeshTile* tile, const unsigned char* data, const int maxDataSize) const;
 	
 
 	/// Encodes a tile id.
@@ -353,17 +352,17 @@ private:
 							dtPolyRef* con, float* conarea, int maxcon) const;
 	
 	/// Builds internal polygons links for a tile.
-	void connectIntLinks(dtMeshTile* tile);
+	void connectIntLinks(dtMeshTile* tile) const;
 	/// Builds internal polygons links for a tile.
-	void connectIntOffMeshLinks(dtMeshTile* tile);
+	void connectIntOffMeshLinks(dtMeshTile* tile) const;
 
 	/// Builds external polygon links for a tile.
-	void connectExtLinks(dtMeshTile* tile, dtMeshTile* target, int side);
+	void connectExtLinks(dtMeshTile* tile, dtMeshTile* target, int side) const;
 	/// Builds external polygon links for a tile.
-	void connectExtOffMeshLinks(dtMeshTile* tile, dtMeshTile* target, int side);
+	void connectExtOffMeshLinks(dtMeshTile* tile, dtMeshTile* target, int side) const;
 	
 	/// Removes external links at specified side.
-	void unconnectExtLinks(dtMeshTile* tile, dtMeshTile* target);
+	void unconnectExtLinks(dtMeshTile* tile, dtMeshTile* target) const;
 	
 
 	// TODO: These methods are duplicates from dtNavMeshQuery, but are needed for off-mesh connection finding.

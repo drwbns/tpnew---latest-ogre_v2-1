@@ -20,10 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
-
 #include "Gign.h"
-
 
 #include "OgreStringConverter.h"
 #include "OgreEntity.h"
@@ -38,7 +35,6 @@ THE SOFTWARE.
 #include "ZZZSndSystem.h"
 #include "GUtility.h"
 #include "ProjectileManager.h"
-#include "PhysicsHelper.h"
 #include "World.h"
 
 #include "characterkinematic\PxCapsuleController.h"
@@ -53,44 +49,44 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 {
 	aimMode = false;
 	//important for perception
-	eyePos = Vector3(0, 1.75, Radius+0.1);
+	eyePos = Vector3(0, 1.75, Radius + 0.1);
 
 	String name = "Gign" + StringConverter::toString(id);
-	mEnt = GSYS->GetSceneMgr()->createEntity(name,"gign.mesh");
+	mEnt = GSYS->GetSceneMgr()->createEntity(name, "gign.mesh");
 
 	name = "GignW" + StringConverter::toString(id);
-	wEnt = GSYS->GetSceneMgr()->createEntity(name,"g3.mesh");
+	wEnt = GSYS->GetSceneMgr()->createEntity(name, "g3.mesh");
 
 	//attach weapon
-	mEnt->attachObjectToBone("Bip01 R Hand",(MovableObject*)wEnt);
+	mEnt->attachObjectToBone("Bip01 R Hand", static_cast<MovableObject*>(wEnt));
 
 	node->attachObject(mEnt);
-	node->setScale(0.03,0.03,0.03);
+	node->setScale(0.03, 0.03, 0.03);
 
 	//show line of sight
 	lineofsight->clear();
-	lineofsight->begin("lineofsightMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+	lineofsight->begin("lineofsightMaterial", RenderOperation::OT_LINE_LIST);
 
 	float range = viewRange / node->getScale().x;//marked
 	//60 degrees left & right, total 120 degrees of sight
 	Quaternion q;
-	q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+	q.FromAngleAxis(Radian(Math::PI / 3), Vector3::UNIT_Y);
 	Vector3 direction = GetRotation() * Vector3::UNIT_Z;
 	Vector3 A = Vector3::ZERO;
 	Vector3 B = A + q * (direction * range);
 	Vector3 C = A + q.Inverse() * (direction * range);
 
-	lineofsight->position(A);	lineofsight->colour(1,0,0);
-	lineofsight->position(A + (eyePos/node->getScale().x));	lineofsight->colour(1,0,0);
+	lineofsight->position(A);	lineofsight->colour(1, 0, 0);
+	lineofsight->position(A + (eyePos / node->getScale().x));	lineofsight->colour(1, 0, 0);
 
-	lineofsight->position(A);	lineofsight->colour(0,1,0);
-	lineofsight->position(B);	lineofsight->colour(0,1,0);
+	lineofsight->position(A);	lineofsight->colour(0, 1, 0);
+	lineofsight->position(B);	lineofsight->colour(0, 1, 0);
 
-	lineofsight->position(B);	lineofsight->colour(0,1,0);
-	lineofsight->position(C);	lineofsight->colour(0,1,0);
+	lineofsight->position(B);	lineofsight->colour(0, 1, 0);
+	lineofsight->position(C);	lineofsight->colour(0, 1, 0);
 
-	lineofsight->position(C);	lineofsight->colour(0,1,0);
-	lineofsight->position(A);	lineofsight->colour(0,1,0);
+	lineofsight->position(C);	lineofsight->colour(0, 1, 0);
+	lineofsight->position(A);	lineofsight->colour(0, 1, 0);
 
 	lineofsight->end();
 	lineofsight->setVisible(true);
@@ -134,7 +130,7 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	// setup default material...
 	mMaterial = PHY->getPhysics()->createMaterial(0.5f, 0.5f, 0.1f);
 	if (!mMaterial)
-		OgreAssert("createMaterial failed!",1);
+		OgreAssert("createMaterial failed!", 1);
 
 	PxCapsuleControllerDesc desc;
 	desc.material = mMaterial;
@@ -144,20 +140,20 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 	desc.reportCallback = this;
 	desc.behaviorCallback = this;
 	desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	desc.stepOffset		= 0.25;
-	desc.callback		= this;
-	desc.position.x		= position.x;
-	desc.position.y		= position.y + 2.0;
-	desc.position.z		= position.z;
-	desc.height         = 1.25;
-	desc.radius	        = Radius;
+	desc.stepOffset = 0.25;
+	desc.callback = this;
+	desc.position.x = position.x;
+	desc.position.y = position.y + 2.0;
+	desc.position.z = position.z;
+	desc.height = 1.25;
+	desc.radius = Radius;
 
 	//desc.upDirection	= PX_Y;
 	//desc.slopeLimit		= cosf(PxMath::degToRad(45.0f));
 	//desc.skinWidth		= 0.10;
 
- 	phycontrol = static_cast<PxCapsuleController*>(PHY->getCManager()->createController(desc));
-	if(phycontrol== NULL)
+	phycontrol = static_cast<PxCapsuleController*>(PHY->getCManager()->createController(desc));
+	if (phycontrol == nullptr)
 		OgreAssert("No capsule controller!", 1);
 	//phycontrol->getActor()->getShapes()[0]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	flying = false;
@@ -170,88 +166,84 @@ Gign::Gign(int id, Race race, Vector3 position) : Agent(id, race, position, 3.0,
 		{
 			PxShape* ctrlShape;
 			actor->getShapes(&ctrlShape, 1);
-			ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
+			//ctrlShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, false);
 		}
 		else
-			OgreAssert("character actor has no shape",1);
+			OgreAssert("character actor has no shape", 1);
 	}
 	else
-		OgreAssert("character could not create actor",1);
-
-	PxShape * hitboxShape = actor->createShape(PxBoxGeometry(1, 1, 1), *mMaterial);
-	hitboxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-	hitboxShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
-
-	PxFilterData fd = hitboxShape->getSimulationFilterData();
-	fd.word0 |= PxU32(NO_COLLIDE);
-	hitboxShape->setSimulationFilterData(fd);
-
-	fd = hitboxShape->getQueryFilterData();
-	fd.word0 |= PxU32(NO_COLLIDE);
-	hitboxShape->setQueryFilterData(fd);
-
-
-	characterFilterData.word0 = 1;
-
-
-	characterControllerFilters.mFilterData = &characterFilterData;
-
-	hitboxShape->setLocalPose(PxTransform(PxIdentity));
-	hitboxes.push_back(hitboxShape);
-
+		OgreAssert("character could not create actor", 1);
 	/*
-	//material for hit boxes
-	int index = PHY->addNewMaterial("gignbody");
+		PxShape * hitboxShape = actor->createShape(PxBoxGeometry(1, 1, 1), *mMaterial);
+		hitboxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+		hitboxShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 
-	//create hitboxes
-	PxActorDesc actorDesc;
-	NxBodyDesc bodyDesc;
-	NxBoxShapeDesc boxDesc;
-	boxDesc.dimensions.set(0.10,0.15,0.10);
-	boxDesc.materialIndex = index;
+		PxFilterData fd = hitboxShape->getSimulationFilterData();
+		fd.word0 |= PxU32(NO_COLLIDE);
+		hitboxShape->setSimulationFilterData(fd);
 
-	actorDesc.shapes.pushBack(&boxDesc);
-	actorDesc.globalPose.t = TemplateUtils::toNX(position);
-	actorDesc.flags = NX_AF_DISABLE_COLLISION;
+		fd = hitboxShape->getQueryFilterData();
+		fd.word0 |= PxU32(NO_COLLIDE);
+		hitboxShape->setQueryFilterData(fd);
 
-	//actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	//actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
-	hitboxes.push_back(actor);
-	mActor->userData = this;
+		characterFilterData.word0 = 1;
 
-	boxDesc.dimensions.set(0.25,0.80,0.25);
-	actorDesc.shapes.clear();
-	actorDesc.shapes.pushBack(&boxDesc);
-	actorDesc.globalPose.t = TemplateUtils::toNX(position);
-	
-	PHY->getScene()->addActor(actorDesc);
-	actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
-	actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
-	hitboxes.push_back(actor);
-	actor->userData = this;
-	*/
-	
+		characterControllerFilters.mFilterData = &characterFilterData;
+
+		hitboxShape->setLocalPose(PxTransform(PxIdentity));
+		hitboxes.push_back(hitboxShape);
+
+		//material for hit boxes
+		int index = PHY->addNewMaterial("gignbody");
+
+		//create hitboxes
+		PxActorDesc actorDesc;
+		NxBodyDesc bodyDesc;
+		NxBoxShapeDesc boxDesc;
+		boxDesc.dimensions.set(0.10,0.15,0.10);
+		boxDesc.materialIndex = index;
+
+		actorDesc.shapes.pushBack(&boxDesc);
+		actorDesc.globalPose.t = TemplateUtils::toNX(position);
+		actorDesc.flags = NX_AF_DISABLE_COLLISION;
+
+		//actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
+		//actor->setCMassOffsetLocalPosition(PxVec3(0.05,0.075,0.05));
+		hitboxes.push_back(actor);
+		mActor->userData = this;
+
+		boxDesc.dimensions.set(0.25,0.80,0.25);
+		actorDesc.shapes.clear();
+		actorDesc.shapes.pushBack(&boxDesc);
+		actorDesc.globalPose.t = TemplateUtils::toNX(position);
+
+		PHY->getScene()->addActor(actorDesc);
+		actor->raiseBodyFlag(NX_BF_DISABLE_GRAVITY);
+		actor->setCMassOffsetLocalPosition(PxVec3(0.125,0.40,0.125));
+		hitboxes.push_back(actor);
+		actor->userData = this;
+		*/
 }
 
 Gign::~Gign()
 {
 	//graphics
-	idleAnimState = NULL;
-	runAnimState = NULL;
-	shootAnimState = NULL;
-	deadAnimState = NULL;
+	idleAnimState = nullptr;
+	runAnimState = nullptr;
+	shootAnimState = nullptr;
+	deadAnimState = nullptr;
 	GSYS->GetSceneMgr()->destroyEntity(mEnt);
-	mEnt = NULL;
+	mEnt = nullptr;
 	GSYS->GetSceneMgr()->destroyEntity(wEnt);
-	wEnt = NULL;
+	wEnt = nullptr;
 
 	//phy
 	//PHY->getCManager()->releaseController(*phycontrol);
-	phycontrol = NULL;
-	for (size_t i=0;i<hitboxes.size();i++)
+	phycontrol = nullptr;
+	for (size_t i = 0; i < hitboxes.size(); i++)
 	{
 		//PHY->getScene()->releaseActor(*hitboxes[i]);
-		hitboxes[i] = NULL;
+		hitboxes[i] = nullptr;
 	}
 	hitboxes.clear();
 }
@@ -284,10 +276,10 @@ void Gign::Update()
 	PxVec3 disp = TemplateUtils::toNX(Velocity * GlobalVars::Tick);
 	if (flying)disp.y -= 10.0 * GlobalVars::Tick;
 	PxU32 collisionFlag;
-	
+
 	phycontrol->move(disp, 0.01f, GlobalVars::Tick, characterControllerFilters);
 	//phycontrol->move(disp, 0.01f, GlobalVars::Tick, PxControllerFilters()); // Causes collisions between hitboxes and player itself when moving
-	
+
 	//flying = !(collisionFlag & NXCC_COLLISION_DOWN);
 
 	//alter pos.
@@ -299,12 +291,12 @@ void Gign::Update()
 
 	//update hitbox transform.
 	//head
-	Vector3 hpos = GetHeadPosition();hpos.y += 0.05;
+	Vector3 hpos = GetHeadPosition();
 	//Quaternion hori = GetHeadRotation();
 	//hitboxes[0]->setGlobalPosition(TemplateUtils::toNX(hpos));
 	//hitboxes[0]->setGlobalOrientationQuat(TemplateUtils::toNX(hori));
 	//body
-	Vector3 bpos = GetBodyPosition();bpos.y -= 0.20;
+	Vector3 bpos = GetBodyPosition();
 	//Quaternion bori = GetBodyRotation();
 	//hitboxes[1]->setGlobalPosition(TemplateUtils::toNX(bpos));
 	//hitboxes[1]->setGlobalOrientationQuat(TemplateUtils::toNX(bori));
@@ -360,7 +352,7 @@ void Gign::orderBrake()
 	Agent::orderBrake();
 }
 
-void Gign::orderArrive(Ogre::Vector3 pos)
+void Gign::orderArrive(Vector3 pos)
 {
 	Agent::orderArrive(pos);
 }
@@ -370,50 +362,50 @@ void Gign::orderPathFollow()
 	Agent::orderPathFollow();
 }
 
-Vector3 Gign::GetFirePosition()
-{ 
+Vector3 *Gign::GetFirePosition()
+{
 	Bone* bone = wEnt->getSkeleton()->getBone("firing");
-	return wEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
+	Vector3 vec = wEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
+	return &vec;
 }
 
 Vector3 Gign::GetFireDirection(Vector3 trg_pos)
 {
-	
 	if (this == WORLD->getPlayerAgent())
 	{
 		trg_pos = PHY->CastRay1(GSYS->GetCamera()->getPosition(), GSYS->GetCamera()->getDirection());
 	}
-	
-	return (trg_pos - GetFirePosition()).normalisedCopy(); 
+
+	return (trg_pos - GetFirePosition()).normalisedCopy();
 }
 
-Ogre::Vector3 Gign::GetHeadPosition()
+Vector3 Gign::GetHeadPosition() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bone01");
 	return mEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
 }
 
-Ogre::Quaternion Gign::GetHeadRotation()
+Quaternion Gign::GetHeadRotation() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bone01");
 	Quaternion q = mEnt->_getParentNodeFullTransform().extractQuaternion();
 	return q * bone->_getDerivedOrientation();
 }
 
-Ogre::Vector3 Gign::GetBodyPosition()
+Vector3 Gign::GetBodyPosition() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bip01");
 	return mEnt->_getParentNodeFullTransform() * bone->_getDerivedPosition();
 }
 
-Ogre::Quaternion Gign::GetBodyRotation()
+Quaternion Gign::GetBodyRotation() const
 {
 	Bone* bone = mEnt->getSkeleton()->getBone("Bip01");
 	Quaternion q = mEnt->_getParentNodeFullTransform().extractQuaternion();
 	return q * bone->_getDerivedOrientation();
 }
 
-void Gign::Shoot(bool first, Vector3 &trg_pos)
+void Gign::Shoot()
 {
 	if (!dead && aimMode)
 	{

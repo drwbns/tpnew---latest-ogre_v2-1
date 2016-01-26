@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyFallbackState.h"
 
 EnemyFallbackState::EnemyFallbackState(int id) : AIState(id)
@@ -31,19 +30,19 @@ EnemyFallbackState::~EnemyFallbackState()
 {
 }
 
-void EnemyFallbackState::Enter(Agent* agent)
+void EnemyFallbackState::Enter(Agent * agent)
 {
 }
 
-void EnemyFallbackState::Execute(Agent* agent)
+void EnemyFallbackState::Execute(Agent * agent)
 {
 }
 
-void EnemyFallbackState::Exit(Agent* agent)
+void EnemyFallbackState::Exit(Agent * agent)
 {
 }
 
-bool EnemyFallbackState::isReady(Agent* agent)
+bool EnemyFallbackState::isReady(Agent * agent)
 {
 	return false;
 }

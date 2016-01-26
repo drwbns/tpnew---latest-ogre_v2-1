@@ -23,8 +23,9 @@ THE SOFTWARE.
 #ifndef ProjectileManager_H_
 #define ProjectileManager_H_
 
-class Agent;
-class BlueBullet;
+#include "prereqs.h"
+
+#include "BlueBullet.h"
 
 #define PJM ProjectileManager::getSingletonPtr()
 
@@ -51,7 +52,7 @@ public:
 	void Initialize();
 	void Finalize();
 	void Update();
-	void Shoot(Type t, Agent* owner, Ogre::Vector3 &pos, Ogre::Vector3 &dir);
+	void Shoot(Type t, Agent* owner, Ogre::Vector3 &pos, Ogre::Vector3 *dir);
 
 private:
 	std::vector<BlueBullet*> blues;

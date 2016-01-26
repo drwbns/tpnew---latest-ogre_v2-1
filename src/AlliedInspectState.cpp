@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedInspectState.h"
 #include "AIKnowledge.h"
 #include "Agent.h"
@@ -37,7 +36,7 @@ AlliedInspectState::~AlliedInspectState()
 {
 }
 
-void AlliedInspectState::Enter(Agent* agent)
+void AlliedInspectState::Enter(Agent * agent)
 {
 	//goto last known enemy location
 	int id = agent->getKnowledge()->getClosestEnemy();
@@ -48,7 +47,7 @@ void AlliedInspectState::Enter(Agent* agent)
 	}
 }
 
-void AlliedInspectState::Execute(Agent* agent)
+void AlliedInspectState::Execute(Agent * agent)
 {
 	//set direction
 	if (agent->GetVelocity().length() > 0.1)
@@ -67,11 +66,11 @@ void AlliedInspectState::Execute(Agent* agent)
 	}
 }
 
-void AlliedInspectState::Exit(Agent* agent)
+void AlliedInspectState::Exit(Agent * agent)
 {
 }
 
-bool AlliedInspectState::isReady(Agent* agent)
+bool AlliedInspectState::isReady(Agent * agent)
 {
 	return true;
 }

@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "Moving.h"
 #include "Agent.h"
 #include "AgentInfo.h"
@@ -28,7 +27,7 @@ using namespace Ogre;
 
 AgentInfo::AgentInfo(Agent* a)
 {
-	if (a != NULL)
+	if (a != nullptr)
 	{
 		agent = a;
 		position = a->GetPosition();
@@ -37,7 +36,7 @@ AgentInfo::AgentInfo(Agent* a)
 	}
 	else
 	{
-		agent = NULL;
+		agent = nullptr;
 		position = Vector3::ZERO;
 		hp = 0;
 		visible = false;
@@ -47,5 +46,9 @@ AgentInfo::AgentInfo(Agent* a)
 
 AgentInfo::~AgentInfo()
 {
-	agent = NULL;
+	agent = nullptr;
+}
+
+void AgentInfo::Update()
+{
 }

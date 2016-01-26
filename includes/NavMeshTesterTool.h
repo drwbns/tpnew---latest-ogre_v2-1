@@ -24,7 +24,7 @@
 #include "Detour/DetourNavMeshQuery.h"
 
 #include "Sample_TileMesh.h"
-#include "DebugDrawOgre.h"
+#include "SharedData.h"
 
 class NavMeshTesterTool : public Sample_TileMesh
 {
@@ -98,7 +98,7 @@ public:
 	//virtual void handleClick(const float* s, const float* p, bool shift);
 	virtual void handleToggle();
 	//virtual void handleStep();
-	virtual void handleUpdate(const float dt);
+	virtual void handleUpdate();
 	virtual void handleRender();
 	//virtual void handleRenderOverlay(double* proj, double* model, int* view);
 

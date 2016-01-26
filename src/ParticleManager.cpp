@@ -20,17 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "ParticleManager.h"
 
 #include "GraphicsSystem.h"
 #include "tinyxml.h"
 
 #include "OgreSceneNode.h"
+#include <OGRE/OgreSceneManager.h>
 
 using namespace Ogre;
 
-template<> ParticleManager* Ogre::Singleton<ParticleManager>::msSingleton = 0;
+template<> ParticleManager* Ogre::Singleton<ParticleManager>::msSingleton = nullptr;
 
 ParticleManager* ParticleManager::getSingletonPtr(void)
 {
@@ -38,14 +38,14 @@ ParticleManager* ParticleManager::getSingletonPtr(void)
 }
 
 ParticleManager& ParticleManager::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
 ParticleManager::ParticleManager()
 {
 	//pManager = NULL;
-	pnode = NULL;
+	pnode = nullptr;
 }
 
 ParticleManager::~ParticleManager()
@@ -70,15 +70,15 @@ void ParticleManager::Initialize()
 	if (!doc.Error())
 	{
 		TiXmlNode* node;
-		node=doc.FirstChild();
-		node=node->FirstChild();
-		for (;node!=0;node=node->NextSibling()) 
+		node = doc.FirstChild();
+		node = node->FirstChild();
+		for (; node != nullptr; node = node->NextSibling())
 		{
 			if (node->Type() == TiXmlNode::ELEMENT)
 			{
 				//get params
 				String name = "";
-				String system = "";
+				String system;
 
 				if (strcmp(node->Value(), "particle") == 0)
 				{
@@ -91,16 +91,15 @@ void ParticleManager::Initialize()
 						}
 						else if (strcmp(att->Name(), "system") == 0)
 						{
-							system = att->Value();
 						}
 						att = att->Next();
 					}
 
 					if (name.length() > 0)
 					{
-						/* particle universe removal.. 
+						/* particle universe removal..
 						//create
-						
+
 						ParticleUniverse::ParticleSystem* psys = pManager->createParticleSystem(name, system, GSYS->GetSceneMgr());
 						pnode->attachObject(psys);
 						//finally add
@@ -122,10 +121,10 @@ void ParticleManager::Finalize()
 	//remove pnode
 	pnode->detachAllObjects();
 	GSYS->GetSceneMgr()->getRootSceneNode()->removeAndDestroyChild(pnode->getName());
-	pnode = NULL;
+	pnode = nullptr;
 
 	//traverse all systems and delete all
-	/* particle universe removal 
+	/* particle universe removal
 	std::map<Ogre::String, ParticleUniverse::ParticleSystem*>::iterator it;
 	it = syss.begin();
 	while (it != syss.end())
@@ -137,7 +136,7 @@ void ParticleManager::Finalize()
 		it++;
 	}
 	syss.clear();
-	
+
 	//clear mgr.
 	pManager->destroyAllParticleSystems(GSYS->GetSceneMgr());
 	pManager = NULL;
@@ -148,19 +147,19 @@ void ParticleManager::Update()
 {
 }
 
-void ParticleManager::ShowParticle(String name, Vector3 pos, Vector3 dir)
+void ParticleManager::ShowParticle()
 {
 	/* particle universe removal
 	ParticleUniverse::ParticleSystem* psys = syss[name];
 	psys->getTechnique(0)->getEmitter(0)->position = pos;
 	psys->getTechnique(0)->getEmitter(0)->setParticleDirection(dir);
 	psys->start();
-	*/ 
+	*/
 }
 
-void ParticleManager::HideParticle(Ogre::String name)
+void ParticleManager::HideParticle()
 {
-	/* particle universe removal 
+	/* particle universe removal
 	ParticleUniverse::ParticleSystem* psys = syss[name];
 	psys->stopFade();
 	*/

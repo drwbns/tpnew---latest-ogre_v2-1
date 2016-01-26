@@ -33,11 +33,12 @@ public:
 	~Path();
 	void AddNode(PtfNode node, bool shift = false);
 	void Clear();
-	void Reverse() { std::reverse(mNodes.begin(), mNodes.end()); }
+	void Reverse() { reverse(mNodes.begin(), mNodes.end()); }
 	void ShowDebug(bool b);
 
 	//gets & sets
-	int GetLength() { return (int)mNodes.size(); }
+	int GetLength() const
+	{ return (int)mNodes.size(); }
 	PtfNode GetNode(int i) { return mNodes[i]; }
 	int numPolys;
 	int numPaths;

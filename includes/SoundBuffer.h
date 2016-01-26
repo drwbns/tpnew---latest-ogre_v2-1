@@ -24,7 +24,6 @@ THE SOFTWARE.
 #define _SOUNDBUFFER_H
 
 #include <OgrePrerequisites.h>
-#include "SoundPrereqs.h"
 
 class SoundBuffer : public Ogre::GeneralAllocatedObject
 {
@@ -34,11 +33,12 @@ public:
 	virtual bool play(ALuint source);
 	virtual bool pause(ALuint source);
 	virtual bool stop(ALuint source);
-	virtual void update(ALuint source, Ogre::Real elapsedTime);
-	virtual void seek(ALuint source, float position);
-	virtual void setLoop(ALuint source, bool loop);
+	virtual void update();
+	virtual void seek();
+	virtual void setLoop(bool loop);
 
-	const Ogre::String& getName() { return mName; }
+	const Ogre::String& getName() const
+	{ return mName; }
 	Ogre::Real getDuration() const { return mDuration; }
 	int getChannels() const { return mChannels; }
 	int getFrequency() const { return mFrequency; }
@@ -48,7 +48,8 @@ public:
 
 protected:
 	void updateInfo();
-	SoundBuffer() { }
+	SoundBuffer(): mBuffers(nullptr), mDuration(0), mChannels(0), mFrequency(0), mSize(0), mBits(0)
+	{ }
 	Ogre::String mName;
 	ALuint* mBuffers;
 

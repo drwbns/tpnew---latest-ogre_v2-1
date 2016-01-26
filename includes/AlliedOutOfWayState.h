@@ -30,10 +30,10 @@ class AlliedOutOfWayState : public AIState
 public:
 	AlliedOutOfWayState(int id);
 	~AlliedOutOfWayState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

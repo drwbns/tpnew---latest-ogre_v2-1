@@ -23,8 +23,6 @@ THE SOFTWARE.
 #ifndef EnemyPatrollingState_h_
 #define EnemyPatrollingState_h_
 
-#include "prereqs.h"
-
 #include "AIState.h"
 
 class EnemyPatrollingState : public AIState
@@ -32,10 +30,10 @@ class EnemyPatrollingState : public AIState
 public:
 	EnemyPatrollingState(int id);
 	~EnemyPatrollingState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

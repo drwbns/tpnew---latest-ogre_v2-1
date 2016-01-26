@@ -4,6 +4,7 @@
 #include <Overlay/OgreOverlay.h>
 
 #include "GraphicsSystem.h"
+#include <OGRE/OgreSceneManager.h>
 
 TextRenderer::TextRenderer()
 {
@@ -26,9 +27,9 @@ TextRenderer::TextRenderer()
 
 TextRenderer::~TextRenderer()
 {
-	//_overlayMgr = Ogre::OverlayManager::getSingletonPtr();
+	//_overlayMgr = Ogre::v1::OverlayManager::getSingletonPtr();
 	//_overlayMgr->destroyAll();
-	_overlayMgr = NULL;
+	_overlayMgr = nullptr;
 }
 
 void TextRenderer::addTextBox(
@@ -68,25 +69,25 @@ void TextRenderer::removeTextBox(const std::string& ID)
 			txts.erase(it);
 			break;
 		}
-		it++;
+		++it;
 	}
 }
 
 void TextRenderer::reset()
 {
-	for (int i=0;i<(int)txts.size();i++)
+	for (int i=0;i<static_cast<int>(txts.size());i++)
 	{
 		removeTextBox(txts[i]);
 	}
 }
 
-void TextRenderer::setText(const std::string& ID, const std::string& Text)
+void TextRenderer::setText(const std::string& ID, const std::string& Text) const
 {
 	Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
 	textBox->setCaption(Text);
 }
 
-void TextRenderer::setPosition(const std::string& ID,float x,float y)
+void TextRenderer::setPosition(const std::string& ID,float x,float y) const
 {
 	Ogre::OverlayElement* textBox = _overlayMgr->getOverlayElement(ID);
 	textBox->setPosition(x, y);

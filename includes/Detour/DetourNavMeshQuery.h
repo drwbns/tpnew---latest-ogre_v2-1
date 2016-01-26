@@ -338,7 +338,7 @@ public:
 private:
 	
 	/// Returns neighbour tile based on side.
-	dtMeshTile* getNeighbourTileAt(int x, int y, int side) const;
+	dtMeshTile* getNeighbourTileAt() const;
 
 	/// Queries polygons within a tile.
 	int queryPolygonsInTile(const dtMeshTile* tile, const float* qmin, const float* qmax, const dtQueryFilter* filter,

@@ -2,16 +2,9 @@
 #define _SOUNDPREREQS_H
 
 //OpenAL Includes
-#include <al.h>
-#include <alc.h>
-#include <xram.h>
 #include <alut.h>
 
-#include <map>
-
 //xiph includes
-#include <ogg/ogg.h>
-#include <vorbis/vorbisfile.h>
 
 struct DeleteSecond
 {

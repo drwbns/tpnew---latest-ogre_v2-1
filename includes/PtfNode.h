@@ -22,9 +22,7 @@ THE SOFTWARE.
 
 #ifndef _PtfNode_H_
 #define _PtfNode_H_
-
-#include <vector>
-#include "OGRE\OgrePrerequisites.h"
+#include <OGRE/OgreVector3.h>
 
 class PtfNode
 {
@@ -34,7 +32,8 @@ public:
 	~PtfNode();
 	
 	//gets & sets
-	Ogre::Vector3 * getPos() { return pos; }
+	Ogre::Vector3 * getPos() const
+	{ return pos; }
 	void setPos(Ogre::Vector3 * p) { pos = p; }
 
 private:

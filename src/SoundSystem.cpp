@@ -25,9 +25,10 @@ THE SOFTWARE.
 #include <OgreRoot.h>
 #include <OgreLogManager.h>
 #include <OgreStringConverter.h>
+#include <SoundPrereqs.h>
 
 
-template<> SoundSystem* Ogre::Singleton<SoundSystem>::msSingleton = NULL;
+template<> SoundSystem* Ogre::Singleton<SoundSystem>::msSingleton = nullptr;
 
 
 //----------------------------------------------------------------------------//
@@ -41,7 +42,8 @@ SoundSystem* SoundSystem::getSingletonPtr(void)
 	return msSingleton;
 }
 //----------------------------------------------------------------------------//
-SoundSystem::SoundSystem()
+SoundSystem::SoundSystem(): mSourceFactory(nullptr), mListenerFactory(nullptr), mDevices(nullptr), mEAXSupport(false), 
+mEAXVersion(0), mXRAMSupport(false), mXRamSize(0), mXRamFree(0), mDopplerFactor(0), mSpeedOfSound(0), mSelectedDevice(0), mContext(nullptr)
 {
 }
 //----------------------------------------------------------------------------//
@@ -75,7 +77,7 @@ bool SoundSystem::initialize()
 	ALCdevice *device = alcOpenDevice(mDeviceName.c_str());
 	logMessage("Choosing: " + mDeviceName);
 
-	if(device == NULL)
+	if(device == nullptr)
 	{
 		throw Ogre::Exception(Ogre::Exception::ERR_INTERNAL_ERROR,
 			"Failed to open audio device", __FUNCTION__);
@@ -83,7 +85,7 @@ bool SoundSystem::initialize()
 
 	// Create OpenAL Context
 	mContext = alcCreateContext(device, NULL);
-	if(mContext == NULL)
+	if(mContext == nullptr)
 	{
 		throw Ogre::Exception(Ogre::Exception::ERR_INTERNAL_ERROR,
 			"Failed to create OpenAL Context", __FUNCTION__);
@@ -93,7 +95,7 @@ bool SoundSystem::initialize()
 	checkError(__FUNCTION__);
 
 	// Check for Supported Formats
-	ALenum eBufferFormat = 0;
+	ALenum eBufferFormat;
 	eBufferFormat = alcGetEnumValue(device, "AL_FORMAT_MONO16");
 	if(eBufferFormat) mSupportedFormats[MONO_CHANNEL] = 
 		OGRE_NEW FormatData(eBufferFormat, "AL_FORMAT_MONO16", "Monophonic Sound");
@@ -176,7 +178,7 @@ void SoundSystem::finalize()
 	delete mDevices;
 
 	// delete all FormatData pointers in the FormatMap;
-	std::for_each(mSupportedFormats.begin(), mSupportedFormats.end(), DeleteSecond());
+	for_each(mSupportedFormats.begin(), mSupportedFormats.end(), DeleteSecond());
 	logMessage("Releasing OpenAL");
 
 	// Release the OpenAL Context and the Audio device
@@ -187,6 +189,11 @@ void SoundSystem::finalize()
 	alcCloseDevice(device);
 	alutExit();
 }
+
+void SoundSystem::setDopplerFactor()
+{
+}
+
 //----------------------------------------------------------------------------//
 struct SoundSystem::UpdateSource
 {
@@ -197,7 +204,7 @@ struct SoundSystem::UpdateSource
 
 	void operator()(std::pair<std::string, SoundSource*> pair)const
 	{
-		pair.second->_updateSound(mElapsedTime);
+		pair.second->_updateSound();
 	}
 
 	float mElapsedTime;
@@ -205,7 +212,7 @@ struct SoundSystem::UpdateSource
 //----------------------------------------------------------------------------//
 struct SoundSystem::SortSources
 {
-	bool operator()(SoundSource* x, SoundSource* y)
+	bool operator()(SoundSource* x, SoundSource* y) const
 	{
 		if ( x->getPriority() < y->getPriority())
 			return true;
@@ -223,7 +230,7 @@ bool SoundSystem::update(float elapsedTime)
 {
 
 	// Update the Sound and Listeners if necessary	
-	std::for_each(mSourceMap.begin(), mSourceMap.end(), UpdateSource(elapsedTime));
+	for_each(mSourceMap.begin(), mSourceMap.end(), UpdateSource(elapsedTime));
 	SoundListener::getSingleton().updateListener();
 
 	mPlayingSources.clear();
@@ -242,7 +249,7 @@ bool SoundSystem::update(float elapsedTime)
 	else
 	{
 		//TODO: sort
-		std::sort(mPlayingSources.begin(), mPlayingSources.end(), SortSources());
+		sort(mPlayingSources.begin(), mPlayingSources.end(), SortSources());
 		mActiveSourceCount = mDevices->getMaxNumSources(mSelectedDevice);
 	}
 
@@ -272,30 +279,25 @@ Ogre::String SoundSystem::errorToString(int error)
 	{
 		case AL_INVALID_VALUE:
 			return Ogre::String("The value pointer given is not valid");
-			break;
-		case AL_INVALID_ENUM:
+	case AL_INVALID_ENUM:
 			return Ogre::String("The specified parameter is not valid");
-			break;
-		case AL_INVALID_NAME:
+	case AL_INVALID_NAME:
 			return Ogre::String("The specified source name is not valid");
-			break;
-		case AL_INVALID_OPERATION:
+	case AL_INVALID_OPERATION:
 			return Ogre::String("There is no current context");
-			break;
-		default:
+	default:
 			return Ogre::String("Unknown Error");
-			break;
 	}
 }
 
 //----------------------------------------------------------------------------//
-SoundListener* SoundSystem::createListener()
+SoundListener* SoundSystem::createListener() const
 {
 	SoundListener *listener = SoundListener::getSingletonPtr();
 	if(!listener)
 	{
 		listener = static_cast<SoundListener*>
-			(mListenerFactory->createInstance("ListenerSingleton", NULL));
+			(mListenerFactory->createInstance("ListenerSingleton", nullptr));
 	}
 
 	return listener;
@@ -311,7 +313,7 @@ SoundSource* SoundSystem::createSource(const Ogre::String& name, const Ogre::Str
 			__FUNCTION__);
 	}
 
-	SoundSource *newSource = static_cast<SoundSource*>(mSourceFactory->createInstance(name, NULL));
+	SoundSource *newSource = static_cast<SoundSource*>(mSourceFactory->createInstance(name, nullptr));
 	newSource->attachBuffer(buffer, streaming);
 
 	if (SoundSource::getActiveCount() < mDevices->getMaxNumSources(mSelectedDevice) )
@@ -323,9 +325,14 @@ SoundSource* SoundSystem::createSource(const Ogre::String& name, const Ogre::Str
 //----------------------------------------------------------------------------//
 void SoundSystem::destroyAllSources()
 {
-	std::for_each(mSourceMap.begin(), mSourceMap.end(), DeleteSecond());
+	for_each(mSourceMap.begin(), mSourceMap.end(), DeleteSecond());
 	mSourceMap.clear();
 }
+
+void SoundSystem::destroySource()
+{
+}
+
 //----------------------------------------------------------------------------//
 void SoundSystem::destroySource(SoundSource* sound)
 {
@@ -343,6 +350,17 @@ void SoundSystem::destroySource(SoundSource* sound)
 			break;
 		}
 }
+
+ALboolean SoundSystem::eaxSetBufferMode()
+{
+	return 0;
+}
+
+ALenum SoundSystem::eaxGetBufferMode()
+{
+	return 0;
+}
+
 //----------------------------------------------------------------------------//
 SoundBuffer* SoundSystem::createBuffer(const Ogre::String& fileName)
 {
@@ -353,7 +371,7 @@ SoundBuffer* SoundSystem::createBuffer(const Ogre::String& fileName)
 			__FUNCTION__);
 	}
 
-	SoundBuffer* mBuffer;
+	SoundBuffer* mBuffer = nullptr;
 	if(fileName.find(".ogg") != std::string::npos || fileName.find(".OGG") != std::string::npos)
 		mBuffer = OGRE_NEW OggBuffer(fileName);
 	else if(fileName.find(".wav") != std::string::npos || fileName.find(".WAV") != std::string::npos)
@@ -366,9 +384,9 @@ SoundBuffer* SoundSystem::createBuffer(const Ogre::String& fileName)
 SoundBuffer* SoundSystem::createStreamingBuffer(SoundSource* mSource, const Ogre::String& fileName)
 {
 
-	StreamingBuffer* mBuffer = NULL;
+	StreamingBuffer* mBuffer = nullptr;
 	if(fileName.find(".ogg") != std::string::npos || fileName.find(".OGG") != std::string::npos)
-		mBuffer = OGRE_NEW OgGAMESTATEream(fileName, mSource, 4);
+		mBuffer = OGRE_NEW OgStream(fileName, mSource, 4);
 	//else if(fileName.find(".wav") != std::string::npos || fileName.find(".WAV") != std::string::npos)
 	//	mBuffer = new WavBuffer(fileName);
 
@@ -393,7 +411,7 @@ SoundBuffer* SoundSystem::getBuffer(const Ogre::String& fileName)
 //----------------------------------------------------------------------------//
 void SoundSystem::destroyAllBuffers()
 {
-	std::for_each(mBufferMap.begin(), mBufferMap.end(), DeleteSecond());
+	for_each(mBufferMap.begin(), mBufferMap.end(), DeleteSecond());
 	for(size_t i = 0; i < mStreamingBuffers.size(); i++)
 		delete mStreamingBuffers[i];
 
@@ -405,8 +423,14 @@ FormatMapIterator SoundSystem::getSupportedFormatIterator()
 {
 	return FormatMapIterator(mSupportedFormats.begin(), mSupportedFormats.end());
 }
+
+const FormatData* SoundSystem::retrieveFormatData()
+{
+	return nullptr;
+}
+
 //----------------------------------------------------------------------------//
-void SoundSystem::restoreContext()
+void SoundSystem::restoreContext() const
 {
 	alcMakeContextCurrent(mContext);
 }
@@ -442,8 +466,14 @@ SoundSource* SoundSystem::getSource(const Ogre::String& name)
 {
 	return mSourceMap[name];
 }
+
+bool SoundSystem::hasSource()
+{
+	return false;
+}
+
 //----------------------------------------------------------------------------//
-SoundSystem::DistanceModel SoundSystem::getDistanceModel() const
+SoundSystem::DistanceModel SoundSystem::getDistanceModel()
 {
 	switch(alGetInteger(AL_DISTANCE_MODEL))
 	{
@@ -470,7 +500,13 @@ SoundSystem::DistanceModel SoundSystem::getDistanceModel() const
 
 	}
 
+	return {};
 }
+
+void SoundSystem::setSpeedOfSound()
+{
+}
+
 void SoundSystem::setDistanceModel(DistanceModel model)
 {
 	switch(model)

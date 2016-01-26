@@ -20,10 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyStrafeState.h"
 #include "World.h"
-#include "AIKnowledge.h"
 using namespace Ogre;
 
 EnemyStrafeState::EnemyStrafeState(int id) : AIState(id)
@@ -34,11 +32,11 @@ EnemyStrafeState::~EnemyStrafeState()
 {
 }
 
-void EnemyStrafeState::Enter(Agent* agent)
+void EnemyStrafeState::Enter(Agent * agent)
 {
 }
 
-void EnemyStrafeState::Execute(Agent* agent)
+void EnemyStrafeState::Execute(Agent * agent)
 {
 	int i = agent->getKnowledge()->getClosestCover();
 	if (i != -1)
@@ -51,11 +49,11 @@ void EnemyStrafeState::Execute(Agent* agent)
 	}
 }
 
-void EnemyStrafeState::Exit(Agent* agent)
+void EnemyStrafeState::Exit(Agent * agent)
 {
 }
 
-bool EnemyStrafeState::isReady(Agent* agent)
+bool EnemyStrafeState::isReady(Agent * agent)
 {
 	return agent->getKnowledge()->totalCover() > 0;
 }

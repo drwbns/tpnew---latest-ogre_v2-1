@@ -24,7 +24,6 @@ THE SOFTWARE.
 #define Level_H_
 
 #include "OgrePrerequisites.h"
-#include "physxPrereqs.h"
 #include "prereqs.h"
 
 #include "Sample_TileMesh.h"
@@ -36,16 +35,17 @@ public:
 	Level();
 	~Level();
 
-	void BuildNavMesh();
+	static void BuildNavMesh();
 	void Update();
 
-	physx::PxActor* GetActor() { return actor; }
+	PxActor* GetActor() const
+	{ return actor; }
 	//NavMesher* GetNavMesher() { return nv; }
 
 protected:
-	Ogre::SceneNode* node;
-	Ogre::Entity*    ent;
-	physx::PxActor*         actor;
+	SceneNode* node;
+	Entity*    ent;
+	PxActor*         actor;
 	std::vector<BoxItem*> items;
 	//NavMesher* nv;
 	

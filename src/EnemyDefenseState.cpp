@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyDefenseState.h"
 
 EnemyDefenseState::EnemyDefenseState(int id) : AIState(id)
@@ -31,19 +30,19 @@ EnemyDefenseState::~EnemyDefenseState()
 {
 }
 
-void EnemyDefenseState::Enter(Agent* agent)
+void EnemyDefenseState::Enter(Agent * agent)
 {
 }
 
-void EnemyDefenseState::Execute(Agent* agent)
+void EnemyDefenseState::Execute(Agent * agent)
 {
 }
 
-void EnemyDefenseState::Exit(Agent* agent)
+void EnemyDefenseState::Exit(Agent * agent)
 {
 }
 
-bool EnemyDefenseState::isReady(Agent* agent)
+bool EnemyDefenseState::isReady(Agent * agent)
 {
 	return false;
 }

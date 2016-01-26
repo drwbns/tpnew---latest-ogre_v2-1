@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedOutOfWayState.h"
 #include "Agent.h"
 #include "World.h"
@@ -36,7 +35,7 @@ AlliedOutOfWayState::~AlliedOutOfWayState()
 {
 }
 
-void AlliedOutOfWayState::Enter(Agent* agent)
+void AlliedOutOfWayState::Enter(Agent * agent)
 {
 	Vector3 dest = agent->GetPosition();
 	Vector3 delta = dest - WORLD->getPlayerAgent()->GetPosition();
@@ -46,7 +45,7 @@ void AlliedOutOfWayState::Enter(Agent* agent)
 	Quaternion q;
 	q.FromAngleAxis(Radian(Math::PI / 2), Vector3::UNIT_Y);
 	float dist = WORLD->getPlayerAgent()->GetRadius() * AIConsts::PlayerOutOfWayDistance;
-	
+
 	float angle = delta.getRotationTo(WORLD->getPlayerAgent()->GetDirection() * Vector3::UNIT_Z).getYaw().valueDegrees();
 	if (angle < 0)
 	{
@@ -60,15 +59,15 @@ void AlliedOutOfWayState::Enter(Agent* agent)
 	agent->orderGoTo(dest);
 }
 
-void AlliedOutOfWayState::Execute(Agent* agent)
+void AlliedOutOfWayState::Execute(Agent * agent)
 {
 }
 
-void AlliedOutOfWayState::Exit(Agent* agent)
+void AlliedOutOfWayState::Exit(Agent * agent)
 {
 }
 
-bool AlliedOutOfWayState::isReady(Agent* agent)
+bool AlliedOutOfWayState::isReady(Agent * agent)
 {
 	//stopped and touching player
 	float dist2player = agent->GetPosition().distance(WORLD->getPlayerAgent()->GetPosition()) - AIConsts::PlayerTouchDistance;

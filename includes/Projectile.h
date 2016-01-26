@@ -25,8 +25,6 @@ THE SOFTWARE.
 
 #include "prereqs.h"
 
-#include "OGRE\OgrePrerequisites.h"
-
 #include "OGRE\OgreMemoryAllocatorConfig.h"
 #include "OgreVector3.h"
 
@@ -45,7 +43,6 @@ protected:
 	void SetSpeed(float f) { mSpeed = f; }
 	void SetHitPoint(float f) { mHitPoint = f; }
 
-protected:
 	Agent* mOwner;
 	Ogre::Vector3 mStart;
 	Ogre::Vector3 mPosition;

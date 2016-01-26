@@ -32,7 +32,7 @@ using namespace Ogre;
 
 BillboardNodeSet::BillboardNodeSet(int sz)
 {
-	set = NULL;
+	set = nullptr;
 	counter = 0;
 	size = sz;
 }
@@ -44,14 +44,14 @@ BillboardNodeSet::~BillboardNodeSet()
 void BillboardNodeSet::Update()
 {
 	//update buffer
-	for (size_t i=0;i<buffer.size();i++)
+	for (size_t i = 0; i < buffer.size(); i++)
 	{
-		if (buffer[i]->bill != NULL)
+		if (buffer[i]->bill != nullptr)
 		{
 			if (buffer[i]->liveTime <= 0)
 			{
 				set->removeBillboard(buffer[i]->bill);
-				buffer[i]->bill = NULL;
+				buffer[i]->bill = nullptr;
 			}
 			else
 			{
@@ -61,22 +61,22 @@ void BillboardNodeSet::Update()
 	}
 }
 
-void BillboardNodeSet::Finalize(Ogre::SceneNode* parent)
+void BillboardNodeSet::Finalize(SceneNode* parent)
 {
 	//clear buffer
-	for (size_t i=0;i<buffer.size();i++)
+	for (size_t i = 0; i < buffer.size(); i++)
 	{
-		if (buffer[i]->bill != NULL)
+		if (buffer[i]->bill != nullptr)
 		{
 			set->removeBillboard(buffer[i]->bill);
 		}
 		delete buffer[i];
-		buffer[i] = NULL;
+		buffer[i] = nullptr;
 	}
 	buffer.clear();
 
 	//detach & remove set
 	parent->detachObject(set);
 	GSYS->GetSceneMgr()->destroyBillboardSet(set);
-	set = NULL;
+	set = nullptr;
 }

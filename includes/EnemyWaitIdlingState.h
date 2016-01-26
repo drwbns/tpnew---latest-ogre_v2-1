@@ -30,10 +30,10 @@ class EnemyWaitIdlingState : public AIState
 public:
 	EnemyWaitIdlingState(int id);
 	~EnemyWaitIdlingState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

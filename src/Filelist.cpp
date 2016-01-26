@@ -28,7 +28,6 @@
 //																					//
 //----------------------------------------------------------------------------------//
 
-
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -62,7 +61,7 @@ static void fileListAdd(FileList& list, const char* path)
 	if (list.size >= FileList::MAX_FILES)
 		return;
 	int n = strlen(path);
-	list.files[list.size] = new char[n+1];
+	list.files[list.size] = new char[n + 1];
 	strcpy(list.files[list.size], path);
 	list.size++;
 }
@@ -70,7 +69,7 @@ static void fileListAdd(FileList& list, const char* path)
 static void fileListClear(FileList& list)
 {
 	for (int i = 0; i < list.size; ++i)
-		delete [] list.files[i];
+		delete[] list.files[i];
 	list.size = 0;
 }
 
@@ -88,11 +87,11 @@ static int cmp(const void* a, const void* b)
 {
 	return strcmp(*(const char**)a, *(const char**)b);
 }
-	
+
 void scanDirectory(const char* path, const char* ext, FileList& list)
 {
 	fileListClear(list);
-	
+
 #ifdef WIN32
 	_finddata_t dir;
 	char pathWithExt[260];
@@ -106,19 +105,18 @@ void scanDirectory(const char* path, const char* ext, FileList& list)
 	do
 	{
 		fileListAdd(list, dir.name);
-	}
-	while (_findnext(fh, &dir) == 0);
+	} while (_findnext(fh, &dir) == 0);
 	_findclose(fh);
 #else
 	dirent* current = 0;
 	DIR* dp = opendir(path);
 	if (!dp)
 		return;
-	
+
 	while ((current = readdir(dp)) != 0)
 	{
 		int len = strlen(current->d_name);
-		if (len > 4 && strncmp(current->d_name+len-4, ext, 4) == 0)
+		if (len > 4 && strncmp(current->d_name + len - 4, ext, 4) == 0)
 		{
 			fileListAdd(list, current->d_name);
 		}

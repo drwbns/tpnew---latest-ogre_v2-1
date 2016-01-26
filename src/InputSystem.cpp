@@ -20,24 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "InputSystem.h"
 
 #include "GraphicsSystem.h"
-#include "GuiSystem.h"
 #include "StateSystem.h"
 #include "GameState.h"
 #include "CamController.h"
-#include "TpCamController.h"
 #include "PhysicsSystem.h"
 #include "World.h"
 #include "InputController.h"
 #include "GlobalVars.h"
+#include <OGRE/OgreRenderWindow.h>
+#include <OIS/OISInputManager.h>
 
 using namespace Ogre;
 using namespace OIS;
 
-template<> InputSystem* Ogre::Singleton<InputSystem>::msSingleton = 0;
+template<> InputSystem* Singleton<InputSystem>::msSingleton = nullptr;
 
 InputSystem* InputSystem::getSingletonPtr(void)
 {
@@ -45,11 +44,11 @@ InputSystem* InputSystem::getSingletonPtr(void)
 }
 
 InputSystem& InputSystem::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
-InputSystem::InputSystem() : mInputManager(NULL), mKeyboard(NULL), mMouse(NULL)
+InputSystem::InputSystem() : mInputManager(nullptr), mMouse(nullptr), mKeyboard(nullptr)
 {
 }
 
@@ -65,8 +64,8 @@ void InputSystem::Initialize()
 	size_t windowHnd = 0;
 	std::ostringstream windowHndStr;
 	GSYS->GetWindow()->getCustomAttribute("WINDOW", &windowHnd);
-	windowHndStr << (unsigned int)windowHnd;
-	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+	windowHndStr << static_cast<unsigned int>(windowHnd);
+	pl.insert(make_pair(std::string("WINDOW"), windowHndStr.str()));
 	mInputManager = InputManager::createInputSystem(pl);
 
 	//create all devices
@@ -79,8 +78,6 @@ void InputSystem::Initialize()
 	OIS::MouseState ms = mMouse->getMouseState();
 	int w = GSYS->GetWindow()->getWidth();
 	int h = GSYS->GetWindow()->getHeight();
-	ms.width = w;
-	ms.height = h;
 }
 
 void InputSystem::Finalize()
@@ -88,12 +85,12 @@ void InputSystem::Finalize()
 	mInputManager->destroyInputObject(mKeyboard);
 	mInputManager->destroyInputObject(mMouse);
 	InputManager::destroyInputSystem(mInputManager);
-	mKeyboard = NULL;
-	mMouse = NULL;
-	mInputManager = NULL;
+	mKeyboard = nullptr;
+	mMouse = nullptr;
+	mInputManager = nullptr;
 }
 
-void InputSystem::Update(const Ogre::FrameEvent& evt)
+void InputSystem::Update(const FrameEvent& evt) const
 {
 	mKeyboard->capture();
 	mMouse->capture();
@@ -101,35 +98,35 @@ void InputSystem::Update(const Ogre::FrameEvent& evt)
 	processUnbufferedMouseInput(evt);
 }
 
-bool InputSystem::mouseMoved( const OIS::MouseEvent &arg )
+bool InputSystem::mouseMoved(const OIS::MouseEvent &arg)
 {
 	//UISYS->GetGUI()->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
 	return true;
 }
 
-bool InputSystem::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+bool InputSystem::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
 	//UISYS->GetGUI()->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
-	
+
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)WORLD->getPlayerAgent()->getController())->injectMousePress(id, true);
+		static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectMousePress(id, true);
 	}
 	return true;
 }
 
-bool InputSystem::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+bool InputSystem::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
 	//UISYS->GetGUI()->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
-	
+
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)WORLD->getPlayerAgent()->getController())->injectMouseRelease(id);
+		static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectMouseRelease(id);
 	}
 	return true;
 }
 
-bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
+bool InputSystem::keyPressed(const OIS::KeyEvent &arg)
 {
 	//UISYS->GetGUI()->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
 
@@ -140,7 +137,7 @@ bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyPress(arg.key);
+		static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectKeyPress(arg.key);
 
 		if (arg.key == KC_C)
 		{
@@ -154,34 +151,32 @@ bool InputSystem::keyPressed( const OIS::KeyEvent &arg )
 		else if (arg.key == KC_E)
 		{
 			GSYS->GetSceneMgr()->getManualObject("mNavMesherDebugger")->getVisible() ?
-			GSYS->GetSceneMgr()->getManualObject("mNavMesherDebugger")->setVisible(false)
-			:
-			GSYS->GetSceneMgr()->getManualObject("mNavMesherDebugger")->setVisible(true);
+				GSYS->GetSceneMgr()->getManualObject("mNavMesherDebugger")->setVisible(false)
+				:
+				GSYS->GetSceneMgr()->getManualObject("mNavMesherDebugger")->setVisible(true);
 		}
 	}
 
 	return true;
 }
 
-bool InputSystem::keyReleased( const OIS::KeyEvent &arg )
+bool InputSystem::keyReleased(const OIS::KeyEvent &arg)
 {
 	//UISYS->GetGUI()->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
 
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyRelease(arg.key);
+		static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectKeyRelease(arg.key);
 	}
 
 	return true;
 }
 
-
-
-bool InputSystem::processUnbufferedKeyInput(const Ogre::FrameEvent& evt)
+bool InputSystem::processUnbufferedKeyInput(const FrameEvent& evt) const
 {
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
-		((InputController*)WORLD->getPlayerAgent()->getController())->injectKeyboardState(mKeyboard);
+		static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectKeyboardState(mKeyboard);
 	}
 
 	if (mKeyboard->isKeyDown(KC_U))GlobalVars::test1 += 0.01;
@@ -194,12 +189,12 @@ bool InputSystem::processUnbufferedKeyInput(const Ogre::FrameEvent& evt)
 	return true;
 }
 
-bool InputSystem::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
+bool InputSystem::processUnbufferedMouseInput(const FrameEvent& evt) const
 {
 	if (SSYS->GetCurrentState()->GetName() == "game")
 	{
 		MouseState ms = mMouse->getMouseState();
-		GAMESTATE->GetCurrentCam()->UpdateRotation(-ms.Y.rel, -ms.X.rel);
+		GAMESTATE->GetCurrentCam()->UpdateRotation();
 
 		if (ms.buttonDown(MB_Middle))
 		{
@@ -212,7 +207,7 @@ bool InputSystem::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
 
 		if (ms.buttonDown(MB_Left))
 		{
-			((InputController*)WORLD->getPlayerAgent()->getController())->injectMousePress(OIS::MB_Left, false);
+			static_cast<InputController*>(WORLD->getPlayerAgent()->getController())->injectMousePress(OIS::MB_Left, false);
 		}
 	}
 	return true;

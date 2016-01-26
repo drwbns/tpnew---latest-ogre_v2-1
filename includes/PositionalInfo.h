@@ -33,7 +33,8 @@ public:
 	~PositionalInfo();
 
 	void SetPosition(Ogre::Vector3 p) { position = p; }
-	Ogre::Vector3 GetPosition() { return position; }
+	Ogre::Vector3 GetPosition() const
+	{ return position; }
 
 private:
 	Ogre::Vector3 position;

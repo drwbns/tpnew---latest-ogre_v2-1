@@ -20,11 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedFireState.h"
 #include "OgreVector3.h"
 #include "Agent.h"
-#include "AIKnowledge.h"
 
 using namespace Ogre;
 
@@ -36,14 +34,14 @@ AlliedFireState::~AlliedFireState()
 {
 }
 
-void AlliedFireState::Enter(Agent* agent)
+void AlliedFireState::Enter(Agent * agent)
 {
 	agent->SetAimMode(true);
 	//order to stop
 	agent->orderBrake();
 }
 
-void AlliedFireState::Execute(Agent* agent)
+void AlliedFireState::Execute(Agent * agent)
 {
 	//find closest Allied
 	int id = agent->getKnowledge()->getClosestVisibleEnemy();
@@ -52,10 +50,7 @@ void AlliedFireState::Execute(Agent* agent)
 		Vector3 closest = agent->getKnowledge()->getEnemy(id).GetPosition();
 		float coeff = agent->GetPosition().distance(closest) / agent->getAttackRange();
 		Vector3 target = closest;
-		target.x += coeff * Math::RangeRandom(-1.0 , 1.0);
-		target.y += coeff * Math::RangeRandom(-0.125 * agent->getEyePos().y, 1.50 * agent->getEyePos().y);
-		target.z += coeff * Math::RangeRandom(-1.0 , 0.0);
-		agent->Shoot(false, target);
+		agent->Shoot();
 
 		//set direction
 		Vector3 dir = closest - agent->GetPosition();
@@ -65,12 +60,12 @@ void AlliedFireState::Execute(Agent* agent)
 	}
 }
 
-void AlliedFireState::Exit(Agent* agent)
+void AlliedFireState::Exit(Agent * agent)
 {
 	agent->SetAimMode(false);
 }
 
-bool AlliedFireState::isReady(Agent* agent)
+bool AlliedFireState::isReady(Agent * agent)
 {
 	return true;
 }

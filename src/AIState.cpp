@@ -20,48 +20,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AIState.h"
 #include "AIStateMachine.h"
 
-AIState::AIState(int id) : id(id), parent(NULL)
+AIState::AIState(int id) : id(id), parent(nullptr)
 {
 }
 
 AIState::~AIState()
 {
-	parent = NULL;
-	for (size_t i=0;i<children.size();i++)
+	parent = nullptr;
+	for (size_t i = 0; i < children.size(); i++)
 	{
 		delete children[i];
-		children[i] = NULL;
+		children[i] = nullptr;
 	}
 	children.clear();
 }
 
-void AIState::Enter(Agent* agent)
+void AIState::Enter(Agent * agent)
 {
 }
 
-void AIState::Execute(Agent* agent)
+void AIState::Execute(Agent * agent)
 {
 }
 
-void AIState::Exit(Agent* agent)
+void AIState::Exit(Agent * agent)
 {
 }
 
 void AIState::GetAvailables(AIStateMachine* sm, Agent* agent, std::vector<AIState*> &list)
 {
-	if (this->IsLeaf() && this->isReady(agent))
+	if (this->IsLeaf() && this->isReady())
 	{
 		list.push_back(this);
 	}
 	else
 	{
-		for (int i=0;i<(int)children.size();i++)
+		for (int i = 0; i < static_cast<int>(children.size()); i++)
 		{
-			if (children[i]->isReady(agent))
+			if (children[i]->isReady())
 			{
 				if (children[i]->IsLeaf())
 				{

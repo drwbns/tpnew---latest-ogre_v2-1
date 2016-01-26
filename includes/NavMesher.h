@@ -26,7 +26,6 @@ THE SOFTWARE.
 #include "Path.h"
 
 #include "Recast/Recast.h"
-#include "Recast/RecastDebugDraw.h"
 //#include "Recast/RecastLog.h"
 //#include "Recast/RecastTimer.h"
 //#include "Detour/DetourStatNavMesh.h"
@@ -53,11 +52,14 @@ public:
 	void cleanup();
 	void DrawDebug();
 	void GetPath(Ogre::Vector3 from, Ogre::Vector3 to, Path* &path);
-	bool CanBeWalkedTo(Ogre::Vector3 to, Ogre::Vector3 extents);
-	void ShowDebug(bool b) { mDebuggerNode->setVisible(b); }
-	int GetTotalPos() { return (int)allPositions.size(); }
+	bool CanBeWalkedTo(Ogre::Vector3 to, Ogre::Vector3 extents) const;
+	void ShowDebug(bool b) const
+	{ mDebuggerNode->setVisible(b); }
+	int GetTotalPos() const
+	{ return (int)allPositions.size(); }
 	Ogre::Vector3 GetPos(int i) { return allPositions[i]; }
-	const char * getFilePath() { return filepath; }
+	const char * getFilePath() const
+	{ return filepath; }
 
 	enum DrawMode
 	{

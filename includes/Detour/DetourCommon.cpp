@@ -27,7 +27,7 @@ float dtSqrt(float x)
 }
 
 void dtClosestPtPointTriangle(float* closest, const float* p,
-							  const float* a, const float* b, const float* c)
+	const float* a, const float* b, const float* c)
 {
 	// Check if P in vertex region outside A
 	float ab[3], ac[3], ap[3];
@@ -42,7 +42,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		dtVcopy(closest, a);
 		return;
 	}
-	
+
 	// Check if P in vertex region outside B
 	float bp[3];
 	dtVsub(bp, p, b);
@@ -54,7 +54,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		dtVcopy(closest, b);
 		return;
 	}
-	
+
 	// Check if P in edge region of AB, if so return projection of P onto AB
 	float vc = d1*d4 - d3*d2;
 	if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
@@ -66,7 +66,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		closest[2] = a[2] + v * ab[2];
 		return;
 	}
-	
+
 	// Check if P in vertex region outside C
 	float cp[3];
 	dtVsub(cp, p, c);
@@ -78,7 +78,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		dtVcopy(closest, c);
 		return;
 	}
-	
+
 	// Check if P in edge region of AC, if so return projection of P onto AC
 	float vb = d5*d2 - d1*d6;
 	if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
@@ -90,7 +90,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		closest[2] = a[2] + w * ac[2];
 		return;
 	}
-	
+
 	// Check if P in edge region of BC, if so return projection of P onto BC
 	float va = d3*d6 - d5*d4;
 	if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
@@ -102,7 +102,7 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 		closest[2] = b[2] + w * (c[2] - b[2]);
 		return;
 	}
-	
+
 	// P inside face region. Compute Q through its barycentric coordinates (u,v,w)
 	float denom = 1.0f / (va + vb + vc);
 	float v = vb * denom;
@@ -113,25 +113,25 @@ void dtClosestPtPointTriangle(float* closest, const float* p,
 }
 
 bool dtIntersectSegmentPoly2D(const float* p0, const float* p1,
-							  const float* verts, int nverts,
-							  float& tmin, float& tmax,
-							  int& segMin, int& segMax)
+	const float* verts, int nverts,
+	float& tmin, float& tmax,
+	int& segMin, int& segMax)
 {
 	static const float EPS = 0.00000001f;
-	
+
 	tmin = 0;
 	tmax = 1;
 	segMin = -1;
 	segMax = -1;
-	
+
 	float dir[3];
 	dtVsub(dir, p1, p0);
-	
-	for (int i = 0, j = nverts-1; i < nverts; j=i++)
+
+	for (int i = 0, j = nverts - 1; i < nverts; j = i++)
 	{
 		float edge[3], diff[3];
-		dtVsub(edge, &verts[i*3], &verts[j*3]);
-		dtVsub(diff, p0, &verts[j*3]);
+		dtVsub(edge, &verts[i * 3], &verts[j * 3]);
+		dtVsub(diff, p0, &verts[j * 3]);
 		const float n = dtVperp2D(edge, diff);
 		const float d = dtVperp2D(dir, edge);
 		if (fabsf(d) < EPS)
@@ -168,7 +168,7 @@ bool dtIntersectSegmentPoly2D(const float* p0, const float* p1,
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -195,7 +195,7 @@ void dtCalcPolyCenter(float* tc, const unsigned short* idx, int nidx, const floa
 	tc[2] = 0.0f;
 	for (int j = 0; j < nidx; ++j)
 	{
-		const float* v = &verts[idx[j]*3];
+		const float* v = &verts[idx[j] * 3];
 		tc[0] += v[0];
 		tc[1] += v[1];
 		tc[2] += v[2];
@@ -209,16 +209,16 @@ void dtCalcPolyCenter(float* tc, const unsigned short* idx, int nidx, const floa
 bool dtClosestHeightPointTriangle(const float* p, const float* a, const float* b, const float* c, float& h)
 {
 	float v0[3], v1[3], v2[3];
-	dtVsub(v0, c,a);
-	dtVsub(v1, b,a);
-	dtVsub(v2, p,a);
-	
+	dtVsub(v0, c, a);
+	dtVsub(v1, b, a);
+	dtVsub(v2, p, a);
+
 	const float dot00 = dtVdot2D(v0, v0);
 	const float dot01 = dtVdot2D(v0, v1);
 	const float dot02 = dtVdot2D(v0, v2);
 	const float dot11 = dtVdot2D(v1, v1);
 	const float dot12 = dtVdot2D(v1, v2);
-	
+
 	// Compute barycentric coordinates
 	const float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
 	const float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
@@ -227,14 +227,14 @@ bool dtClosestHeightPointTriangle(const float* p, const float* a, const float* b
 	// The (sloppy) epsilon is needed to allow to get height of points which
 	// are interpolated along the edges of the triangles.
 	static const float EPS = 1e-4f;
-	
+
 	// If point lies inside the triangle, return interpolated ycoord.
-	if (u >= -EPS && v >= -EPS && (u+v) <= 1+EPS)
+	if (u >= -EPS && v >= -EPS && (u + v) <= 1 + EPS)
 	{
-		h = a[1] + v0[1]*u + v1[1]*v;
+		h = a[1] + v0[1] * u + v1[1] * v;
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -243,29 +243,29 @@ bool dtPointInPolygon(const float* pt, const float* verts, const int nverts)
 	// TODO: Replace pnpoly with triArea2D tests?
 	int i, j;
 	bool c = false;
-	for (i = 0, j = nverts-1; i < nverts; j = i++)
+	for (i = 0, j = nverts - 1; i < nverts; j = i++)
 	{
-		const float* vi = &verts[i*3];
-		const float* vj = &verts[j*3];
+		const float* vi = &verts[i * 3];
+		const float* vj = &verts[j * 3];
 		if (((vi[2] > pt[2]) != (vj[2] > pt[2])) &&
-			(pt[0] < (vj[0]-vi[0]) * (pt[2]-vi[2]) / (vj[2]-vi[2]) + vi[0]) )
+			(pt[0] < (vj[0] - vi[0]) * (pt[2] - vi[2]) / (vj[2] - vi[2]) + vi[0]))
 			c = !c;
 	}
 	return c;
 }
 
 bool dtDistancePtPolyEdgesSqr(const float* pt, const float* verts, const int nverts,
-							  float* ed, float* et)
+	float* ed, float* et)
 {
 	// TODO: Replace pnpoly with triArea2D tests?
 	int i, j;
 	bool c = false;
-	for (i = 0, j = nverts-1; i < nverts; j = i++)
+	for (i = 0, j = nverts - 1; i < nverts; j = i++)
 	{
-		const float* vi = &verts[i*3];
-		const float* vj = &verts[j*3];
+		const float* vi = &verts[i * 3];
+		const float* vj = &verts[j * 3];
 		if (((vi[2] > pt[2]) != (vj[2] > pt[2])) &&
-			(pt[0] < (vj[0]-vi[0]) * (pt[2]-vi[2]) / (vj[2]-vi[2]) + vi[0]) )
+			(pt[0] < (vj[0] - vi[0]) * (pt[2] - vi[2]) / (vj[2] - vi[2]) + vi[0]))
 			c = !c;
 		ed[j] = dtDistancePtSegSqr2D(pt, vj, vi, et[j]);
 	}
@@ -273,52 +273,52 @@ bool dtDistancePtPolyEdgesSqr(const float* pt, const float* verts, const int nve
 }
 
 static void projectPoly(const float* axis, const float* poly, const int npoly,
-						float& rmin, float& rmax)
+	float& rmin, float& rmax)
 {
 	rmin = rmax = dtVdot2D(axis, &poly[0]);
 	for (int i = 1; i < npoly; ++i)
 	{
-		const float d = dtVdot2D(axis, &poly[i*3]);
+		const float d = dtVdot2D(axis, &poly[i * 3]);
 		rmin = dtMin(rmin, d);
 		rmax = dtMax(rmax, d);
 	}
 }
 
 inline bool overlapRange(const float amin, const float amax,
-						 const float bmin, const float bmax,
-						 const float eps)
+	const float bmin, const float bmax,
+	const float eps)
 {
-	return ((amin+eps) > bmax || (amax-eps) < bmin) ? false : true;
+	return ((amin + eps) > bmax || (amax - eps) < bmin) ? false : true;
 }
 
 bool dtOverlapPolyPoly2D(const float* polya, const int npolya,
-						 const float* polyb, const int npolyb)
+	const float* polyb, const int npolyb)
 {
 	const float eps = 1e-4f;
-	
-	for (int i = 0, j = npolya-1; i < npolya; j=i++)
+
+	for (int i = 0, j = npolya - 1; i < npolya; j = i++)
 	{
-		const float* va = &polya[j*3];
-		const float* vb = &polya[i*3];
-		const float n[3] = { vb[2]-va[2], 0, -(vb[0]-va[0]) };
-		float amin,amax,bmin,bmax;
-		projectPoly(n, polya, npolya, amin,amax);
-		projectPoly(n, polyb, npolyb, bmin,bmax);
-		if (!overlapRange(amin,amax, bmin,bmax, eps))
+		const float* va = &polya[j * 3];
+		const float* vb = &polya[i * 3];
+		const float n[3] = { vb[2] - va[2], 0, -(vb[0] - va[0]) };
+		float amin, amax, bmin, bmax;
+		projectPoly(n, polya, npolya, amin, amax);
+		projectPoly(n, polyb, npolyb, bmin, bmax);
+		if (!overlapRange(amin, amax, bmin, bmax, eps))
 		{
 			// Found separating axis
 			return false;
 		}
 	}
-	for (int i = 0, j = npolyb-1; i < npolyb; j=i++)
+	for (int i = 0, j = npolyb - 1; i < npolyb; j = i++)
 	{
-		const float* va = &polyb[j*3];
-		const float* vb = &polyb[i*3];
-		const float n[3] = { vb[2]-va[2], 0, -(vb[0]-va[0]) };
-		float amin,amax,bmin,bmax;
-		projectPoly(n, polya, npolya, amin,amax);
-		projectPoly(n, polyb, npolyb, bmin,bmax);
-		if (!overlapRange(amin,amax, bmin,bmax, eps))
+		const float* va = &polyb[j * 3];
+		const float* vb = &polyb[i * 3];
+		const float n[3] = { vb[2] - va[2], 0, -(vb[0] - va[0]) };
+		float amin, amax, bmin, bmax;
+		projectPoly(n, polya, npolya, amin, amax);
+		projectPoly(n, polyb, npolyb, bmin, bmax);
+		if (!overlapRange(amin, amax, bmin, bmax, eps))
 		{
 			// Found separating axis
 			return false;
@@ -326,4 +326,3 @@ bool dtOverlapPolyPoly2D(const float* polya, const int npolya,
 	}
 	return true;
 }
-

@@ -23,8 +23,6 @@ THE SOFTWARE.
 #ifndef AlliedAttackState_h_
 #define AlliedAttackState_h_
 
-#include "prereqs.h"
-
 #include "AIState.h"
 
 class AlliedAttackState : public AIState
@@ -32,10 +30,10 @@ class AlliedAttackState : public AIState
 public:
 	AlliedAttackState(int id);
 	~AlliedAttackState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

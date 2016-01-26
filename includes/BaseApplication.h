@@ -22,7 +22,7 @@ This source file is part of the
 #include "OgreSingleton.h"
 #include "OgreFrameListener.h"
 #include "OgreWindowEventUtilities.h"
-#include "Overlay\OgreOverlayElement.h"
+//#include "Overlay\OgreOverlayElement.h"
 
 #include "OIS\OISMouse.h"
 #include "OIS\OISKeyboard.h"
@@ -32,7 +32,7 @@ This source file is part of the
 
 using namespace Ogre;
 
-class BaseApplication : public Ogre::Singleton<BaseApplication>, public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
+class BaseApplication : public Singleton<BaseApplication>, public FrameListener, public WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
 public:
     BaseApplication(void);
@@ -41,15 +41,23 @@ public:
 	static BaseApplication& getSingleton();
 	static BaseApplication* getSingletonPtr();
 
-	RenderWindow* getWindow() { return mWindow; };
-	OIS::Mouse * getMouse() { return mMouse; };
-	OIS::Keyboard* getKeyboard() { return mKeyboard; }
-	Camera* getCamera() { return mCamera; }
-	SceneManager* getSceneMgr() { return mSceneMgr; }
-	Root* getRoot() { return mRoot; } 
-	OIS::InputManager* getInputMgr() { return mInputManager; } 
+	RenderWindow* getWindow() const
+	{ return mWindow; };
+	OIS::Mouse * getMouse() const
+	{ return mMouse; };
+	OIS::Keyboard* getKeyboard() const
+	{ return mKeyboard; }
+	Camera* getCamera() const
+	{ return mCamera; }
+	SceneManager* getSceneMgr() const
+	{ return mSceneMgr; }
+	Root* getRoot() const
+	{ return mRoot; } 
+	OIS::InputManager* getInputMgr() const
+	{ return mInputManager; } 
 
-	OgreCharacter * getCharacter() { return mChar; }
+	OgreCharacter * getCharacter() const
+	{ return mChar; }
 
     virtual void go(void);
 
@@ -69,7 +77,7 @@ protected:
     virtual void loadResources(void);
 
     // Ogre::FrameListener
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    virtual bool frameRenderingQueued(const FrameEvent& evt);
 
     // OIS::KeyListener
     virtual bool keyPressed( const OIS::KeyEvent &arg );
@@ -85,12 +93,12 @@ protected:
     //Unattach OIS before window shutdown (very important under Linux)
     virtual void windowClosed(Ogre::RenderWindow* rw);
 
-    Ogre::Root *mRoot;
-    Ogre::Camera* mCamera;
-    Ogre::SceneManager* mSceneMgr;
-    Ogre::RenderWindow* mWindow;
-    Ogre::String mResourcesCfg;
-    Ogre::String mPluginsCfg;
+    Root *mRoot;
+    Camera* mCamera;
+    SceneManager* mSceneMgr;
+    RenderWindow* mWindow;
+    String mResourcesCfg;
+    String mPluginsCfg;
 
     bool mCursorWasVisible;                    // was cursor visible before dialog appeared
     bool mShutDown;
@@ -119,7 +127,7 @@ protected:
 	bool yawHasBeenReset;
 	Real pitchAngle, yawAngle;
 
-	Ogre::OverlayElement* guiDbg;
+	//OverlayElement* guiDbg;
 	float mTimeUntilNextToggle;
 	TextureFilterOptions mFiltering;
 	size_t mAniso;

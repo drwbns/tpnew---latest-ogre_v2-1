@@ -33,10 +33,13 @@ class RtsCamController : public Ogre::Singleton<RtsCamController>, public CamCon
 public:
 	RtsCamController();
 	~RtsCamController();
-	void Initialize(Ogre::Camera* camera);
-	void Finalize();
-	void UpdateLocation(float mWalk, float mStrafe, float mUp);
-	void UpdateRotation(float mPitch, float mYaw);
+	void Initialize(Ogre::Camera* camera) override;
+	void Finalize() override;
+	void UpdateLocation() override;
+	void UpdateRotation() override;
+	Ogre::Real mWalk;
+	Ogre::Real mStrafe;
+	Ogre::Real mUp;
 };
 
 #endif

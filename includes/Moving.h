@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "Ogre/OgreVector3.h"
 #include "OGRE\OgreQuaternion.h"
 
-#include "prereqs.h"
+#include "Path.h"
 
 class Moving
 {
@@ -51,32 +51,44 @@ protected:
 	virtual void Update();
 
 public:
-	Ogre::Vector3 CalculateBrake();
-	Ogre::Vector3 CalculateSeek();
-	Ogre::Vector3 CalculateArrive();
-	Ogre::Vector3 CalculateObstacleAvoidance();
-	Ogre::Vector3 CalculateWallAvoidance();
-	Ogre::Vector3 CalculateAgentAvoidance();
+	Ogre::Vector3 CalculateBrake() const;
+	Ogre::Vector3 CalculateSeek() const;
+	Ogre::Vector3 CalculateArrive() const;
+	Ogre::Vector3 CalculateObstacleAvoidance() const;
+	Ogre::Vector3 CalculateWallAvoidance() const;
+	Ogre::Vector3 CalculateAgentAvoidance() const;
 	Ogre::Vector3 CalculatePathFollow();
-	Ogre::Vector3 CalculateSeperate();
+	Ogre::Vector3 CalculateSeperate() const;
 
-	float GetMaxSpeed() { return MaxSpeed; }
-	float GetRadius() { return Radius; }
-	Ogre::Vector3 GetPosition() { return Position; }
-	Ogre::Vector3 GetVelocity() { return Velocity; }
-	Ogre::Vector3 GetAcceleration() { return Acceleration; }
-	Ogre::Vector3 GetDest() { return Destination; }
-	Ogre::Quaternion GetRotation() { return Rotation; }
-	Ogre::Quaternion GetDirection() { return Direction; }
+	float GetMaxSpeed() const
+	{ return MaxSpeed; }
+	float GetRadius() const
+	{ return Radius; }
+	Ogre::Vector3 GetPosition() const
+	{ return Position; }
+	Ogre::Vector3 GetVelocity() const
+	{ return Velocity; }
+	Ogre::Vector3 GetAcceleration() const
+	{ return Acceleration; }
+	Ogre::Vector3 GetDest() const
+	{ return Destination; }
+	Ogre::Quaternion GetRotation() const
+	{ return Rotation; }
+	Ogre::Quaternion GetDirection() const
+	{ return Direction; }
 	void SetDirection(Ogre::Quaternion q) { Direction = q; }
 	void SetMaxSpeed(float v) { MaxSpeed = v; }
 	void SetDest(Ogre::Vector3 dest) { Destination = dest; }
-	Path* GetPath() { return mPath; }
+	Path* GetPath() const
+	{ return mPath; }
 	void SetPath(Path* p) { mPath = p; }
-	Path* GetPatrolPath() { return pPath; }
-	bool isOnDest() { return Position == Destination; }
+	Path* GetPatrolPath() const
+	{ return pPath; }
+	bool isOnDest() const
+	{ return Position == Destination; }
 
-	bool isActive(Behaviour b)  { return (b & behavior)!=0; }
+	bool isActive(Behaviour b) const
+	{ return (b & behavior)!=0; }
 	void resetBehavior()	    { behavior = 0;   }
 	void brakeOn()				{ behavior |= brake; }
 	void brakeOf()				{ behavior ^= brake; }

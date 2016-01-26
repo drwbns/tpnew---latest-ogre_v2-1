@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyWaitIdlingState.h"
 
 #include "Agent.h"
@@ -36,22 +35,22 @@ EnemyWaitIdlingState::~EnemyWaitIdlingState()
 {
 }
 
-void EnemyWaitIdlingState::Enter(Agent* agent)
+void EnemyWaitIdlingState::Enter(Agent * agent)
 {
 	agent->setWaitTime(0);
 }
 
-void EnemyWaitIdlingState::Execute(Agent* agent)
+void EnemyWaitIdlingState::Execute(Agent * agent)
 {
 	agent->add2WaitTime(GlobalVars::Tick);
 }
 
-void EnemyWaitIdlingState::Exit(Agent* agent)
+void EnemyWaitIdlingState::Exit(Agent * agent)
 {
 	agent->setWaitTime(agent->getMwaitTime());
 }
 
-bool EnemyWaitIdlingState::isReady(Agent* agent)
+bool EnemyWaitIdlingState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() < agent->getMwaitTime();
 }

@@ -49,20 +49,18 @@ class SampleListener : public OIS::MouseListener, public OIS::KeyListener
 
 	 // Virtual function declarations for handling mouse and Keyboard events
     // OIS::KeyListener
-    virtual bool keyPressed( const OIS::KeyEvent &arg );
-    virtual bool keyReleased( const OIS::KeyEvent &arg );
+    virtual bool keyPressed( const OIS::KeyEvent &arg ) override;
+    virtual bool keyReleased( const OIS::KeyEvent &arg ) override;
     // OIS::MouseListener
-    virtual bool mouseMoved( const OIS::MouseEvent &arg );
-    virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
-    virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
+    virtual bool mouseMoved( const OIS::MouseEvent &arg ) override;
+    virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id ) override;
+    virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id ) override;
 	void setCharacter(Character *character);
 	
-	 void updateStats();
- 
+	 void updateStats() const;
 
 
-
-	 bool frameStarted(const FrameEvent& evt);
+	static bool frameStarted(const FrameEvent& evt);
 
  };
 

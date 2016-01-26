@@ -26,7 +26,7 @@ This source file is part of the
 #include "OgreMeshManager.h"
 #include "OgreCamera.h"
 #include "OgreRoot.h"
-
+#include "SharedData.h"
 
 
 class SampleApplication : public BaseApplication
@@ -72,7 +72,7 @@ class SampleApplication : public BaseApplication
 			Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 			plane, 12000, 12000, 1, 1, true, 1, 50, 50, Ogre::Vector3::UNIT_Z);
 			// placing plane
-			Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+			Ogre::v1::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
 			
 			mSceneMgr->getRootSceneNode()->createChildSceneNode(Vector3(0,0,0))->attachObject(entGround);
 

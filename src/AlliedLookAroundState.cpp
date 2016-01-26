@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedLookAroundState.h"
 #include "Agent.h"
 
@@ -34,7 +33,7 @@ AlliedLookAroundState::~AlliedLookAroundState()
 {
 }
 
-void AlliedLookAroundState::Enter(Agent* agent)
+void AlliedLookAroundState::Enter(Agent * agent)
 {
 	Quaternion mq = agent->GetRotation();
 	float some = Math::fDeg2Rad * Math::RangeRandom(-90, 90);
@@ -44,15 +43,15 @@ void AlliedLookAroundState::Enter(Agent* agent)
 	agent->setWaitTime(0);
 }
 
-void AlliedLookAroundState::Execute(Agent* agent)
+void AlliedLookAroundState::Execute(Agent * agent)
 {
 }
 
-void AlliedLookAroundState::Exit(Agent* agent)
+void AlliedLookAroundState::Exit(Agent * agent)
 {
 }
 
-bool AlliedLookAroundState::isReady(Agent* agent)
+bool AlliedLookAroundState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() == agent->getMwaitTime();
 }

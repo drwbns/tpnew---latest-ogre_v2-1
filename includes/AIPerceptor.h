@@ -36,12 +36,10 @@ public:
 	static AIPerceptor* getSingletonPtr();
 	AIPerceptor();
 	~AIPerceptor();
-	bool CanSee(Agent* agent1, Agent* agent2);
-	bool CanSee(Agent* agent1, Ogre::Vector3 position);
-	void UpdateKnowledge(Agent* agent);
-	void FindCovers(Agent* agent);
-
-private:
+	bool CanSee(Agent* agent1, Agent* agent2) const;
+	bool CanSee(Agent* agent1, Ogre::Vector3 position) const;
+	void UpdateKnowledge(Agent* agent) const;
+	static void FindCovers(Agent* agent);
 };
 
 #endif

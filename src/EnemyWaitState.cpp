@@ -20,11 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyWaitState.h"
 
 #include "Agent.h"
-#include "Path.h"
 
 using namespace Ogre;
 
@@ -36,19 +34,19 @@ EnemyWaitState::~EnemyWaitState()
 {
 }
 
-void EnemyWaitState::Enter(Agent* agent)
+void EnemyWaitState::Enter(Agent * agent)
 {
 }
 
-void EnemyWaitState::Execute(Agent* agent)
+void EnemyWaitState::Execute(Agent * agent)
 {
 }
 
-void EnemyWaitState::Exit(Agent* agent)
+void EnemyWaitState::Exit(Agent * agent)
 {
 }
 
-bool EnemyWaitState::isReady(Agent* agent)
+bool EnemyWaitState::isReady(Agent * agent)
 {
 	return agent->GetPatrolPath()->GetLength() == 0;
 }

@@ -1,13 +1,6 @@
 #ifndef PhysicsHelper_H_
 #define PhysicsHelper_H_
 
-#include "characterkinematic/PxCharacter.h"
-#include "characterkinematic/PxController.h"
-#include "characterkinematic/PxCapsuleController.h"
-#include "characterkinematic\PxController.h"
-#include "PxShape.h"
-#include "PxActor.h"
-
 #define isnan( x ) (( x ) !=  ( x ))
 
 enum CollGroup

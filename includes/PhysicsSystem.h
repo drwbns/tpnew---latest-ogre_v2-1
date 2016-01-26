@@ -23,17 +23,12 @@ THE SOFTWARE.
 #ifndef PhysicsSystem_H_
 #define PhysicsSystem_H_
 
-#include "physxPrereqs.h"
-
 #include "OgreSingleton.h"
 #include "OgreMemoryAllocatorConfig.h"
 
 #include "PxPhysicsAPI.h"
-#include "extensions/PxDefaultSimulationFilterShader.h"
 
 using namespace physx;
-
-#include <malloc.h>
 
 #define PVD_HOST "127.0.0.1"	//Set this to the IP address of the system running the PhysX Visual Debugger that you want to connect to.
 
@@ -60,30 +55,32 @@ public:
 	static PhysicsSystem* getSingletonPtr();
 
 	void Initialize();
-	void Finalize();
-	void Update();
+	void Finalize() const;
+	void Update() const;
 	void FlipDebug();
 
 	//utility
-	Ogre::Vector3 CastRay1(const Ogre::Vector3 &from, Ogre::Vector3 &dir);
-	Ogre::Vector3 CastRay2(Ogre::Vector3 &from, Ogre::Vector3 &to, PxShape** shape);
-	Ogre::Vector3 CastRay3(Ogre::Vector3 &from, Ogre::Vector3 &to);
-	Ogre::Vector3 CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 & to);
-	Ogre::Vector3 CastRay5(const Ogre::Vector3 & from, Ogre::Vector3 & dir);
-	bool OverlapTest(Ogre::Vector3 *min, Ogre::Vector3 *max);
+	Ogre::Vector3 CastRay1(const Ogre::Vector3 &from, Ogre::Vector3 &dir) const;
+	Ogre::Vector3 CastRay2(Ogre::Vector3 &from, Ogre::Vector3 &to) const;
+	Ogre::Vector3 CastRay6(Ogre::Vector3 & from, Ogre::Vector3 & to, PxRaycastBuffer & buf) const;
+	static Ogre::Vector3 CastRay3();
+	Ogre::Vector3 CastRay4(const Ogre::Vector3 & from, Ogre::Vector3 & to) const;
+	Ogre::Vector3 CastRay5(const Ogre::Vector3 & from, Ogre::Vector3 & dir) const;
+	static bool OverlapTest();
 
 	//gets & sets
 	std::vector<Ogre::String> * getMaterials() { return &materials; }
 	//@TODO: Outdated, marked for removal //NxPhysicsSDK* getSDK()  const { return gPhysicsSDK; } 
 	PxScene*      getScene() const { return mScene; }
-	PxPhysics * getPhysics() { return mPhysics; }
+	PxPhysics * getPhysics() const
+	{ return mPhysics; }
 	PxControllerManager* getCManager() const { 
 		return mControllerManager;
 	}
 	//@TODO: Outdated - new implementation needed //void SetActorCollisionGroup(PxActor* actor, PxCollisionGroup *group);
 	//@TODO: Outdated - new implementation needed //PxMaterialIndex addNewMaterial(Ogre::String name);
-	PxMaterial* addNewMaterial(Ogre::String name);
-	Ogre::String getMaterialName(PxMaterial *mat);
+	static PxMaterial* addNewMaterial();
+	static Ogre::String getMaterialName();
 
 	
 private:

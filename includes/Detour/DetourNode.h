@@ -28,7 +28,7 @@ enum dtNodeFlags
 };
 
 typedef unsigned short dtNodeIndex;
-static const dtNodeIndex DT_NULL_IDX = (dtNodeIndex)~0;
+static const dtNodeIndex DT_NULL_IDX = static_cast<dtNodeIndex>(~0);
 
 struct dtNode
 {
@@ -46,30 +46,30 @@ class dtNodePool
 public:
 	dtNodePool(int maxNodes, int hashSize);
 	~dtNodePool();
-	inline void operator=(const dtNodePool&) {}
+	void operator=(const dtNodePool&) const {}
 	void clear();
 	dtNode* getNode(dtPolyRef id);
-	dtNode* findNode(dtPolyRef id);
+	dtNode* findNode(dtPolyRef id) const;
 
-	inline unsigned int getNodeIdx(const dtNode* node) const
+	unsigned int getNodeIdx(const dtNode* node) const
 	{
 		if (!node) return 0;
 		return (unsigned int)(node - m_nodes)+1;
 	}
 
-	inline dtNode* getNodeAtIdx(unsigned int idx)
+	dtNode* getNodeAtIdx(unsigned int idx)
 	{
 		if (!idx) return 0;
 		return &m_nodes[idx-1];
 	}
 
-	inline const dtNode* getNodeAtIdx(unsigned int idx) const
+	const dtNode* getNodeAtIdx(unsigned int idx) const
 	{
 		if (!idx) return 0;
 		return &m_nodes[idx-1];
 	}
 	
-	inline int getMemUsed() const
+	int getMemUsed() const
 	{
 		return sizeof(*this) +
 			sizeof(dtNode)*m_maxNodes +
@@ -77,11 +77,11 @@ public:
 			sizeof(dtNodeIndex)*m_hashSize;
 	}
 	
-	inline int getMaxNodes() const { return m_maxNodes; }
+	int getMaxNodes() const { return m_maxNodes; }
 	
-	inline int getHashSize() const { return m_hashSize; }
-	inline dtNodeIndex getFirst(int bucket) const { return m_first[bucket]; }
-	inline dtNodeIndex getNext(int i) const { return m_next[i]; }
+	int getHashSize() const { return m_hashSize; }
+	dtNodeIndex getFirst(int bucket) const { return m_first[bucket]; }
+	dtNodeIndex getNext(int i) const { return m_next[i]; }
 	
 private:
 	
@@ -98,19 +98,19 @@ class dtNodeQueue
 public:
 	dtNodeQueue(int n);
 	~dtNodeQueue();
-	inline void operator=(dtNodeQueue&) {}
+	void operator=(dtNodeQueue&) const {}
 	
-	inline void clear()
+	void clear()
 	{
 		m_size = 0;
 	}
 	
-	inline dtNode* top()
+	dtNode* top() const
 	{
 		return m_heap[0];
 	}
 	
-	inline dtNode* pop()
+	dtNode* pop()
 	{
 		dtNode* result = m_heap[0];
 		m_size--;
@@ -118,13 +118,13 @@ public:
 		return result;
 	}
 	
-	inline void push(dtNode* node)
+	void push(dtNode* node)
 	{
 		m_size++;
 		bubbleUp(m_size-1, node);
 	}
 	
-	inline void modify(dtNode* node)
+	void modify(dtNode* node) const
 	{
 		for (int i = 0; i < m_size; ++i)
 		{
@@ -136,19 +136,19 @@ public:
 		}
 	}
 	
-	inline bool empty() const { return m_size == 0; }
+	bool empty() const { return m_size == 0; }
 	
-	inline int getMemUsed() const
+	int getMemUsed() const
 	{
 		return sizeof(*this) +
 		sizeof(dtNode*)*(m_capacity+1);
 	}
 	
-	inline int getCapacity() const { return m_capacity; }
+	int getCapacity() const { return m_capacity; }
 	
 private:
-	void bubbleUp(int i, dtNode* node);
-	void trickleDown(int i, dtNode* node);
+	void bubbleUp(int i, dtNode* node) const;
+	void trickleDown(int i, dtNode* node) const;
 	
 	dtNode** m_heap;
 	const int m_capacity;

@@ -30,10 +30,10 @@ class AlliedGetCloseState : public AIState
 public:
 	AlliedGetCloseState(int id);
 	~AlliedGetCloseState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

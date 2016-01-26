@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AIPerceptor.h"
 #include "AIKnowledge.h"
 #include "PhysicsSystem.h"
@@ -36,12 +35,11 @@ THE SOFTWARE.
 #include "GameState.h"
 #include "StateSystem.h"
 
-
 */
 
 using namespace Ogre;
 
-template<> AIPerceptor* Ogre::Singleton<AIPerceptor>::msSingleton = 0;
+template<> AIPerceptor* Singleton<AIPerceptor>::msSingleton = nullptr;
 
 AIPerceptor* AIPerceptor::getSingletonPtr(void)
 {
@@ -49,8 +47,8 @@ AIPerceptor* AIPerceptor::getSingletonPtr(void)
 }
 
 AIPerceptor& AIPerceptor::getSingleton(void)
-{  
-	assert(msSingleton);  return ( *msSingleton);
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
 AIPerceptor::AIPerceptor()
@@ -61,7 +59,7 @@ AIPerceptor::~AIPerceptor()
 {
 }
 
-bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
+bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2) const
 {
 	//check range
 	float minrange = 5;
@@ -73,16 +71,16 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 	{
 		return true;
 	}
-	else if (dist < minrange*minrange && agent2->GetVelocity().length() > 1.0)
+	if (dist < minrange*minrange && agent2->GetVelocity().length() > 1.0)
 	{
 		return true;
 	}
-	else if (dist < maxrange*maxrange)
+	if (dist < maxrange*maxrange)
 	{
 		//prepare line of sight triangle
 		//60 degrees left & right, total 120 degrees of sight
 		Quaternion q;
-		q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+		q.FromAngleAxis(Radian(Math::PI / 3), Vector3::UNIT_Y);
 		Vector3 direction = agent1->GetRotation() * Vector3::UNIT_Z;
 		Vector3 A = agent1->GetPosition();
 		Vector3 B = agent1->GetPosition() + q * (direction * maxrange);
@@ -94,7 +92,7 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 		Vector3 add1 = agent1->GetRotation() * agent1->getEyePos();
 		Vector3 add2(-add1.x, add1.y, -add1.z);
 		//Vector3 add3 = agent1->GetFirePosition();
-		Vector3 result = PHY->CastRay3(agent1->GetPosition()+add1, agent2->GetPosition()+add2);
+		Vector3 result = PHY->CastRay3();
 		//
 		return dy < 1.0 && AIUtility::PointInTriangle2D(P, A, B, C) && result == Vector3::ZERO;
 	}
@@ -102,7 +100,7 @@ bool AIPerceptor::CanSee(Agent* agent1, Agent* agent2)
 	return false;
 }
 
-bool AIPerceptor::CanSee(Agent* agent1, Vector3 position)
+bool AIPerceptor::CanSee(Agent* agent1, Vector3 position) const
 {
 	//check range
 	float range = agent1->getViewRange();
@@ -111,7 +109,7 @@ bool AIPerceptor::CanSee(Agent* agent1, Vector3 position)
 	{
 		//prepare line of sight triangle
 		//60 degrees left & right, total 120 degrees of sight
-		Quaternion q;q.FromAngleAxis(Radian(Math::PI/3), Vector3::UNIT_Y);
+		Quaternion q; q.FromAngleAxis(Radian(Math::PI / 3), Vector3::UNIT_Y);
 		Vector3 direction = agent1->GetRotation() * Vector3::UNIT_Z;
 		Vector3 A = agent1->GetPosition();
 		Vector3 B = agent1->GetPosition() + q * (direction * range);
@@ -126,13 +124,13 @@ bool AIPerceptor::CanSee(Agent* agent1, Vector3 position)
 	return false;
 }
 
-void AIPerceptor::UpdateKnowledge(Agent* agent)
+void AIPerceptor::UpdateKnowledge(Agent* agent) const
 {
 	//get a list of visibles
 	AIKnowledge* ledge = agent->getKnowledge();
 	std::vector<int> visible_ally;
 	std::vector<int> visible_enemy;
-	for (int i=0;i<WORLD->getAgentTotal();i++)
+	for (int i = 0; i < WORLD->getAgentTotal(); i++)
 	{
 		if (agent->getID() != WORLD->getAgent(i)->getID() && !WORLD->getAgent(i)->isDead())
 		{
@@ -154,7 +152,7 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	}
 
 	//set all outdated
-	for (int i=0;i<ledge->totalAlly();i++)
+	for (int i = 0; i < ledge->totalAlly(); i++)
 	{
 		if (!ledge->allies[i].GetAgent()->isDead())
 		{
@@ -163,7 +161,7 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 		ledge->allies[i].visible = false;
 	}
 
-	for (int i=0;i<ledge->totalEnemy();i++)
+	for (int i = 0; i < ledge->totalEnemy(); i++)
 	{
 		if (!ledge->enemies[i].GetAgent()->isDead())
 		{
@@ -176,7 +174,7 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	ledge->Update();
 
 	//check existance, add if not, update if so
-	for (size_t i=0;i<visible_ally.size();i++)
+	for (size_t i = 0; i < visible_ally.size(); i++)
 	{
 		Agent* a = WORLD->getAgent(visible_ally[i]);
 		int pos = ledge->allyExists(a->getID());
@@ -197,11 +195,11 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 	}
 
 	//add attacker if exists and not ally
-	if (agent->getAttacker() != NULL && agent->getRace() != agent->getAttacker()->getRace())
+	if (agent->getAttacker() != nullptr && agent->getRace() != agent->getAttacker()->getRace())
 	{
 		//check existance, add if not, update if so
 		bool e = true;
-		for (size_t i=0;i<ledge->enemies.size();i++)
+		for (size_t i = 0; i < ledge->enemies.size(); i++)
 		{
 			if (ledge->enemies[i].GetAgent() == agent->getAttacker())
 			{
@@ -220,11 +218,11 @@ void AIPerceptor::UpdateKnowledge(Agent* agent)
 			AgentInfo inf(agent->getAttacker());
 			ledge->enemies.push_back(inf);
 		}
-		agent->setAttacker(NULL);
+		agent->setAttacker(nullptr);
 	}
 
 	//check existance, add if not, update if so
-	for (size_t i=0;i<visible_enemy.size();i++)
+	for (size_t i = 0; i < visible_enemy.size(); i++)
 	{
 		Agent* a = WORLD->getAgent(visible_enemy[i]);
 		int pos = ledge->enemyExists(a->getID());
@@ -261,11 +259,11 @@ void AIPerceptor::FindCovers(Agent* agent)
 	//add sensor grid
 	int halfw = 4;
 	std::vector<Vector3> tposs;
-	for (int i=-halfw;i<=halfw;i++)
+	for (int i = -halfw; i <= halfw; i++)
 	{
-		for (int j=-halfw;j<=halfw;j++)
+		for (int j = -halfw; j <= halfw; j++)
 		{
-			if (i!=0 || j!=0)
+			if (i != 0 || j != 0)
 			{
 				Vector3 npos = agent->GetPosition();
 				npos.x += i;
@@ -279,19 +277,19 @@ void AIPerceptor::FindCovers(Agent* agent)
 	std::vector<Vector3>::iterator it = tposs.begin();
 	while (it != tposs.end())
 	{
-		bool ok = SMPL->CanBeWalkedTo(*it, Vector3(0.05,agent->getEyePos().y/2,0.05));
+		bool ok = SMPL->CanBeWalkedTo(*it, Vector3(0.05, agent->getEyePos().y / 2, 0.05));
 		if (!ok)
 		{
 			it = tposs.erase(it);
 		}
 		else
 		{
-			it++;
+			++it;
 		}
 	}
 
 	//leave only cover points for all visible enemy
-	for (int i=0;i<agent->getKnowledge()->totalEnemy();i++)
+	for (int i = 0; i < agent->getKnowledge()->totalEnemy(); i++)
 	{
 		if (agent->getKnowledge()->getEnemy(i).GetFlag() == AgentInfo::IF_UP2DATE)
 		{
@@ -299,21 +297,21 @@ void AIPerceptor::FindCovers(Agent* agent)
 			it = tposs.begin();
 			while (it != tposs.end())
 			{
-				Vector3 ret = PHY->CastRay3(coverFrom, *it);
+				Vector3 ret = PHY->CastRay3();
 				if (ret == Vector3::ZERO)
 				{
 					it = tposs.erase(it);
 				}
 				else
 				{
-					it++;
+					++it;
 				}
 			}
 		}
 	}
 
 	//add all
-	for (size_t i=0;i<tposs.size();i++)
+	for (size_t i = 0; i < tposs.size(); i++)
 	{
 		PositionalInfo info(tposs[i]);
 		agent->getKnowledge()->coverPositions.push_back(info);

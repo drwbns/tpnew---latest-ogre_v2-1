@@ -1,7 +1,10 @@
 // Euler class for Ogre
 // Author: Kojack
 // License: Do whatever you want with it.
- 
+
+#include <OGRE/OgreMath.h>
+#include <OGRE/OgreVector3.h>
+
 class Euler
 {
 public:
@@ -11,26 +14,26 @@ public:
     }
  
     // Get the Yaw angle.
-    inline Ogre::Radian getYaw() 
+    Ogre::Radian getYaw() const
     {
         return m_yaw;
     }
  
     // Get the Pitch angle.
-    inline Ogre::Radian getPitch() 
+    Ogre::Radian getPitch() const
     {
         return m_pitch;
     }
  
     // Get the Roll angle.
-    inline Ogre::Radian getRoll() 
+    Ogre::Radian getRoll() const
     {
         return m_roll;
     }
  
     // Apply a relative yaw. (Adds angle to current yaw)
     // Angles wrap around within the range 0 to 2*PI radians (0 to 360 degrees)
-    inline Euler &yaw(Ogre::Radian y) 
+    Euler &yaw(Ogre::Radian y) 
     {
         m_yaw += y; 
         if(m_yaw.valueRadians() < 0.0f)
@@ -46,7 +49,7 @@ public:
     }
  
     // Apply a relative pitch. (Adds angle to current pitch)
-    inline Euler &pitch(Ogre::Radian p) 
+    Euler &pitch(Ogre::Radian p) 
     {
         m_pitch += p; 
         m_changed = true; 
@@ -54,7 +57,7 @@ public:
     }
  
     // Apply a relative roll. (Adds angle to current roll)
-    inline Euler &roll(Ogre::Radian r) 
+    Euler &roll(Ogre::Radian r) 
     {
         m_roll += r; 
         m_changed = true; 
@@ -62,7 +65,7 @@ public:
     }
  
     // Set the yaw.
-    inline Euler &setYaw(Ogre::Radian y) 
+    Euler &setYaw(Ogre::Radian y) 
     {
         m_yaw = y; 
         m_changed = true; 
@@ -70,7 +73,7 @@ public:
     }
  
     // Set the pitch.
-    inline Euler &setPitch(Ogre::Radian p) 
+    Euler &setPitch(Ogre::Radian p) 
     {
         m_pitch = p; 
         m_changed = true; 
@@ -78,7 +81,7 @@ public:
     }
  
     // Set the roll.
-    inline Euler &setRoll(Ogre::Radian r) 
+    Euler &setRoll(Ogre::Radian r) 
     {
         m_roll = r; 
         m_changed = true; 
@@ -86,26 +89,26 @@ public:
     }
  
     // Get a vector pointing forwards.
-    inline Ogre::Vector3 getForward() 
+    Ogre::Vector3 getForward() 
     {
         return toQuaternion() * Ogre::Vector3::NEGATIVE_UNIT_Z;
     }
  
     // Get a vector pointing to the right.
-    inline Ogre::Vector3 getRight() 
+    Ogre::Vector3 getRight() 
     {
         return toQuaternion() * Ogre::Vector3::UNIT_X;
     }
  
     // Get a vector pointing up.
-    inline Ogre::Vector3 getUp() 
+    Ogre::Vector3 getUp() 
     {
         return toQuaternion() * Ogre::Vector3::UNIT_Y;
     }
  
     // Calculate the quaternion of a euler object.
     // The result is cached, it is only recalculated when the component euler angles are changed.
-    inline Ogre::Quaternion toQuaternion() 
+    Ogre::Quaternion toQuaternion() 
     {
         if(m_changed) 
         {
@@ -116,7 +119,7 @@ public:
     }
  
     // Casting operator. This allows any ogre function that wants a Quaternion to accept a Euler instead.
-    inline operator Ogre::Quaternion() 
+    operator Ogre::Quaternion() 
     {
         return toQuaternion();
     }
@@ -136,7 +139,7 @@ public:
  
     // Get the angular difference between the current yaw and the specified yaw.
     // Only yaw is considered, pitch and roll are ignored.
-    inline Ogre::Radian getYawToDirection(const Ogre::Radian &a)
+    Ogre::Radian getYawToDirection(const Ogre::Radian &a) const
     {
         Ogre::Real angle = (a - m_yaw).valueRadians();
         if(angle>Ogre::Math::PI)
@@ -148,21 +151,21 @@ public:
  
     // Get the angular difference between the current yaw and the specified direction vector.
     // Only yaw is considered, pitch and roll are ignored.
-    inline Ogre::Radian getYawToDirection(const Ogre::Vector3 &v)
+    Ogre::Radian getYawToDirection(const Ogre::Vector3 &v)
     {
         return getYawToDirection(Ogre::Radian(atan2(v.z, v.x) + Ogre::Math::PI/2.0f));
     }
  
     // Get the angular difference between the current yaw and the specified euler object.
     // Only yaw is considered, pitch and roll are ignored.
-    inline Ogre::Radian getYawToDirection(const Euler &e)
+    Ogre::Radian getYawToDirection(const Euler &e)
     {
         return getYawToDirection(e.m_yaw);
     }
  
     // Change the yaw to face in the direction of the vector.
     // Only yaw is changed, pitch and roll are ignored.
-    inline Euler &yawToDirection(const Ogre::Vector3 &v)
+    Euler &yawToDirection(const Ogre::Vector3 &v)
     {
         m_yaw = getYawToDirection(v);
         m_changed = true;
@@ -171,7 +174,7 @@ public:
  
     // Change the yaw to face in the direction of the euler object.
     // Only yaw is changed, pitch and roll are ignored.
-    inline Euler &yawToDirection(const Euler &e)
+    Euler &yawToDirection(const Euler &e)
     {
         m_yaw = getYawToDirection(e);
         m_changed = true;
@@ -179,7 +182,7 @@ public:
     }
  
     // stream operator, for printing the euler component angles to a stream
-    inline friend std::ostream &operator<<(std::ostream &o, const Euler &e)
+    friend std::ostream &operator<<(std::ostream &o, const Euler &e)
     {
         o << "<Y:" << e.m_yaw << ", P:" << e.m_pitch << ", R:" << e.m_roll << ">";
         return o;

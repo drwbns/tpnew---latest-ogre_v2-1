@@ -52,12 +52,6 @@
 #define MESHLOADER_OBJ
 #include <vector>
 
-#include "OIS/OIS.h"
-
-#include "SharedData.h"
-#include "PxPhysics.h"
-#include "PxMaterial.h"
-
 #include "OGRE\OgreEntity.h"
 #include "OGRE\OgreSceneNode.h"
 #include "OGRE\OgreSceneManager.h"
@@ -72,25 +66,28 @@ public:
 	~rcMeshLoaderObj();
 
 	bool load(const char* filepath);
-	bool load();
 
 	const std::vector<float>& getVerts() const { return verts; } 
 	//const float* getVerts() const { return &verts[0]; } 
-	inline const float* getNormals() const { return &m_normals[0]; }
+	const float* getNormals() const { return &m_normals[0]; }
 	const std::vector<size_t>& getTris() const{ return tris; }
-	inline size_t getVertCount() const { return nverts; }
-	inline int getTriCount() const { return ntris; }
+
+	size_t getVertCount() const { return nverts; }
+
+	int getTriCount() const { return ntris; }
 	//inline std::vector<PxMaterial*> getMaterials() const { return m_materials; }
 
-	inline Ogre::Entity* getEntity() const { return ent; }
-	inline Ogre::SceneNode* getSceneNode() const { return lvlNode; }
-	const char* getFileName() { return fileName; }
+	v1::Entity* getEntity() const { return ent; }
+
+	SceneNode* getSceneNode() const { return lvlNode; }
+	const char* getFileName() const
+	{ return fileName; }
 
 private:
 
-	Ogre::SceneManager* mSceneMgr;
-	Ogre::Entity* ent;
-	Ogre::SceneNode* lvlNode;
+	SceneManager* mSceneMgr;
+	v1::Entity* ent;
+	SceneNode* lvlNode;
 
 protected:
 

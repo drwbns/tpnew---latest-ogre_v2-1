@@ -22,7 +22,6 @@
 
 #include "Sample.h"
 #include "InputGeom.h"
-#include "Recast/Recast.h"
 
 //#include "RecastDebugDraw.h"
 //#include "DetourDebugDraw.h"
@@ -42,23 +41,23 @@
 #endif
 
 Sample::Sample() :
-	m_navMesh(0),
-	m_navQuery(0),
+	m_navMesh(nullptr),
+	m_navQuery(nullptr),
 	//m_crowd(0),
-	m_navMeshDrawFlags(DU_DRAWNAVMESH_OFFMESHCONS|DU_DRAWNAVMESH_CLOSEDLIST),
-	m_tool(0),
-	m_ctx(0)
+	m_navMeshDrawFlags(DU_DRAWNAVMESH_OFFMESHCONS | DU_DRAWNAVMESH_CLOSEDLIST),
+	m_tool(nullptr),
+	m_ctx(nullptr)
 {
 	resetCommonSettings();
 	m_navQuery = dtAllocNavMeshQuery();
-//	m_crowd = dtAllocCrowd();
+	//	m_crowd = dtAllocCrowd();
 }
 
 Sample::~Sample()
 {
 	dtFreeNavMeshQuery(m_navQuery);
 	dtFreeNavMesh(m_navMesh);
-//	dtFreeCrowd(m_crowd);
+	//	dtFreeCrowd(m_crowd);
 	delete m_tool;
 }
 
@@ -88,6 +87,10 @@ void Sample::resetCommonSettings()
 	m_detailSampleMaxError = 1.0f;
 }
 
+void Sample::handleCommonSettings()
+{
+}
+
 /*
 void Sample::handleClick(const float* s, const float* p, bool shift)
 {
@@ -114,21 +117,20 @@ bool Sample::handleBuild()
 
 const float* Sample::getBoundsMin()
 {
-	if (!INPT) return 0;
+	if (!INPT) return nullptr;
 	return INPT->getMeshBoundsMin();
 }
 
 const float* Sample::getBoundsMax()
 {
-	if (!INPT) return 0;
+	if (!INPT) return nullptr;
 	return INPT->getMeshBoundsMax();
 }
 
-void Sample::handleUpdate(const float dt)
+void Sample::handleUpdate()
 {
 	/*
 	if (m_tool)
 		m_tool->handleUpdate(dt);
 		*/
 }
-

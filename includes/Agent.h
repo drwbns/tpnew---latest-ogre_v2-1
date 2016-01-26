@@ -33,6 +33,7 @@ THE SOFTWARE.
 
 #include "MovableText.h"
 #include "Moving.h"
+#include "AIKnowledge.h"
 
 using namespace physx;
 
@@ -63,12 +64,12 @@ public:
 protected:
 	Agent(int id, Race race, Ogre::Vector3 position, float max_speed, float max_acc, float radius);
 	virtual ~Agent();
-	virtual void Update();
+	virtual void Update() override;
 
 public:
-	bool isDetachable(PxFilterData & filterData);
+	static bool isDetachable(PxFilterData & filterData);
 	// Implements PxSimulationEventCallback
-	virtual	void							onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs);
+	virtual	void							onContact(const PxContactPair* pairs, PxU32 nbPairs);
 	virtual	void							onTrigger(PxTriggerPair*, PxU32) {}
 	virtual void							onConstraintBreak(PxConstraintInfo*, PxU32) {}
 	virtual void							onWake(PxActor**, PxU32) {}
@@ -77,14 +78,15 @@ public:
 	///////////////////////////////////////////////////////////////////////////////
 
 	// Implements PxUserControllerHitReport
-	virtual void							onShapeHit(const PxControllerShapeHit& hit);
-	virtual void							onControllerHit(const PxControllersHit& hit) {}
-	virtual void							onObstacleHit(const PxControllerObstacleHit& hit) {}
+	virtual void							onShapeHit(const PxControllerShapeHit& hit) override;
+	virtual void							onControllerHit(const PxControllersHit& hit) override {}
+	virtual void							onObstacleHit(const PxControllerObstacleHit& hit) override {}
 
 	// Implements PxControllerBehaviorCallback
-	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxShape&, const PxActor&) { return PxControllerBehaviorFlags(0); }
-	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxController&) { return PxControllerBehaviorFlags(0); }
-	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxObstacle&) { return PxControllerBehaviorFlags(0); }
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxShape&, const PxActor&) override { return PxControllerBehaviorFlags(0); }
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxController&) override { return PxControllerBehaviorFlags(0); }
+	virtual PxControllerBehaviorFlags		getBehaviorFlags(const PxObstacle&) override
+	{ return PxControllerBehaviorFlags(0); }
 
 	virtual void orderMove(float walk, float strafe);
 	virtual void orderBrake();
@@ -95,44 +97,45 @@ public:
 	virtual void Die();
 
 	//get / set
-	virtual Ogre::Vector3 GetFirePosition() = 0;
+	virtual Ogre::Vector3 *GetFirePosition() = 0;
 
-	int getID()const { return id; }
-	int getRace() { return race; }
+	int getID() const { return id; }
+	int getRace() const { return race; }
 	void ChangeController(BaseController* ct);
-	BaseController* getController() { return controller; }
+	BaseController* getController() const { return controller; }
 	void add2Hp(int i);
-	int getHP() { return hp; }
-	bool isDead() { return dead; }
-	void ShowHeadText(bool b) { headText->setVisible(b); }
-	AIKnowledge* getKnowledge() { return knowledge; }
-	Ogre::Vector3 getEyePos() { return eyePos; }
-	Agent* getAttacker() { return attacker; }
+	int getHP() const { return hp; }
+	bool isDead() const { return dead; }
+	void ShowHeadText(bool b) const { headText->setVisible(b); }
+	AIKnowledge* getKnowledge() const { return knowledge; }
+	Ogre::Vector3 getEyePos() const { return eyePos; }
+	Agent* getAttacker() const { return attacker; }
 	void setAttacker(Agent* a) { attacker = a; }
-	void setHeadText(Ogre::String s) { headText->setCaption(s); }
+	void setHeadText(Ogre::String s) const { headText->setCaption(s); }
 
-	float getMwaitTime() { return mWaitTime; }
-	float getCwaitTime() { return cWaitTime; }
+	float getMwaitTime() const { return mWaitTime; }
+	float getCwaitTime() const { return cWaitTime; }
 	void setWaitTime(float f) { cWaitTime = f; }
 	void add2WaitTime(float f) { cWaitTime +=f; }
-	float getViewRange() { return viewRange; }
-	float getAttackRange() { return attackRange; }
+	float getViewRange() const { return viewRange; }
+	float getAttackRange() const { return attackRange; }
 	void setShotsFired(int i) { shotsFired = i; }
 	void incShotsFired() { shotsFired++; }
 	void setShotsHit(int i) { shotsHit = i; }
 	void incShotsHit() { shotsHit++; }
-	int getShotsFired() { return shotsFired; }
-	int getShotsHit() { return shotsHit; }
+	int getShotsFired() const { return shotsFired; }
+	int getShotsHit() const { return shotsHit; }
 
-	Ogre::AnimationState* getRunState() { return runAnimState; }
-	Ogre::AnimationState* getIdleAnimState() { return idleAnimState; }
+	Ogre::v1::AnimationState* getRunState() const { return runAnimState; }
+	Ogre::v1::AnimationState* getIdleAnimState() const
+	{ return idleAnimState; }
 
 
 
 	//pure
-	virtual physx::PxShape* getHitBox(int i) = 0;
+	virtual PxShape* getHitBox(int i) = 0;
 	virtual void SetAimMode(bool b) = 0;
-	virtual void Shoot(bool first, Ogre::Vector3 &trg_pos) = 0;
+	virtual void Shoot() = 0;
 
 protected:
 	std::vector<PxShape*>			mDetaching;
@@ -145,13 +148,13 @@ protected:
 	Ogre::ManualObject* coverlocs;
 	MovableText* headText;
 
-	Ogre::Entity* mEnt;
-	Ogre::Entity* wEnt;
-	Ogre::AnimationState* aimAnimState;
-	Ogre::AnimationState* idleAnimState;
-	Ogre::AnimationState* runAnimState;
-	Ogre::AnimationState* shootAnimState;
-	Ogre::AnimationState* deadAnimState;
+	Ogre::v1::Entity* mEnt;
+	Ogre::v1::Entity* wEnt;
+	Ogre::v1::AnimationState* aimAnimState;
+	Ogre::v1::AnimationState* idleAnimState;
+	Ogre::v1::AnimationState* runAnimState;
+	Ogre::v1::AnimationState* shootAnimState;
+	Ogre::v1::AnimationState* deadAnimState;
 	bool aimMode;
 
 	//stats & info

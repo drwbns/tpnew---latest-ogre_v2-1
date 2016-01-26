@@ -30,7 +30,6 @@ class BillboardNodeSet
 {
 	friend class BillboardSystem;
 
-private:
 	BillboardNodeSet(int sz);
 	~BillboardNodeSet();
 	void Update();
@@ -38,7 +37,7 @@ private:
 	BillboardNode* GetCurrent() { return buffer[counter]; }
 	void IncCounter() { counter++; counter %= size; }
 
-	Ogre::BillboardSet* set;
+	Ogre::v1::BillboardSet* set;
 	std::vector<BillboardNode*> buffer;
 	int counter;
 	int size;

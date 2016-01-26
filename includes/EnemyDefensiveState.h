@@ -30,10 +30,10 @@ class EnemyDefensiveState : public AIState
 public:
 	EnemyDefensiveState(int id);
 	~EnemyDefensiveState();
-	void Enter(Agent* agent);
-	void Execute(Agent* agent);
-	void Exit(Agent* agent);
-	bool isReady(Agent* agent);
+	void Enter(Agent * agent);
+	void Execute(Agent * agent);
+	void Exit(Agent * agent);
+	bool isReady(Agent * agent);
 };
 
 #endif

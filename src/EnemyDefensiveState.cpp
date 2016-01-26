@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyDefensiveState.h"
 #include "World.h"
 using namespace Ogre;
@@ -33,19 +32,19 @@ EnemyDefensiveState::~EnemyDefensiveState()
 {
 }
 
-void EnemyDefensiveState::Enter(Agent* agent)
+void EnemyDefensiveState::Enter(Agent * agent)
 {
 }
 
-void EnemyDefensiveState::Execute(Agent* agent)
+void EnemyDefensiveState::Execute(Agent * agent)
 {
 }
 
-void EnemyDefensiveState::Exit(Agent* agent)
+void EnemyDefensiveState::Exit(Agent * agent)
 {
 }
 
-bool EnemyDefensiveState::isReady(Agent* agent)
+bool EnemyDefensiveState::isReady(Agent * agent)
 {
 	return false;
 	//return agent->getHP() < 50;;

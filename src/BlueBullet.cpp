@@ -27,12 +27,9 @@ THE SOFTWARE.
 #include "World.h"
 #include "PhysicsSystem.h"
 #include "BillboardSystem.h"
-#include "ParticleManager.h"
-
 #include "GlobalVars.h"
 
 #include "PxShape.h"
-#include "extensions\PxRigidBodyExt.h"
 
 using namespace Ogre;
 using namespace physx;
@@ -55,13 +52,33 @@ void BlueBullet::Update()
 {
 	//check if it will hit sth.;
 	Vector3 toAdd = mDirection * mSpeed * GlobalVars::Tick;
-	PxShape* shape = NULL;
-	
+	PxShape* shape = nullptr;
+
 	//@TODO:
-	if(true); // Start Section Outdated, marked for removal 
-	
+	// @TODO // Start Section Outdated, marked for removal
+
 	PxMaterial * mat; // Possibly used for material names? Need to check if material names can be done in PhysX3 or if a new enum or struct needs to be made
-	Vector3 normal = PHY->CastRay4(mPosition, mPosition+toAdd);
+	//Vector3 normal = PHY->CastRay2(mPosition, mPosition+toAdd, shape);
+
+	const PxU32 bufferSize = 256;        // [in] size of 'hitBuffer'
+	PxRaycastHit hitBuffer[bufferSize];  // [out] User provided buffer for results
+	PxRaycastBuffer buf(hitBuffer, bufferSize); // [out] Blocking and touching hits will be stored here
+
+	Vector3 hitPosition = Vector3::ZERO;
+
+	PxVec3 org = TemplateUtils::toNX(mPosition);
+	Vector3 delta = mPosition + toAdd - mPosition;
+	PxVec3 ndir = TemplateUtils::toNX(delta.normalisedCopy());
+
+	PxVec3 origin = org;                 // [in] Ray origin
+	PxVec3 unitDir = ndir;                // [in] Normalized ray direction
+	PxReal maxDistance = 10000;            // [in] Raycast max distance
+
+	// Raycast against all static & dynamic objects (no filtering)
+	// The main result from this call are all hits along the ray, stored in 'hitBuffer'
+	bool hadBlockingHit = PHY->getScene()->raycast(origin, unitDir, maxDistance, buf);
+	if (hadBlockingHit)
+		; // buf shows hasBlock is false here
 
 	//show source
 	if (sbill == -1)
@@ -116,16 +133,12 @@ void BlueBullet::Update()
 		}
 		*/
 		//apply impact
-		if (shape != NULL)
+		Vector3 normal;
+		if (normal != Vector3::ZERO && buf.hasBlock)
 		{
-			if (shape->getActor()->isRigidDynamic())
+			if (buf.touches[0].actor->userData != nullptr)
 			{
-				PxRigidBodyExt::addForceAtPos(static_cast<PxRigidBody&>(*shape->getActor()), TemplateUtils::toNX(mDirection * mSpeed * 0.25), TemplateUtils::toNX(mPosition));
-				//shape->getActor()->addForceAtPos(TemplateUtils::toPX(mDirection * Speed * 0.25), TemplateUtils::toPX(mPosition), PX_IMPULSE);
-			}
-			else if (shape->getActor()->userData != NULL)
-			{
-				Agent* a = (Agent*)shape->getActor()->userData;
+				Agent* a = static_cast<Agent*>(shape->getActor()->userData);
 				//warn attacked one
 				a->setAttacker(mOwner);
 				//inc. hit score
@@ -142,6 +155,6 @@ void BlueBullet::Update()
 			}
 		}
 	}
-	
-	if(true); // End Section Outdated, marked for removal 
+
+	// @TODO // End Section Outdated, marked for removal
 }

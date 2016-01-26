@@ -1,25 +1,19 @@
-
-#include "PhysicsContactReport.h"
-#include "PhysicsHelper.h"
-#include "zzzSndSystem.h"
-#include "GUtility.h"
-
 /*
 void PhysicsContactReport::onContactNotify(NxContactPair& pair, PxU32 events)
 {
 	NxContactStreamIterator j(pair.stream);
 	PxVec3 cp(0,0,0);
 	while(j.goNextPair())
-    {
+	{
 		while(j.goNextPatch())
-        {
+		{
 			while(j.goNextPoint())
-            {
+			{
 				cp = j.getPoint();
-            }
-        }
-    }
-	
+			}
+		}
+	}
+
 	if (events & NX_NOTIFY_ON_START_TOUCH_FORCE_THRESHOLD)
 	{
 		ZSND->PlaySound("metal", TemplateUtils::toOgre(cp), 25 * fabs(j.getSeparation()));

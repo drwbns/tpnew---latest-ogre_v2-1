@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "BillboardSystem.h"
 #include "GraphicsSystem.h"
 #include "tinyxml.h"
@@ -29,11 +28,12 @@ THE SOFTWARE.
 
 #include "OgreBillboardSet.h"
 #include "OgreSceneNode.h"
-
+#include <OGRE/OgreBillboard.h>
+#include <OGRE/Math/Simple/C/OgreAabb.h>
 
 using namespace Ogre;
 
-template<> BillboardSystem* Ogre::Singleton<BillboardSystem>::msSingleton = 0;
+template<> BillboardSystem* Singleton<BillboardSystem>::msSingleton = nullptr;
 
 BillboardSystem* BillboardSystem::getSingletonPtr(void)
 {
@@ -41,13 +41,13 @@ BillboardSystem* BillboardSystem::getSingletonPtr(void)
 }
 
 BillboardSystem& BillboardSystem::getSingleton(void)
-{  
-	assert( msSingleton );  return ( *msSingleton );
+{
+	assert(msSingleton);  return (*msSingleton);
 }
 
 BillboardSystem::BillboardSystem()
 {
-	bnode = NULL;
+	bnode = nullptr;
 }
 
 BillboardSystem::~BillboardSystem()
@@ -58,7 +58,7 @@ BillboardSystem::~BillboardSystem()
 void BillboardSystem::Initialize()
 {
 	//create node
-	bnode = GSYS->GetSceneMgr()->getRootSceneNode()->createChildSceneNode("BillboardSystemNode");
+	bnode = GSYS->GetSceneMgr()->getRootSceneNode()->createChildSceneNode();
 
 	//read xml & load sets
 	DataStreamPtr data = ResourceGroupManager::getSingleton().openResource("billboards.xml");
@@ -69,9 +69,9 @@ void BillboardSystem::Initialize()
 	if (!doc.Error())
 	{
 		TiXmlNode* node;
-		node=doc.FirstChild();
-		node=node->FirstChild();
-		for (;node!=0;node=node->NextSibling()) 
+		node = doc.FirstChild();
+		node = node->FirstChild();
+		for (; node != nullptr; node = node->NextSibling())
 		{
 			if (node->Type() == TiXmlNode::ELEMENT)
 			{
@@ -119,17 +119,18 @@ void BillboardSystem::Initialize()
 					if (name.length() > 0)
 					{
 						BillboardNodeSet* bset = new BillboardNodeSet(poolsize);
-						bset->set = GSYS->GetSceneMgr()->createBillboardSet(name, poolsize);
-						bset->set->setMaterialName(material);
+						bset->set = GSYS->GetSceneMgr()->createBillboardSet(poolsize);
+						bset->set->setMaterialName(material, "Billboards");
 						bset->set->setDefaultDimensions(width, height);
-						bset->set->setBillboardType((BillboardType)type);
-						bset->set->setRenderQueueGroup(RENDER_QUEUE_SKIES_LATE);
-						AxisAlignedBox aabInf;aabInf.setInfinite();;
+						bset->set->setBillboardType(static_cast<v1::BillboardType>(type));
+						//bset->set->setRenderQueueGroup(RENDER_QUEUE_SKIES_LATE);
+						Aabb aabInf; 
+						//aabInf.setInfinite();
 						bset->set->setBounds(aabInf, 1024);
 						bnode->attachObject(bset->set);
 
 						//create billboard buffer
-						for (int i=0;i<poolsize;i++)
+						for (int i = 0; i < poolsize; i++)
 						{
 							BillboardNode* bbnode = new BillboardNode();
 							bset->buffer.push_back(bbnode);
@@ -151,7 +152,7 @@ void BillboardSystem::Initialize()
 void BillboardSystem::Finalize()
 {
 	//traverse all sets and delete all
-	std::map<Ogre::String, BillboardNodeSet*>::iterator it;
+	std::map<String, BillboardNodeSet*>::iterator it;
 	it = sets.begin();
 	while (it != sets.end())
 	{
@@ -159,37 +160,36 @@ void BillboardSystem::Finalize()
 		BillboardNodeSet* bset = (*it).second;
 		bset->Finalize(bnode);
 		delete bset;
-		bset = NULL;
 
-		it++;
+		++it;
 	}
 	sets.clear();
 
 	//remove bnode
-	GSYS->GetSceneMgr()->getRootSceneNode()->removeAndDestroyChild(bnode->getName());
-	bnode = NULL;
+	GSYS->GetSceneMgr()->getRootSceneNode()->removeAndDestroyChild(bnode);
+	bnode = nullptr;
 }
 
 void BillboardSystem::Update()
 {
 	//traverse all sets and update as necessary
-	std::map<Ogre::String, BillboardNodeSet*>::iterator it;
+	std::map<String, BillboardNodeSet*>::iterator it;
 	it = sets.begin();
 	while (it != sets.end())
 	{
 		BillboardNodeSet* bset = (*it).second;
 		bset->Update();
-		it++;
+		++it;
 	}
 }
 
-int BillboardSystem::ShowBillboard(Ogre::String name, Ogre::Vector3 pos, float time)
+int BillboardSystem::ShowBillboard(String name, Vector3 pos, float time)
 {
 	//remove if exists
 	BillboardNodeSet* bset = sets[name];
 	int ret = bset->counter;
 
-	if (bset->GetCurrent()->bill != NULL)
+	if (bset->GetCurrent()->bill != nullptr)
 	{
 		bset->set->removeBillboard(bset->GetCurrent()->bill);
 	}
@@ -201,19 +201,19 @@ int BillboardSystem::ShowBillboard(Ogre::String name, Ogre::Vector3 pos, float t
 	return ret;
 }
 
-void BillboardSystem::UpdateBillboard(Ogre::String name, int id, Ogre::Vector3 pos)
+void BillboardSystem::UpdateBillboard(String name, int id, Vector3 pos)
 {
 	BillboardNodeSet* bset = sets[name];
-	if (bset->buffer[id]->bill != NULL)
+	if (bset->buffer[id]->bill != nullptr)
 	{
 		bset->buffer[id]->bill->setPosition(pos);
 	}
 }
 
-void BillboardSystem::HideBillboard(Ogre::String name, int id)
+void BillboardSystem::HideBillboard(String name, int id)
 {
 	BillboardNodeSet* bset = sets[name];
-	if (bset->buffer[id]->bill != NULL)
+	if (bset->buffer[id]->bill != nullptr)
 	{
 		bset->buffer[id]->liveTime = 0;
 	}

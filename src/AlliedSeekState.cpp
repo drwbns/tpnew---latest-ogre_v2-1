@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedSeekState.h"
 #include "AIKnowledge.h"
 
@@ -34,19 +33,19 @@ AlliedSeekState::~AlliedSeekState()
 {
 }
 
-void AlliedSeekState::Enter(Agent* agent)
+void AlliedSeekState::Enter(Agent * agent)
 {
 }
 
-void AlliedSeekState::Execute(Agent* agent)
+void AlliedSeekState::Execute(Agent * agent)
 {
 }
 
-void AlliedSeekState::Exit(Agent* agent)
+void AlliedSeekState::Exit(Agent * agent)
 {
 }
 
-bool AlliedSeekState::isReady(Agent* agent)
+bool AlliedSeekState::isReady(Agent * agent)
 {
 	return agent->getKnowledge()->totalVisibleEnemy() == 0 && agent->getKnowledge()->totalEnemy() > 0;
 }

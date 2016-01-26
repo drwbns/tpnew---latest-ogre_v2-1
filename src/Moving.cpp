@@ -24,7 +24,6 @@ THE SOFTWARE.
 #include "World.h"
 #include "PtfNode.h"
 #include "GameState.h"
-#include "StateSystem.h"
 #include "GlobalVars.h"
 #include "Obstacle.h"
 #include "AIUtility.h"
@@ -56,9 +55,9 @@ Moving::Moving(Vector3 position, float max_speed, float max_acc, float radius)
 Moving::~Moving()
 {
 	delete mPath;
-	mPath = NULL;
+	mPath = nullptr;
 	delete pPath;
-	pPath = NULL;
+	pPath = nullptr;
 }
 
 void Moving::Update()
@@ -126,13 +125,13 @@ void Moving::Update()
 	Rotation = Quaternion::Slerp(inc, Rotation, Direction, true);
 }
 
-Vector3 Moving::CalculateSeek()
+Vector3 Moving::CalculateSeek() const
 {
 	Vector3 delta = Destination - Position;
 	return delta.normalisedCopy() * MaxAcceleration;
 }
 
-Vector3 Moving::CalculateBrake()
+Vector3 Moving::CalculateBrake() const
 {
 	if (Velocity.length() > MINSPD)
 	{
@@ -141,7 +140,7 @@ Vector3 Moving::CalculateBrake()
 	return Vector3::ZERO;
 }
 
-Vector3 Moving::CalculateArrive()
+Vector3 Moving::CalculateArrive() const
 {
 	Vector3 delta = Destination - Position;
 	float distance = delta.length();
@@ -163,17 +162,17 @@ Vector3 Moving::CalculateArrive()
 	return Vector3::ZERO;
 }
 
-Vector3 Moving::CalculateObstacleAvoidance()
+Vector3 Moving::CalculateObstacleAvoidance() const
 {
 	Vector3 ret = Vector3::ZERO;
 
 	//prepare ray
-	Ogre::Ray r;
+	Ray r;
 	Vector3 tpos = Position;
 	r.setDirection(Velocity.normalisedCopy());
 
 	//for each obstacle
-	for (int i=0;i<WORLD->getObstacleTotal();i++)
+	for (int i = 0; i < WORLD->getObstacleTotal(); i++)
 	{
 		//if close enough
 		float dist = Position.distance(WORLD->getObstacle(i)->GetPos());
@@ -184,7 +183,7 @@ Vector3 Moving::CalculateObstacleAvoidance()
 			tpos.y = WORLD->getObstacle(i)->GetPos().y;
 			r.setOrigin(tpos);
 			Vector3 intersection;
-			bool result = AIUtility::IntersectLineCircle(WORLD->getObstacle(i)->GetPos(),WORLD->getObstacle(i)->GetRadius(), r.getOrigin(), r.getOrigin()+dist*r.getDirection(), intersection);
+			bool result = AIUtility::IntersectLineCircle(WORLD->getObstacle(i)->GetPos(), WORLD->getObstacle(i)->GetRadius(), r.getOrigin(), r.getOrigin() + dist*r.getDirection(), intersection);
 			if (result)
 			{
 				//find if we need to turn left or right to avoid
@@ -216,12 +215,12 @@ Vector3 Moving::CalculateObstacleAvoidance()
 	return ret.normalisedCopy() * MaxAcceleration;
 }
 
-Vector3 Moving::CalculateWallAvoidance()
+Vector3 Moving::CalculateWallAvoidance() const
 {
 	Vector3 ret = Vector3::ZERO;
 
 	//for each wall
-	for (int i=0;i<WORLD->getWallTotal();i++)
+	for (int i = 0; i < WORLD->getWallTotal(); i++)
 	{
 		//test intersection
 		Vector3 line1start = Position;
@@ -237,11 +236,11 @@ Vector3 Moving::CalculateWallAvoidance()
 		//test intersection only if angle between velocity and wall normal is positive
 		if (mangle > 0)
 		{
-			Vector3 result = AIUtility::LineIntersect(line1start,line1end,line2start,line2end);
+			Vector3 result = AIUtility::LineIntersect(line1start, line1end, line2start, line2end);
 			float dist = result.distance(Position);
 			float mindist = 2 * Radius;
 
-			if (result != Vector3(-1,-1,-1) && dist < mindist)
+			if (result != Vector3(-1, -1, -1) && dist < mindist)
 			{
 				//find if we need to turn left or right to avoid
 				//from agent to intersection
@@ -282,17 +281,17 @@ Vector3 Moving::CalculateWallAvoidance()
 	return ret.normalisedCopy() * MaxAcceleration;
 }
 
-Vector3 Moving::CalculateAgentAvoidance()
+Vector3 Moving::CalculateAgentAvoidance() const
 {
 	Vector3 ret = Vector3::ZERO;
 
 	//prepare ray
-	Ogre::Ray r;
+	Ray r;
 	Vector3 tpos = Position;
 	r.setDirection(Velocity.normalisedCopy());
 
 	//for each obstacle
-	for (int i=0;i<WORLD->getAgentTotal();i++)
+	for (int i = 0; i < WORLD->getAgentTotal(); i++)
 	{
 		//if close enough
 		float dist = Position.distance(WORLD->getAgent(i)->GetPosition());
@@ -303,7 +302,7 @@ Vector3 Moving::CalculateAgentAvoidance()
 			tpos.y = WORLD->getAgent(i)->GetPosition().y;
 			r.setOrigin(tpos);
 			Vector3 intersection;
-			bool result = AIUtility::IntersectLineCircle(WORLD->getAgent(i)->GetPosition(),WORLD->getAgent(i)->GetRadius(), r.getOrigin(), r.getOrigin()+dist*r.getDirection(), intersection);
+			bool result = AIUtility::IntersectLineCircle(WORLD->getAgent(i)->GetPosition(), WORLD->getAgent(i)->GetRadius(), r.getOrigin(), r.getOrigin() + dist*r.getDirection(), intersection);
 			if (result)
 			{
 				//find if we need to turn left or right to avoid
@@ -358,24 +357,24 @@ Vector3 Moving::CalculateAgentAvoidance()
 
 Vector3 Moving::CalculatePathFollow()
 {
-	if (mPath != NULL)
+	if (mPath != nullptr)
 	{
-		Ogre::Vector3 dest = *mPath->GetNode(PathPosition).getPos();
-		float pathNextDist = 2*Radius;
+		Vector3 dest = *mPath->GetNode(PathPosition).getPos();
+		float pathNextDist = 2 * Radius;
 
-		if (Position.distance(dest) < pathNextDist && PathPosition < mPath->GetLength()-1)
+		if (Position.distance(dest) < pathNextDist && PathPosition < mPath->GetLength() - 1)
 		{
 			PathPosition++;
 			dest = *mPath->GetNode(PathPosition).getPos();
 		}
-		
+
 		SetDest(dest);
 
-		if (PathPosition < mPath->GetLength()-1)
+		if (PathPosition < mPath->GetLength() - 1)
 		{
 			return CalculateSeek();
 		}
-		else 
+		else
 		{
 			pathOf();
 			arriveOn();
@@ -385,19 +384,19 @@ Vector3 Moving::CalculatePathFollow()
 	return Vector3::ZERO;
 }
 
-Vector3 Moving::CalculateSeperate()
+Vector3 Moving::CalculateSeperate() const
 {
 	Vector3 ret = Vector3::ZERO;
 
-	for (int i=0;i<WORLD->getAgentTotal();i++)
+	for (int i = 0; i < WORLD->getAgentTotal(); i++)
 	{
-		Ogre::Vector3 delta = Position - WORLD->getAgent(i)->GetPosition();
+		Vector3 delta = Position - WORLD->getAgent(i)->GetPosition();
 		float dist = delta.length();
 		float mindist = Radius + WORLD->getAgent(i)->GetRadius();
 		if (dist < mindist)
 		{
 			float power = mindist - dist;
-			if (power<0)power = 0;
+			if (power < 0)power = 0;
 			ret += delta.normalisedCopy() * power;
 		}
 	}

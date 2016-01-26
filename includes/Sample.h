@@ -118,7 +118,7 @@ public:
 	//virtual void handleRenderOverlay(double* proj, double* model, int* view);
 	//virtual void handleMeshChanged(class InputGeom* geom);
 	virtual bool handleBuild();
-	virtual void handleUpdate(const float dt);
+	virtual void handleUpdate();
 
 	virtual dtNavMesh* getNavMesh() { return m_navMesh; }
 	virtual dtNavMeshQuery* getNavMeshQuery() { return m_navQuery; }
@@ -133,7 +133,7 @@ public:
 	inline void setNavMeshDrawFlags(unsigned char flags) { m_navMeshDrawFlags = flags; }
 
 	void resetCommonSettings();
-	void handleCommonSettings();
+	static void handleCommonSettings();
 };
 
 

@@ -20,10 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "GameState.h"
 
-#include "StateSystem.h"
 #include "GraphicsSystem.h"
 #include "GuiSystem.h"
 #include "CamController.h"
@@ -45,9 +43,9 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-template<> GameState* Ogre::Singleton<GameState>::msSingleton = 0;
+template<> GameState* Singleton<GameState>::msSingleton = nullptr;
 
-GameState::GameState()
+GameState::GameState() : ccam(0), mWorld(nullptr), mLevel(nullptr)
 {
 }
 
@@ -58,7 +56,7 @@ GameState::~GameState()
 void GameState::Initialize()
 {
 	UISYS->InitDebuggers();
-	UISYS->SetCursor(false);
+	UISYS->SetCursor();
 	UISYS->SetCrossHair(false);
 
 	//add cam conrollers
@@ -74,10 +72,10 @@ void GameState::Initialize()
 
 	CamController* cam3 = new TpCamController();
 	cam3->Initialize(GSYS->GetCamera());
-	TPCAM->SetFarCamOffset(   Vector3(0.0,  2.0, -4.0));
-	TPCAM->SetFarDestOffset(  Vector3(0.0,  1.5,  1.0));
-	TPCAM->SetCloseCamOffset( Vector3(-0.8, 1.5, -1.75));
-	TPCAM->SetCloseDestOffset(Vector3(-0.8, 1.75,  1.0));
+	TPCAM->SetFarCamOffset(Vector3(0.0, 2.0, -4.0));
+	TPCAM->SetFarDestOffset(Vector3(0.0, 1.5, 1.0));
+	TPCAM->SetCloseCamOffset(Vector3(-0.8, 1.5, -1.75));
+	TPCAM->SetCloseDestOffset(Vector3(-0.8, 1.75, 1.0));
 	TPCAM->SetCloseSpeed(8);
 	cams.push_back(cam3);
 
@@ -90,39 +88,41 @@ void GameState::Initialize()
 	//mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(-2,0.1,-30), new InputController());
 	//mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(2,0.1,30), NULL);
 	//mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(-5,0.1,30), NULL);
-	Agent * player = mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(0,0.1,-28), new InputController());
+	Vector3 vec = Vector3(0, 0.1, -28);
+	Agent * player = mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, vec , new InputController());
 
-	for (int i=-1;i<=1;i++)
+	for (int i = -1; i <= 1; i++)
 	{
 		if (i != 0)
 		{
-			mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, Vector3(i*-4, 0.1, -30), new AlliedAIController());
+			vec = Vector3(i*-4, 0.1, -30);
+			mWorld->addAgent(Agent::AT_VIP, Agent::RT_ALLY, vec, new AlliedAIController());
 		}
 	}
-	
-	for (int i=0;i<=1;i++)
+
+	for (int i = 0; i <= 1; i++)
 	{
-		mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, Vector3(i*4,0.1,30), new EnemyAIController());
+		vec = Vector3(i * 4, 0.1, 30);
+		mWorld->addAgent(Agent::AT_GIGN, Agent::RT_ENEMY, vec, new EnemyAIController());
 		int ci = mWorld->getAgentTotal() - 1;
-		Vector3 * cpos = &mWorld->getAgent(ci)->GetPosition();
-		PtfNode node1(cpos);
-		cpos->z -= 30;
-		PtfNode node2(cpos);
-		cpos->x -= 10;
-		PtfNode node3(cpos);
-		cpos->z += 30;
-		PtfNode node4(cpos);
+		Vector3 cpos = mWorld->getAgent(ci)->GetPosition();
+		PtfNode node1(&cpos);
+		cpos.z -= 30;
+		PtfNode node2(&cpos);
+		cpos.x -= 10;
+		PtfNode node3(&cpos);
+		cpos.z += 30;
+		PtfNode node4(&cpos);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node1);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node2);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node3);
 		mWorld->getAgent(ci)->GetPatrolPath()->AddNode(node4);
 	}
-	
+
 	mLevel = new Level;
 
 	BBS->Initialize();
 	PTM->Initialize();
-	
 }
 
 void GameState::Finalize()
@@ -132,19 +132,19 @@ void GameState::Finalize()
 	UISYS->DeinitDebuggers();
 
 	//del cam controllers
-	for (int i=0;i<(int)cams.size();i++)
+	for (int i = 0; i < static_cast<int>(cams.size()); i++)
 	{
 		cams[i]->Finalize();
 		delete cams[i];
-		cams[i] = NULL;
+		cams[i] = nullptr;
 	}
 	cams.clear();
 
 	delete mWorld;
-	mWorld = NULL;
+	mWorld = nullptr;
 
 	delete mLevel;
-	mLevel = NULL;
+	mLevel = nullptr;
 
 	PHY->Finalize();
 	BBS->Finalize();
@@ -154,28 +154,23 @@ void GameState::Update()
 {
 	if (GlobalVars::Tick > 0)
 	{
-		Ogre::Timer tmr;
-		unsigned long tm = tmr.getMicroseconds();
+		Timer tmr;
+		unsigned long tm;
 		mWorld->Update();
-		tm = tmr.getMicroseconds() - tm;
 		if (GlobalVars::Tick_4 == 0)
 		{
 			//GlobalVars::test1 = tm;
 		}
 
-		tm = tmr.getMicroseconds();
 		PHY->Update();
-		tm = tmr.getMicroseconds() - tm;
 		if (GlobalVars::Tick_4 == 0)
 		{
 			//GlobalVars::test2 = tm;
 		}
 
-		tm = tmr.getMicroseconds();
 		BBS->Update();
 		PTM->Update();
 		mLevel->Update();
-		tm = tmr.getMicroseconds() - tm;
 		if (GlobalVars::Tick_4 == 0)
 		{
 			//GlobalVars::test3 = tm;

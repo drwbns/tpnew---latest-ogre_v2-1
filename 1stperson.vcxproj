@@ -55,7 +55,7 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Graphics Code\freealut-vc14-x86\sdk\include\AL;D:\Graphics Code\libvorbis-1.3.5\include;D:\Graphics Code\libogg-1.3.2\include;F:\Program Files (x86)\OpenAL 1.1 SDK\include;D:\Graphics Code\tpnew - latest-ogre_v2-1\includes;D:\Graphics Code\v2-1-vc14\sdk\include\;D:\Graphics Code\v2-1-vc14\sdk\include\OGRE;D:\Graphics Code\boost_1_59_0;D:\Graphics Code\PhysX-3.3\PhysXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;E:\Graphics Code\freealut-vc14-x86\sdk\include\AL;E:\Graphics Code\libvorbis-1.3.5\include;E:\Graphics Code\libogg-1.3.2\include;F:\Program Files (x86)\OpenAL 1.1 SDK\include;E:\Graphics Code\tpnew - latest-ogre_v2-1\includes;E:\Graphics Code\vc14\Ogre-2.1\sdk\include\;E:\Graphics Code\vc14\Ogre-2.1\sdk\include\OGRE;E:\Graphics Code\boost_1_59_0;E:\Graphics Code\PhysX-3.3\PhysXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OIS_DYNAMIC_LIB;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -172,8 +172,6 @@
     <ClCompile Include="src\BoxItem.cpp" />
     <ClCompile Include="src\CamController.cpp" />
     <ClCompile Include="src\ChunkyTriMesh.cpp" />
-    <ClCompile Include="src\DebugDrawOgre.cpp" />
-    <ClCompile Include="src\DotSceneLoader.cpp" />
     <ClCompile Include="src\EnemyAIController.cpp" />
     <ClCompile Include="src\EnemyAttackState.cpp" />
     <ClCompile Include="src\EnemyDefenseState.cpp" />
@@ -226,7 +224,6 @@
     <ClCompile Include="src\Sample.cpp" />
     <ClCompile Include="src\SampleInterfaces.cpp" />
     <ClCompile Include="src\SampleListener.cpp" />
-    <ClCompile Include="src\Sample_TileMesh.cpp" />
     <ClCompile Include="src\SoundBuffer.cpp" />
     <ClCompile Include="src\SoundDevices.cpp" />
     <ClCompile Include="src\SoundListener.cpp" />
@@ -282,7 +279,6 @@
     <ClInclude Include="includes\CamController.h" />
     <ClInclude Include="includes\Character.h" />
     <ClInclude Include="includes\ChunkyTriMesh.h" />
-    <ClInclude Include="includes\DebugDrawOgre.h" />
     <ClInclude Include="includes\Detour\DetourAlloc.h" />
     <ClInclude Include="includes\Detour\DetourAssert.h" />
     <ClInclude Include="includes\Detour\DetourCommon.h" />
@@ -293,7 +289,6 @@
     <ClInclude Include="includes\Detour\DetourStatus.h" />
     <ClInclude Include="includes\Detour\DetourTileCache.h" />
     <ClInclude Include="includes\Detour\DetourTileCacheBuilder.h" />
-    <ClInclude Include="includes\DotSceneLoader.hpp" />
     <ClInclude Include="includes\EnemyAIController.h" />
     <ClInclude Include="includes\EnemyAttackState.h" />
     <ClInclude Include="includes\EnemyDefenseState.h" />
@@ -357,7 +352,6 @@
     <ClInclude Include="includes\Sample.h" />
     <ClInclude Include="includes\SampleInterfaces.h" />
     <ClInclude Include="includes\SampleListener.h" />
-    <ClInclude Include="includes\Sample_TileMesh.h" />
     <ClInclude Include="includes\SharedData.h" />
     <ClInclude Include="includes\SoundBuffer.h" />
     <ClInclude Include="includes\SoundDevices.h" />

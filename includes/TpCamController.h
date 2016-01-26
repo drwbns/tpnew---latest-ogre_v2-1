@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 #include "CamController.h"
 #include "OgreSingleton.h"
+#include <OGRE/OgreVector3.h>
 
 #define TPCAM TpCamController::getSingletonPtr()
 
@@ -33,10 +34,10 @@ class TpCamController : public Ogre::Singleton<TpCamController>, public CamContr
 public:
 	TpCamController();
 	~TpCamController();
-	void Initialize(Ogre::Camera* camera);
-	void Finalize();
-	void UpdateLocation(float mWalk, float mStrafe, float mUp);
-	void UpdateRotation(float mPitch, float mYaw);
+	void Initialize(Ogre::Camera* camera) override;
+	void Finalize() override;
+	void UpdateLocation() override;
+	void UpdateRotation() override;
 
 	void SetFarCamOffset(Ogre::Vector3 v) { farCamOffset = v; }
 	void SetFarDestOffset(Ogre::Vector3 v) { farDestOffset = v; }
@@ -44,7 +45,8 @@ public:
 	void SetCloseDestOffset(Ogre::Vector3 v) { closeDestOffset = v; }
 	void SetCloseSpeed(float f) { closeSpeed = f; }
 	void SetAimMode(bool b) { aim = b; }
-	Ogre::Quaternion GetRotation() { return rotation; }
+	Ogre::Quaternion GetRotation() const
+	{ return rotation; }
 
 private:
 	Ogre::Quaternion rotation;
@@ -57,6 +59,8 @@ private:
 	float pitch;
 	float closeSpeed;
 	bool aim;
+	float mYaw;
+	float mPitch;
 };
 
 #endif

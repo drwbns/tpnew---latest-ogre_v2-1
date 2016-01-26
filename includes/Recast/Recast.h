@@ -67,26 +67,26 @@ enum rcTimerLabel
 class rcContext
 {
 public:
-	inline rcContext(bool state = true) : m_logEnabled(state), m_timerEnabled(state) {}
+	 rcContext(bool state = true) : m_logEnabled(state), m_timerEnabled(state) {}
 	virtual ~rcContext() {}
 
 	/// Enables or disables logging.
-	inline void enableLog(bool state) { m_logEnabled = state; }
+	 void enableLog(bool state) { m_logEnabled = state; }
 	/// Resets log.
-	inline void resetLog() { if (m_logEnabled) doResetLog(); }
+	 void resetLog() { if (m_logEnabled) doResetLog(); }
 	/// Logs a message.
-	void log(const rcLogCategory category, const char* format, ...);
+	virtual void log(const rcLogCategory category, const char* format, ...);
 
 	/// Enables or disables timer.
-	inline void enableTimer(bool state) { m_timerEnabled = state; }
+	 void enableTimer(bool state) { m_timerEnabled = state; }
 	/// Resets all timers.
-	inline void resetTimers() { if (m_timerEnabled) doResetTimers(); }
+	 void resetTimers() { if (m_timerEnabled) doResetTimers(); }
 	/// Starts timer, used for performance timing.
-	inline void startTimer(const rcTimerLabel label) { if (m_timerEnabled) doStartTimer(label); }
+	 void startTimer(const rcTimerLabel label) { if (m_timerEnabled) doStartTimer(label); }
 	/// Stops timer, used for performance timing.
-	inline void stopTimer(const rcTimerLabel label) { if (m_timerEnabled) doStopTimer(label); }
+	 void stopTimer(const rcTimerLabel label) { if (m_timerEnabled) doStopTimer(label); }
 	/// Returns time accumulated between timer start/stop.
-	inline int getAccumulatedTime(const rcTimerLabel label) const { return m_timerEnabled ? doGetAccumulatedTime(label) : -1; }
+	 int getAccumulatedTime(const rcTimerLabel label) const { return m_timerEnabled ? doGetAccumulatedTime(label) : -1; }
 
 protected:
 

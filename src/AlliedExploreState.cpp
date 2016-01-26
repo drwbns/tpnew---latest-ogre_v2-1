@@ -20,15 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedExploreState.h"
 #include "Path.h"
 #include "NavMesher.h"
 #include "Agent.h"
 
-
 #include "OgreVector3.h"
-
 
 using namespace Ogre;
 
@@ -40,11 +37,11 @@ AlliedExploreState::~AlliedExploreState()
 {
 }
 
-void AlliedExploreState::Enter(Agent* agent)
+void AlliedExploreState::Enter(Agent * agent)
 {
 }
 
-void AlliedExploreState::Execute(Agent* agent)
+void AlliedExploreState::Execute(Agent * agent)
 {
 	if (!agent->isActive(Moving::path))
 	{
@@ -67,11 +64,11 @@ void AlliedExploreState::Execute(Agent* agent)
 	}
 }
 
-void AlliedExploreState::Exit(Agent* agent)
+void AlliedExploreState::Exit(Agent * agent)
 {
 }
 
-bool AlliedExploreState::isReady(Agent* agent)
+bool AlliedExploreState::isReady(Agent * agent)
 {
 	return false;
 }

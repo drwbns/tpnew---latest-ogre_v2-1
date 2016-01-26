@@ -24,9 +24,6 @@ THE SOFTWARE.
 #define _SOUNDDEVICES_H
 
 #include <vector>
-#include <string>
-
-#include "SoundPrereqs.h"
 
 #include "OgreMemoryAllocatorConfig.h"
 
@@ -42,7 +39,6 @@ typedef struct AlDeviceInfo
 
 class SoundDevices : public Ogre::GeneralAllocatedObject
 {
-private:
 	std::vector<ALDEVICEINFO> vDeviceInfo;
 	int defaultDeviceIndex;
 	int filterIndex;
@@ -67,7 +63,7 @@ public:
 	void logDevices() const;
 
 private:
-	unsigned int getMaxNumSources() const;
+	static unsigned int getMaxNumSources();
 };
 
 #endif

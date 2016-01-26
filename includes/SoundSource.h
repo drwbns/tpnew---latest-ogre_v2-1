@@ -38,16 +38,16 @@ public:
 	~SoundSource();
 
 	bool isPlaying() const;
-	bool play();
+	bool play() const;
 
 	bool isPaused() const;
-	bool pause();
+	bool pause() const;
 
 	bool isStopped() const;
-	bool stop();
+	bool stop() const;
 
 	bool isInitial() const;
-	bool seek(Ogre::Real position);
+	bool seek(Ogre::Real position) const;
 
 	Ogre::Real getPitch() const {return mPitch;}
 	void setPitch(Ogre::Real pitch);
@@ -61,7 +61,7 @@ public:
 	Ogre::Real getMinGain() const {return mMinGain;}
 	void setMinGain(Ogre::Real minGain);
 
-	void setGainValues(Ogre::Real maxGain, Ogre::Real minGain, Ogre::Real gain);
+	static void setGainValues();
 
 	Ogre::Real getMaxDistance() const {return mMaxDistance;}
 	void setMaxDistance(Ogre::Real maxDistance);
@@ -95,7 +95,8 @@ public:
 	Ogre::Real getInnerConeAngle() const {return mInnerConeAngle;}
 	void setInnnerConeAngle(Ogre::Real innerConeAngle);
 
-	Ogre::Real getOuterConeAngle() {return mOuterConeAngle;}
+	Ogre::Real getOuterConeAngle() const
+	{return mOuterConeAngle;}
 	void setOuterConeAngle(Ogre::Real outerConeAngle);
 
 	bool isLooping() const {return mLoop==AL_TRUE?true:false;}
@@ -107,23 +108,28 @@ public:
 	const Ogre::Vector3& getDerivedPosition() const;
 	const Ogre::Vector3& getDerivedDirection() const;
 
-	Ogre::Real getEffectiveGain() { return mEffectiveGain; }
+	Ogre::Real getEffectiveGain() const
+	{ return mEffectiveGain; }
 	static size_t getActiveCount() { return mActiveCount; }
-	bool isActive() { return mActive; }
+	bool isActive() const
+	{ return mActive; }
 	void activate(bool activate);
 
 	bool attachBuffer(const Ogre::String& bufferName, bool streaming = false);
-	bool _updateSound(Ogre::Real ElapsedTime);
+	bool _updateSound();
 	Ogre::Real getDistanceToListener() const;
-	const SoundTimer* getTimer() { return mTimer; }
+	const SoundTimer* getTimer() const
+	{ return mTimer; }
 
 	/** Overridden from MovableObject */
-	const Ogre::String& getMovableType() const;
-	const Ogre::AxisAlignedBox& getBoundingBox() const;
-	Ogre::Real getBoundingRadius() const {return 0; /* Not Visible */} 
-	void _updateRenderQueue(Ogre::RenderQueue* queue);
-	void _notifyAttached(Ogre::Node *parent, bool isTagPoint = false);
-	void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables = false) { }
+	const Ogre::String& getMovableType() const override;
+	const Ogre::AxisAlignedBox& getBoundingBox() const override;
+	Ogre::Real getBoundingRadius() const override
+	{return 0; /* Not Visible */} 
+	void _updateRenderQueue() override;
+	void _notifyAttached(Ogre::Node *parent) override;
+	void visitRenderables() override
+	{ }
 protected:
 	void initSource();
 	void deinitSource();
@@ -177,14 +183,14 @@ public:
 
 	static Ogre::String FACTORY_TYPE_NAME;
 
-	const Ogre::String& getType() const;
-	void destroyInstance(Ogre::MovableObject* obj);
+	const Ogre::String& getType() const override;
+	void destroyInstance(Ogre::MovableObject* obj) override;
 
 protected:
 	typedef std::map<std::string, SoundBuffer*> BufferMap;
 	BufferMap mBufferMap;
 
-	Ogre::MovableObject* createInstanceImpl(const Ogre::String& name, const Ogre::NameValuePairList* params = 0);
+	Ogre::MovableObject* createInstanceImpl(const Ogre::String& name) override;
 };
 
 #endif

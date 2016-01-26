@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #include "OgreVector3.h"
 
-template<> World* Ogre::Singleton<World>::msSingleton = 0;
+template<> World* Ogre::Singleton<World>::msSingleton = nullptr;
 
 World::World()
 {
@@ -41,34 +41,34 @@ World::~World()
 {
 
 	//agents
-	for (int i=0;i<(int)agents.size();i++)
+	for (int i=0;i<static_cast<int>(agents.size());i++)
 	{
 		delete agents[i];
-		agents[i] = NULL;
+		agents[i] = nullptr;
 	}
 	agents.clear();
 
 	//obstacles
-	for (int i=0;i<(int)obstacles.size();i++)
+	for (int i=0;i<static_cast<int>(obstacles.size());i++)
 	{
 		delete obstacles[i];
-		obstacles[i] = NULL;
+		obstacles[i] = nullptr;
 	}
 	obstacles.clear();
 
 	//walls
-	for (int i=0;i<(int)walls.size();i++)
+	for (int i=0;i<static_cast<int>(walls.size());i++)
 	{
 		delete walls[i];
-		walls[i] = NULL;
+		walls[i] = nullptr;
 	}
 	walls.clear();
 
 	//paths
-	for (int i=0;i<(int)paths.size();i++)
+	for (int i=0;i<static_cast<int>(paths.size());i++)
 	{
 		delete paths[i];
-		paths[i] = NULL;
+		paths[i] = nullptr;
 	}
 	paths.clear();
 }
@@ -83,12 +83,11 @@ void World::Update()
 		if (a->isDead() && a->getCwaitTime() < 0)
 		{
 			delete a;
-			a = NULL;
 			it = agents.erase(it);
 		}
 		else
 		{
-			it++;
+			++it;
 		}
 	}
 
@@ -111,6 +110,7 @@ Agent * World::addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 &posit
 		agents.push_back(a);
 		return a;
 	}
+	return nullptr;
 }
 
 void World::addPath(std::vector<PtfNode> list)

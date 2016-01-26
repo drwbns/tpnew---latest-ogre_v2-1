@@ -33,10 +33,10 @@ class BoxItem : public Ogre::GeneralAllocatedObject
 public:
 	BoxItem(int id, Ogre::String mat, Ogre::Vector3 pos, Ogre::Vector3 scl, float mass);
 	~BoxItem();
-	void Update();
+	static void Update();
 
 	physx::PxActor* actor;
-	Ogre::Entity* ent;
+	Ogre::v1::Entity* ent;
 	Ogre::SceneNode* node;
 	int obstacle;
 };

@@ -20,16 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "BillboardSystem.h"
 #include "BillboardNode.h"
 using namespace Ogre;
 
-BillboardNode::BillboardNode() : bill(NULL), liveTime(0)
+BillboardNode::BillboardNode() : bill(nullptr), liveTime(0)
 {
 }
 
 BillboardNode::~BillboardNode()
 {
-	bill = NULL;
+	bill = nullptr;
 }

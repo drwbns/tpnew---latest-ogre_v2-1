@@ -39,26 +39,31 @@ public:
 	~World();
 	void Update();
 
-	Agent * addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 &position, BaseController* ct = NULL);
+	Agent * addAgent(Agent::Type type, Agent::Race race, Ogre::Vector3 &position, BaseController* ct = nullptr);
 	Agent* getAgent(int i) { return agents[i]; }
-	int getAgentTotal() { return agents.size(); }
+	int getAgentTotal() const
+	{ return agents.size(); }
 	void setAgentController(int i, BaseController* ct) { agents[i]->ChangeController(ct); }
 
 	void addPath(std::vector<PtfNode> list);
 	Path* getPath(int i) { return paths[i]; }
-	int getPathTotal() { return paths.size(); }
+	int getPathTotal() const
+	{ return paths.size(); }
 
 	int addObstacle(Ogre::Vector3 &position, float radius);
 	void updateObstacle(int i, Ogre::Vector3 &position);
 	Obstacle* getObstacle(int i) { return obstacles[i]; }
-	int getObstacleTotal() { return obstacles.size(); }
+	int getObstacleTotal() const
+	{ return obstacles.size(); }
 
 	void addWall(Ogre::Vector3 &from, Ogre::Vector3& to, bool leftnormal);
 	Wall* getWall(int i) { return walls[i]; }
-	int getWallTotal() { return walls.size(); }
+	int getWallTotal() const
+	{ return walls.size(); }
 
 	void setPlayer(int id) { player = id; }
-	int getPlayer() { return player; }
+	int getPlayer() const
+	{ return player; }
 	Agent* getPlayerAgent() { return agents[player]; }
 
 

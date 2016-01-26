@@ -20,11 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyAIController.h"
 
 #include "AIState.h"
-#include "StateSystem.h"
 #include "AIStateMachine.h"
 
 #include "EnemyIdleState.h"
@@ -47,77 +45,75 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-
-
 EnemyAIController::EnemyAIController() : BaseController()
 {
-	sm = NULL;
+	sm = nullptr;
 }
 
 EnemyAIController::~EnemyAIController()
 {
 	delete sm;
-	sm = NULL;
+	sm = nullptr;
 }
 
 void EnemyAIController::SetAgent(Agent* a)
 {
 	BaseController::SetAgent(a);
-	if (sm == NULL)
+	if (sm == nullptr)
 	{
 		//prepare states
 		int id = 0;
 		AIState* base = new AIState(id++);//0
 
-			EnemyIdleState* idle_state = new EnemyIdleState(id++);//1
+		EnemyIdleState* idle_state = new EnemyIdleState(id++);//1
 
-				EnemyPatrolState* patrol_state = new EnemyPatrolState(id++);//2
+		EnemyPatrolState* patrol_state = new EnemyPatrolState(id++);//2
 
-					EnemyNextPatrolState*   nextp_state  = new EnemyNextPatrolState(id++);//3
-					EnemyPatrollingState* pidling_state = new EnemyPatrollingState(id++);//4
+		EnemyNextPatrolState* nextp_state = new EnemyNextPatrolState(id++);//3
+		EnemyPatrollingState* pidling_state = new EnemyPatrollingState(id++);//4
 
-				EnemyWaitState* wait_state = new EnemyWaitState(id++);//5
+		EnemyWaitState* wait_state = new EnemyWaitState(id++);//5
 
-					EnemyLookAroundState* looka_state  = new EnemyLookAroundState(id++);//6
-					EnemyWaitIdlingState* widling_state = new EnemyWaitIdlingState(id++);//7
+		EnemyLookAroundState* looka_state = new EnemyLookAroundState(id++);//6
+		EnemyWaitIdlingState* widling_state = new EnemyWaitIdlingState(id++);//7
 
-			EnemyOffensiveState* ofensive_state = new EnemyOffensiveState(id++);//8
+		EnemyOffensiveState* ofensive_state = new EnemyOffensiveState(id++);//8
 
-				EnemyAttackState* atack_state = new EnemyAttackState(id++);//9
+		EnemyAttackState* atack_state = new EnemyAttackState(id++);//9
 
-					EnemyFireState*   fire_state   = new EnemyFireState(id++);//10
-					EnemyStrafeState* strafe_state = new EnemyStrafeState(id++);//11
+		EnemyFireState* fire_state = new EnemyFireState(id++);//10
+		EnemyStrafeState* strafe_state = new EnemyStrafeState(id++);//11
 
-				EnemySeekState* seek_state = new EnemySeekState(id++);//12
+		EnemySeekState* seek_state = new EnemySeekState(id++);//12
 
-					EnemyExploreState* explore_state = new EnemyExploreState(id++);//13
-					EnemyInspectState* inspect_state = new EnemyInspectState(id++);//14
+		EnemyExploreState* explore_state = new EnemyExploreState(id++);//13
+		EnemyInspectState* inspect_state = new EnemyInspectState(id++);//14
 
-			EnemyDefensiveState* defensive_state = new EnemyDefensiveState(id++);//15
+		EnemyDefensiveState* defensive_state = new EnemyDefensiveState(id++);//15
 
-				EnemyFallbackState* fback_state   = new EnemyFallbackState(id++);//16
-				EnemyDefenseState*  defense_state = new EnemyDefenseState(id++);//17
+		EnemyFallbackState* fback_state = new EnemyFallbackState(id++);//16
+		EnemyDefenseState* defense_state = new EnemyDefenseState(id++);//17
 
 		//setup hierarchy
 		base->AddChild(idle_state);
-			idle_state->AddChild(patrol_state);
-				patrol_state->AddChild(nextp_state);
-				patrol_state->AddChild(pidling_state);
-			idle_state->AddChild(wait_state);
-				wait_state->AddChild(looka_state);
-				wait_state->AddChild(widling_state);
+		idle_state->AddChild(patrol_state);
+		patrol_state->AddChild(nextp_state);
+		patrol_state->AddChild(pidling_state);
+		idle_state->AddChild(wait_state);
+		wait_state->AddChild(looka_state);
+		wait_state->AddChild(widling_state);
 
 		base->AddChild(ofensive_state);
-			ofensive_state->AddChild(atack_state);
-				atack_state->AddChild(fire_state);
-				atack_state->AddChild(strafe_state);
-			ofensive_state->AddChild(seek_state);
-				seek_state->AddChild(explore_state);
-				seek_state->AddChild(inspect_state);
+		ofensive_state->AddChild(atack_state);
+		atack_state->AddChild(fire_state);
+		atack_state->AddChild(strafe_state);
+		ofensive_state->AddChild(seek_state);
+		seek_state->AddChild(explore_state);
+		seek_state->AddChild(inspect_state);
 
 		base->AddChild(defensive_state);
-			defensive_state->AddChild(fback_state);
-			defensive_state->AddChild(defense_state);
+		defensive_state->AddChild(fback_state);
+		defensive_state->AddChild(defense_state);
 
 		//create sm
 		sm = new AIStateMachine(agent, base, 1.0);
@@ -130,8 +126,9 @@ void EnemyAIController::SetAgent(Agent* a)
 
 void EnemyAIController::Update()
 {
-	if (sm != NULL && !agent->isDead())
+	if (sm != nullptr && !agent->isDead())
 	{
 		sm->Update();
 	}
 }
+

@@ -20,11 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AIKnowledge.h"
-#include "World.h"
-#include "GameState.h"
-#include "StateSystem.h"
 using namespace Ogre;
 
 AIKnowledge::AIKnowledge(Agent* owner) : owner(owner)
@@ -33,7 +29,7 @@ AIKnowledge::AIKnowledge(Agent* owner) : owner(owner)
 
 AIKnowledge::~AIKnowledge()
 {
-	owner = NULL;
+	owner = nullptr;
 	allies.clear();
 	enemies.clear();
 	coverPositions.clear();
@@ -49,7 +45,7 @@ void AIKnowledge::Update()
 		{
 			it = allies.erase(it);
 		}
-		else it++;
+		else ++it;
 	}
 
 	it = enemies.begin();
@@ -59,13 +55,13 @@ void AIKnowledge::Update()
 		{
 			it = enemies.erase(it);
 		}
-		else it++;
+		else ++it;
 	}
 }
 
 int AIKnowledge::allyExists(int id)
 {
-	for (size_t i=0;i<allies.size();i++)
+	for (size_t i = 0; i < allies.size(); i++)
 	{
 		if (id == allies[i].GetID())
 		{
@@ -77,7 +73,7 @@ int AIKnowledge::allyExists(int id)
 
 int AIKnowledge::enemyExists(int id)
 {
-	for (size_t i=0;i<enemies.size();i++)
+	for (size_t i = 0; i < enemies.size(); i++)
 	{
 		if (id == enemies[i].GetID())
 		{
@@ -90,7 +86,7 @@ int AIKnowledge::enemyExists(int id)
 int AIKnowledge::totalVisibleAlly()
 {
 	int ret = 0;
-	for (size_t i=0;i<allies.size();i++)
+	for (size_t i = 0; i < allies.size(); i++)
 	{
 		if (allies[i].IsVisible())
 		{
@@ -103,7 +99,7 @@ int AIKnowledge::totalVisibleAlly()
 int AIKnowledge::totalVisibleEnemy()
 {
 	int ret = 0;
-	for (size_t i=0;i<enemies.size();i++)
+	for (size_t i = 0; i < enemies.size(); i++)
 	{
 		if (enemies[i].IsVisible())
 		{
@@ -113,7 +109,7 @@ int AIKnowledge::totalVisibleEnemy()
 	return ret;
 }
 
-int AIKnowledge::totalVisibleCover()
+int AIKnowledge::totalVisibleCover() const
 {
 	return coverPositions.size();
 }
@@ -122,7 +118,7 @@ int AIKnowledge::getClosestEnemy()
 {
 	float max = 999999;
 	int id = -1;
-	for (size_t i=0;i<enemies.size();i++)
+	for (size_t i = 0; i < enemies.size(); i++)
 	{
 		float d = owner->GetPosition().squaredDistance(enemies[i].GetPosition());
 		if (d < max)
@@ -138,7 +134,7 @@ int AIKnowledge::getClosestVisibleEnemy()
 {
 	float max = 999999;
 	int id = -1;
-	for (size_t i=0;i<enemies.size();i++)
+	for (size_t i = 0; i < enemies.size(); i++)
 	{
 		if (enemies[i].IsVisible())
 		{
@@ -157,7 +153,7 @@ int AIKnowledge::getClosestCover()
 {
 	float max = 999999;
 	int id = -1;
-	for (size_t i=0;i<coverPositions.size();i++)
+	for (size_t i = 0; i < coverPositions.size(); i++)
 	{
 		float d = owner->GetPosition().squaredDistance(coverPositions[i].GetPosition());
 		if (d < max)

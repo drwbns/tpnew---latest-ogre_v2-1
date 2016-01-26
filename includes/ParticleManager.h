@@ -38,9 +38,9 @@ public:
 
 	void Initialize();
 	void Finalize();
-	void Update();
-	void ShowParticle(Ogre::String name, Ogre::Vector3 pos, Ogre::Vector3 dir);
-	void HideParticle(Ogre::String name);
+	static void Update();
+	static void ShowParticle();
+	static void HideParticle();
 
 private:
 	/* 

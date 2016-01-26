@@ -66,7 +66,7 @@ struct ConvexVolume
 
 #define INPT InputGeom::getSingletonPtr()
 
-class InputGeom : public Ogre::Singleton<InputGeom>
+class InputGeom : public Singleton<InputGeom>
 {
 	rcChunkyTriMesh* m_chunkyMesh;
 	rcMeshLoaderObj* m_mesh;
@@ -97,18 +97,23 @@ public:
 
 
 	bool loadMesh(const char* filepath);
-	bool loadTerrain();
-	inline rcMeshLoaderObj* getMeshObject() { return m_mesh; }
+	static bool loadTerrain();
+	rcMeshLoaderObj* getMeshObject() const
+	{ return m_mesh; }
 	
 	bool load(const char* filepath);
 	bool save(const char* filepath);
 	
 	// Method to return static mesh data.
-	inline rcMeshLoaderObj* getMesh() { return m_mesh; }
-	inline const float* getMeshBoundsMin() const { return m_meshBMin; }
-	inline const float* getMeshBoundsMax() const { return m_meshBMax; }
-	inline const rcChunkyTriMesh* getChunkyMesh() const { return m_chunkyMesh; }
-	bool raycastMesh(float* src, float* dst, float& tmin);
+	rcMeshLoaderObj* getMesh() const
+	{ return m_mesh; }
+
+	const float* getMeshBoundsMin() const { return m_meshBMin; }
+
+	const float* getMeshBoundsMax() const { return m_meshBMax; }
+
+	const rcChunkyTriMesh* getChunkyMesh() const { return m_chunkyMesh; }
+	bool raycastMesh(float* src, float* dst, float& tmin) const;
 
 	// Off-Mesh connections.
 	int getOffMeshConnectionCount() const { return m_offMeshConCount; }

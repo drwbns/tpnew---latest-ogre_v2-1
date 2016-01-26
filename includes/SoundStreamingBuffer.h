@@ -23,23 +23,22 @@ THE SOFTWARE.
 #ifndef _STREAMINGBUFFER_H
 #define _STREAMINGBUFFER_H
 
-#include "SoundPrereqs.h"
 #include "SoundBuffer.h"
-#include "SoundTimer.h"
 #include "SoundSource.h"
 
 class StreamingBuffer : public SoundBuffer
 {
 public:
 	StreamingBuffer(const Ogre::String& name, SoundSource* source, int bufferCount = 4);
-	bool play(ALuint source);
-	bool pause(ALuint source);
-	bool stop(ALuint source);
-	void update(ALuint source, Ogre::Real elapsedTime);
-	void setLoop(ALuint source, bool loop) { mLoop = loop; }
-	virtual void seek(ALuint source, float position);
+	bool play(ALuint source) override;
+	bool pause(ALuint source) override;
+	bool stop(ALuint source) override;
+	void update() override;
+	void setLoop(bool loop) override
+	{ mLoop = loop; }
+	virtual void seek() override;
 protected:
-	virtual bool stream(ALuint buffer);
+	virtual bool stream();
 	int mBufferCount;
 	bool mLoop;
 	SoundSource* mSource;
@@ -47,14 +46,14 @@ protected:
 
 };
 
-class OgGAMESTATEream : public StreamingBuffer
+class OgSream : public StreamingBuffer
 {
 public:
-	OgGAMESTATEream(const Ogre::String& name, SoundSource* source, int bufferCount);
-	~OgGAMESTATEream();
-	void seek(ALuint source, float position);
+	OgSream(const Ogre::String& name, SoundSource* source, int bufferCount);
+	~OgSream();
+	void seek() override;
 protected:
-	bool stream(ALuint buffer);
+	bool stream() override;
 
     OggVorbis_File  mOgGAMESTATEream;
     vorbis_comment* mVorbisComment;

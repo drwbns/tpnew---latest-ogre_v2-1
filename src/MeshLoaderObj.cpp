@@ -36,39 +36,34 @@
 #include "SharedData.h"
 #include "GUtility.h"
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #define _USE_MATH_DEFINES
-#include <math.h>
 
 #include <OgrePixelCountLodStrategy.h>
-#include <OgreDistanceLodStrategy.h>
 #include "OgreRoot.h"
 #include "OgreMeshManager.h"
 
 using namespace Ogre;
 
-typedef std::vector<Ogre::Vector3> OgreVector3Array;
+typedef std::vector<Vector3> OgreVector3Array;
 typedef std::vector<OgreVector3Array> OgreVector3Array2D;
 typedef std::vector<long>  LongArray;
 typedef std::vector<LongArray> LongArray2D;
 
-rcMeshLoaderObj::rcMeshLoaderObj() :
-	m_verts(0),	m_tris(0), m_normals(0), ntris(0),
-	tris(0), verts(0), nverts(0), numNodes(0),newverts(0)
-	{
-		mSceneMgr = SharedData::getSingleton().iSceneMgr;
-	}
+rcMeshLoaderObj::rcMeshLoaderObj() : ent(nullptr), lvlNode(nullptr), fileName(nullptr),
+m_verts(nullptr), m_tris(nullptr), m_normals(0), ntris(0),
+nverts(0), verts(0), tris(0), numNodes(0), newverts(nullptr)
+{
+	mSceneMgr = SharedData::getSingleton().iSceneMgr;
+}
 
 rcMeshLoaderObj::~rcMeshLoaderObj()
 {
-	delete [] m_verts;
+	delete[] m_verts;
 	//delete [] m_normals;
-	delete [] m_tris;
+	delete[] m_tris;
 	//delete [] tris;
 	//delete [] verts;
-	
 }
 
 // PARTS OF THE FOLLOWING METHOD WERE TAKEN FROM AN OGRE3D FORUM POST ABOUT RECAST
@@ -89,7 +84,7 @@ bool rcMeshLoaderObj::load(const char* filepath)
 
 	//  ******** Entity Loading code **********
 
-	ent = SharedData::getSingleton().iSceneMgr->createEntity(fileName,fileName);
+	ent = SharedData::getSingleton().iSceneMgr->createEntity(fileName, fileName);
 	ent->setQueryFlags(GEOMETRY_QUERY_MASK);
 	lvlNode = SharedData::getSingleton().iSceneMgr->getRootSceneNode()->createChildSceneNode(fileName);
 	lvlNode->attachObject(ent);
@@ -102,12 +97,9 @@ bool rcMeshLoaderObj::load(const char* filepath)
 	//lvlNode->setScale(2,2,2);
 	lvlNode->setPosition(offsetX, 0.0f, offsetZ);
 	SharedData::getSingleton().mNavNodeList.push_back(lvlNode);
-	offsetX += 270.0f;
-	offsetZ += 270.0f;
 
 	//initialize mesh counts and data arrays
 	const int numNodes = SharedData::getSingleton().mNavNodeList.size();
-
 
 	std::vector<size_t> meshVertexCount(numNodes);
 	std::vector<size_t> meshIndexCount(numNodes);
@@ -116,27 +108,26 @@ bool rcMeshLoaderObj::load(const char* filepath)
 	/*
 	std::vector<size_t> meshVertexCount (numNodes);  // Vertex count
 	std::vector<Ogre::Vector3**> meshVertices(numNodes); // Vertices
-	
+
 	std::vector<size_t> meshIndexCount (numNodes); // Index count
 	std::vector<long > meshIndices(numNodes);  // Indices
-	*/ 
-	
+	*/
+
 	/*
 	size_t *meshVertexCount = new size_t[numNodes];
 	size_t *meshIndexCount = new size_t[numNodes];
-	
+
 	Ogre::Vector3 **meshVertices = new Ogre::Vector3*[numNodes];
 	unsigned long **meshIndices = new unsigned long*[numNodes];
 
 	*/
 
-	Ogre::Mesh* mesh = reinterpret_cast<Ogre::Mesh *>(Root::getSingleton().getMeshManager()->getByName(fileName).get() );	
+	Mesh* mesh = reinterpret_cast<Mesh *>(Root::getSingleton().getMeshManager()->getByName(fileName).get());
 
-	for (int i = 0 ; i < numNodes ; i++)
+	for (int i = 0; i < numNodes; i++)
 	{
 		if (!TemplateUtils::getMeshInformation(mesh, meshVertexCount[i], meshVertices[i], meshIndexCount[i], meshIndices[i])) {
 			return false;
-			
 		}
 		//total number of verts
 		nverts += meshVertexCount[i];
@@ -145,45 +136,45 @@ bool rcMeshLoaderObj::load(const char* filepath)
 	}
 
 	// Allocate space for verts and tris arrays based on mesh values
-	verts.resize(nverts*3);
+	verts.resize(nverts * 3);
 	tris.resize(ntris);
 
 	//verts = new float[nverts*3];// verts holds x,y,&z for each verts in the array
- 	//tris = new int[ntris];// tris in recast is really indices like ogre
+	//tris = new int[ntris];// tris in recast is really indices like ogre
 
 	//convert index count into tri count
-	ntris = ntris/3; //although the tris array are indices the ntris is actual number of triangles, eg. indices/3;
+	ntris = ntris / 3; //although the tris array are indices the ntris is actual number of triangles, eg. indices/3;
 
 	//set the reference node
 	SceneNode *referenceNode;
-		referenceNode = SharedData::getSingleton().iSceneMgr->getRootSceneNode();
+	referenceNode = SharedData::getSingleton().iSceneMgr->getRootSceneNode();
 
 	//copy all meshes verticies into single buffer and transform to world space relative to parentNode
 	int vertsIndex = 0;
 	int prevVerticiesCount = 0;
 	int prevIndexCountTotal = 0;
-	for (int i = 0 ; i < numNodes ; i++)
+	for (int i = 0; i < numNodes; i++)
 	{
 		//find the transform between the reference node and this node
-		Ogre::Matrix4 transform = referenceNode->_getFullTransform().inverse() * SharedData::getSingleton().mNavNodeList[i]->_getFullTransform();
-		Ogre::Vector3 vertexPos;
-		for (uint j = 0 ; j < meshVertexCount[i] ; j++)
+		Matrix4 transform = referenceNode->_getFullTransform().inverse() * SharedData::getSingleton().mNavNodeList[i]->_getFullTransform();
+		Vector3 vertexPos;
+		for (uint j = 0; j < meshVertexCount[i]; j++)
 		{
 			vertexPos = transform*meshVertices[i][j];
 			verts[vertsIndex] = vertexPos.x;
-			verts[vertsIndex+1] = vertexPos.y;
-			verts[vertsIndex+2] = vertexPos.z;
-			vertsIndex+=3;
+			verts[vertsIndex + 1] = vertexPos.y;
+			verts[vertsIndex + 2] = vertexPos.z;
+			vertsIndex += 3;
 		}
 
-		for (uint j = 0 ; j < meshIndexCount[i] ; j++)
+		for (uint j = 0; j < meshIndexCount[i]; j++)
 		{
-			tris[prevIndexCountTotal+j] = meshIndices[i][j]+prevVerticiesCount;
+			tris[prevIndexCountTotal + j] = meshIndices[i][j] + prevVerticiesCount;
 		}
 		prevIndexCountTotal += meshIndexCount[i];
 		prevVerticiesCount = meshVertexCount[i];
 	}
-	//delete tempory arrays 
+	//delete tempory arrays
 	//TODO These probably could member varibles, this would increase performance slightly
 
 	/* // Removed due to using std::vector instead
@@ -204,34 +195,33 @@ bool rcMeshLoaderObj::load(const char* filepath)
 	// TODO : fix this
 
 	// Allocate space for normals data
-	m_normals.resize(ntris*3);
+	m_normals.resize(ntris * 3);
 
- 	for (int i = 0; i < ntris*3; i += 3)
- 	{
- 		const float* v0 = &verts[tris[i]*3];
- 		const float* v1 = &verts[tris[i+1]*3];
- 		const float* v2 = &verts[tris[i+2]*3];
- 		float e0[3], e1[3];
- 		for (int j = 0; j < 3; ++j)
- 		{
- 			e0[j] = (v1[j] - v0[j]);
- 			e1[j] = (v2[j] - v0[j]);
- 		}
- 		float* n = &m_normals[i];
-  		n[0] = ((e0[1]*e1[2]) - (e0[2]*e1[1]));
-  		n[1] = ((e0[2]*e1[0]) - (e0[0]*e1[2]));
-  		n[2] = ((e0[0]*e1[1]) - (e0[1]*e1[0]));
- 		
- 		float d = sqrtf(n[0]*n[0] + n[1]*n[1] + n[2]*n[2]);
- 		if (d > 0)
- 		{
- 			d = 1.0f/d;
- 			n[0] *= d;
- 			n[1] *= d;
- 			n[2] *= d;
- 		}	
- 	}
+	for (int i = 0; i < ntris * 3; i += 3)
+	{
+		const float* v0 = &verts[tris[i] * 3];
+		const float* v1 = &verts[tris[i + 1] * 3];
+		const float* v2 = &verts[tris[i + 2] * 3];
+		float e0[3], e1[3];
+		for (int j = 0; j < 3; ++j)
+		{
+			e0[j] = (v1[j] - v0[j]);
+			e1[j] = (v2[j] - v0[j]);
+		}
+		float* n = &m_normals[i];
+		n[0] = ((e0[1] * e1[2]) - (e0[2] * e1[1]));
+		n[1] = ((e0[2] * e1[0]) - (e0[0] * e1[2]));
+		n[2] = ((e0[0] * e1[1]) - (e0[1] * e1[0]));
 
+		float d = sqrtf(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
+		if (d > 0)
+		{
+			d = 1.0f / d;
+			n[0] *= d;
+			n[1] *= d;
+			n[2] *= d;
+		}
+	}
 
 	return true;
 }

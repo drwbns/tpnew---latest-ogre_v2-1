@@ -31,15 +31,16 @@ class Obstacle
 {
 	friend class World;
 
-private:
 	Obstacle(Ogre::Vector3 position, float radius);
 	~Obstacle();
-	void resetDebug();
+	void resetDebug() const;
 
 public:
-	Ogre::Vector3 GetPos() { return Position; }
+	Ogre::Vector3 GetPos() const
+	{ return Position; }
 	void SetPos(Ogre::Vector3 & p) { Position = p; }
-	float GetRadius() { return Radius; }
+	float GetRadius() const
+	{ return Radius; }
 
 private:
 	Ogre::Vector3 Position;

@@ -31,14 +31,15 @@ public:
 	MenuState();
 	~MenuState();
 
-	void Initialize();
-	void Finalize();
-	void Update();
-	Ogre::String GetName() { return "menu"; }
+	void Initialize() override;
+	void Finalize() override;
+	void Update() override;
+	Ogre::String GetName() override
+	{ return "menu"; }
 
 	//callbacks
-	void OnPlay();
-	void OnExit();
+	static void OnPlay();
+	static void OnExit();
 };
 
 #endif

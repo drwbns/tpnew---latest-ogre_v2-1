@@ -40,8 +40,9 @@ public:
 
 	void LoadState(Ogre::String Name);
 	void UnloadCurrentState();
-	void Update();
-	State* GetCurrentState() { return mState; }
+	void Update() const;
+	State* GetCurrentState() const
+	{ return mState; }
 	
 private:
 	State* mState;

@@ -20,11 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "EnemyFireState.h"
 #include "Agent.h"
-#include "AIKnowledge.h"
-
 
 using namespace Ogre;
 
@@ -36,14 +33,14 @@ EnemyFireState::~EnemyFireState()
 {
 }
 
-void EnemyFireState::Enter(Agent* agent)
+void EnemyFireState::Enter(Agent * agent)
 {
 	agent->SetAimMode(true);
 	//order to stop
 	agent->orderBrake();
 }
 
-void EnemyFireState::Execute(Agent* agent)
+void EnemyFireState::Execute(Agent * agent)
 {
 	//find closest enemy
 	int id = agent->getKnowledge()->getClosestVisibleEnemy();
@@ -52,10 +49,8 @@ void EnemyFireState::Execute(Agent* agent)
 		Vector3 closest = agent->getKnowledge()->getEnemy(id).GetPosition();
 		float coeff = agent->GetPosition().distance(closest) / agent->getAttackRange();
 		Vector3 target = closest;
-		target.x += coeff * Math::RangeRandom(-1.0 , 1.0);
-		target.y += coeff * Math::RangeRandom(-0.125 * agent->getEyePos().y, 1.50 * agent->getEyePos().y);
-		target.z += coeff * Math::RangeRandom(-1.0 , 0.0);
-		agent->Shoot(false, target);
+		target.x += coeff * Math::RangeRandom(-1.0, 1.0);
+		agent->Shoot();
 
 		//set direction
 		Vector3 dir = closest - agent->GetPosition();
@@ -65,12 +60,12 @@ void EnemyFireState::Execute(Agent* agent)
 	}
 }
 
-void EnemyFireState::Exit(Agent* agent)
+void EnemyFireState::Exit(Agent * agent)
 {
 	agent->SetAimMode(false);
 }
 
-bool EnemyFireState::isReady(Agent* agent)
+bool EnemyFireState::isReady(Agent * agent)
 {
 	return true;
 }

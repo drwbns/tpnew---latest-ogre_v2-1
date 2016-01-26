@@ -20,27 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "CamController.h"
 
-CamController::CamController() : mCamera(NULL), mSpeed(8), mSensivity(0.005)
+CamController::CamController() : mCamera(nullptr), mSpeed(8), mSensivity(0.005)
 {
 	type = CT_FREE;
 }
 
 CamController::~CamController()
 {
-	Finalize();
+	CamController::Finalize();
 }
 
 void CamController::Initialize(Ogre::Camera* camera)
 {
 	mCamera = camera;
-	mCamera->setPosition(0,1,0);
-	mCamera->lookAt(0,1,1);
+	mCamera->setPosition(0, 1, 0);
+	mCamera->lookAt(0, 1, 1);
 }
 
 void CamController::Finalize()
 {
-	mCamera = NULL;
+	mCamera = nullptr;
 }

@@ -17,8 +17,6 @@
 
 #include "boost\thread\mutex.hpp"
 
-#include <string.h>
-
 #ifdef WIN32
 #	define snprintf _snprintf
 #endif
@@ -57,8 +55,8 @@ void BuildContext::log(const rcLogCategory category, const char* format, ...)
 	int len = vsnprintf(msg, MSG_SIZE, format, ap);
 	if (len >= MSG_SIZE)
 	{
-		len = MSG_SIZE-1;
-		msg[MSG_SIZE-1] = '\0';
+		len = MSG_SIZE - 1;
+		msg[MSG_SIZE - 1] = '\0';
 	}
 	va_end(ap);
 	doLog(category, msg, len);
@@ -66,7 +64,6 @@ void BuildContext::log(const rcLogCategory category, const char* format, ...)
 
 void BuildContext::doLog(const rcLogCategory category, const char* msg, const int len)
 {
-	
 	if (!len) return;
 	if (m_messageCount >= MAX_MESSAGES)
 		return;
@@ -75,14 +72,14 @@ void BuildContext::doLog(const rcLogCategory category, const char* msg, const in
 	if (n < 2)
 		return;
 	char* cat = dst;
-	char* text = dst+1;
-	const int maxtext = n-1;
+	char* text = dst + 1;
+	const int maxtext = n - 1;
 	// Store category
-	*cat = (char)category;
+	*cat = static_cast<char>(category);
 	// Store message
-	const int count = rcMin(len+1, maxtext);
+	const int count = rcMin(len + 1, maxtext);
 	memcpy(text, msg, count);
-	text[count-1] = '\0';
+	text[count - 1] = '\0';
 	m_textPoolSize += 1 + count;
 	m_messages[m_messageCount++] = dst;
 }
@@ -101,7 +98,7 @@ void BuildContext::doStartTimer(const rcTimerLabel label)
 void BuildContext::doStopTimer(const rcTimerLabel label)
 {
 	const TimeVal endTime = getPerfTime();
-	const int deltaTime = (int)(endTime - m_startTime[label]);
+	const int deltaTime = static_cast<int>(endTime - m_startTime[label]);
 	if (m_accTime[label] == -1)
 		m_accTime[label] = deltaTime;
 	else
@@ -113,7 +110,7 @@ int BuildContext::doGetAccumulatedTime(const rcTimerLabel label) const
 	return m_accTime[label];
 }
 
-void BuildContext::dumpLog(const char* format, ...)
+void BuildContext::dumpLog(const char* format, ...) const
 {
 	// Print header.
 	va_list ap;
@@ -121,12 +118,12 @@ void BuildContext::dumpLog(const char* format, ...)
 	vprintf(format, ap);
 	va_end(ap);
 	printf("\n");
-	
+
 	// Print messages
 	const int TAB_STOPS[4] = { 28, 36, 44, 52 };
 	for (int i = 0; i < m_messageCount; ++i)
 	{
-		const char* msg = m_messages[i]+1;
+		const char* msg = m_messages[i] + 1;
 		int n = 0;
 		while (*msg)
 		{
@@ -160,20 +157,20 @@ void BuildContext::dumpLog(const char* format, ...)
 
 boost::mutex io_mutex;
 
-void BuildContext::dumpLogToFile(const char* path) 
-{ 
+void BuildContext::dumpLogToFile(const char* path)
+{
 	boost::mutex::scoped_lock lock(io_mutex);
-	FILE* fp = fopen(path, "a"); 
-	if (!fp) return; 
-	if (m_messages[0] == NULL) return;
+	FILE* fp = fopen(path, "a");
+	if (!fp) return;
+	if (m_messages[0] == nullptr) return;
 
-	// Print messages 
-	const int TAB_STOPS[4] = { 28, 36, 44, 52 }; 
-	for (int i = 0; i < m_messageCount; ++i) 
-	{ 
-		const char* msg = m_messages[i]+1; 
+	// Print messages
+	const int TAB_STOPS[4] = { 28, 36, 44, 52 };
+	for (int i = 0; i < m_messageCount; ++i)
+	{
+		const char* msg = m_messages[i] + 1;
 		fprintf(fp, "%s\n", msg);
-	} 
+	}
 	m_messageCount = 0;
 	fclose(fp);
 	resetLog();
@@ -186,7 +183,7 @@ int BuildContext::getLogCount() const
 
 const char* BuildContext::getLogText(const int i) const
 {
-	return m_messages[i]+1;
+	return m_messages[i] + 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +195,7 @@ public:
 	GLCheckerTexture() : m_texId(0)
 	{
 	}
-	
+
 	~GLCheckerTexture()
 	{
 		if (m_texId != 0)
@@ -213,7 +210,7 @@ public:
 			const unsigned int col1 = duRGBA(255,255,255,255);
 			static const int TSIZE = 64;
 			unsigned int data[TSIZE*TSIZE];
-			
+
 			glGenTextures(1, &m_texId);
 			glBindTexture(GL_TEXTURE_2D, m_texId);
 
@@ -228,7 +225,7 @@ public:
 				size /= 2;
 				level++;
 			}
-			
+
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
@@ -239,7 +236,6 @@ public:
 	}
 };
 GLCheckerTexture g_tex;
-
 
 void DebugDrawGL::depthMask(bool state)
 {
@@ -316,7 +312,7 @@ void DebugDrawGL::end()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 FileIO::FileIO() :
-	m_fp(0),
+	m_fp(nullptr),
 	m_mode(-1)
 {
 }
@@ -367,5 +363,3 @@ bool FileIO::read(void* ptr, const size_t size)
 	fread(ptr, size, 1, m_fp);
 	return true;
 }
-
-

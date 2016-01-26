@@ -49,10 +49,10 @@ void rcLog::log(rcLogCategory category, const char* format, ...)
 	// Store message
 	va_list ap;
 	va_start(ap, format);
-	int ret = vsnprintf(dst+1, n-1, format, ap);
+	int ret = vsnprintf(dst + 1, n - 1, format, ap);
 	va_end(ap);
 	if (ret > 0)
-		m_textPoolSize += ret+2;
+		m_textPoolSize += ret + 2;
 	m_messages[m_messageCount++] = dst;
 }
 

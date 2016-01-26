@@ -32,12 +32,12 @@ THE SOFTWARE.
 
 using namespace Ogre;
 
-Path::Path()
+Path::Path() : numPolys(0), numPaths(0), numStraightPaths(0)
 {
 	//mark
 	mark = GSYS->GetSceneMgr()->createManualObject();
 	mark->setCastShadows(false);
-	MaterialPtr markMaterial = MaterialManager::getSingleton().create("markMaterial","General");
+	MaterialPtr markMaterial = MaterialManager::getSingleton().create("markMaterial", "General");
 	markMaterial->setReceiveShadows(false);
 	markMaterial->getTechnique(0)->setLightingEnabled(false);
 	mark->clear();
@@ -48,12 +48,12 @@ Path::~Path()
 {
 	GSYS->GetSceneMgr()->getRootSceneNode()->detachObject(mark);
 	GSYS->GetSceneMgr()->destroyManualObject(mark);
-	mark = NULL;
+	mark = nullptr;
 
 	mNodes.clear();
 }
 
-void Path::AddNode(PtfNode node, bool shift) 
+void Path::AddNode(PtfNode node, bool shift)
 {
 	if (!shift)
 	{
@@ -65,9 +65,9 @@ void Path::AddNode(PtfNode node, bool shift)
 	}
 }
 
-void Path::Clear() 
-{ 
-	mNodes.clear(); 
+void Path::Clear()
+{
+	mNodes.clear();
 	mark->clear();
 }
 
@@ -77,20 +77,20 @@ void Path::ShowDebug(bool b)
 
 	if (b)
 	{
-		mark->begin("markMaterial", Ogre::RenderOperation::OT_LINE_LIST);
-		for (int i=0;i<GetLength()-1;i++)
+		mark->begin("markMaterial", RenderOperation::OT_LINE_LIST);
+		for (int i = 0; i < GetLength() - 1; i++)
 		{
 			//node to next node
 			mark->position(*mNodes[i].getPos());
-			mark->colour(1,1,1);
-			mark->position(*mNodes[i+1].getPos());
-			mark->colour(1,1,1);
+			mark->colour(1, 1, 1);
+			mark->position(*mNodes[i + 1].getPos());
+			mark->colour(1, 1, 1);
 
 			//node to upper
 			mark->position(*mNodes[i].getPos());
-			mark->colour(1,1,0);
-			mark->position(mNodes[i].getPos()->x, mNodes[i].getPos()->y+0.75, mNodes[i].getPos()->z);
-			mark->colour(1,1,0);
+			mark->colour(1, 1, 0);
+			mark->position(mNodes[i].getPos()->x, mNodes[i].getPos()->y + 0.75, mNodes[i].getPos()->z);
+			mark->colour(1, 1, 0);
 		}
 		mark->end();
 	}

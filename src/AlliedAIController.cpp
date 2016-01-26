@@ -43,72 +43,72 @@ using namespace Ogre;
 
 AlliedAIController::AlliedAIController() : BaseController()
 {
-	sm = NULL;
+	sm = nullptr;
 }
 
 AlliedAIController::~AlliedAIController()
 {
 	delete sm;
-	sm = NULL;
+	sm = nullptr;
 }
 
 void AlliedAIController::SetAgent(Agent* a)
 {
 	BaseController::SetAgent(a);
-	if (sm == NULL)
+	if (sm == nullptr)
 	{
 		//prepare states
 		int id = 0;
 		AIState* base = new AIState(id++);//0
 
-			AlliedIdleState* idle_state = new AlliedIdleState(id++);//1
-				
-				AlliedKeepCloseState* kclose_state1 = new AlliedKeepCloseState(id++);//2
-					AlliedGetCloseState*   gclose_state1  = new AlliedGetCloseState(id++);//3
+		AlliedIdleState* idle_state = new AlliedIdleState(id++);//1
 
-				AlliedWaitState* wait_state = new AlliedWaitState(id++);//4
-					AlliedLookAroundState* looka_state  = new AlliedLookAroundState(id++);//5
-					AlliedWaitIdlingState* widling_state = new AlliedWaitIdlingState(id++);//6
-					AlliedOutOfWayState* outofway_state = new AlliedOutOfWayState(id++);//7
+		AlliedKeepCloseState* kclose_state1 = new AlliedKeepCloseState(id++);//2
+		AlliedGetCloseState*   gclose_state1 = new AlliedGetCloseState(id++);//3
 
-			AlliedOffensiveState* ofensive_state = new AlliedOffensiveState(id++);//8
+		AlliedWaitState* wait_state = new AlliedWaitState(id++);//4
+		AlliedLookAroundState* looka_state = new AlliedLookAroundState(id++);//5
+		AlliedWaitIdlingState* widling_state = new AlliedWaitIdlingState(id++);//6
+		AlliedOutOfWayState* outofway_state = new AlliedOutOfWayState(id++);//7
 
-				AlliedAttackState* atack_state = new AlliedAttackState(id++);//9
+		AlliedOffensiveState* ofensive_state = new AlliedOffensiveState(id++);//8
 
-					AlliedFireState*   fire_state   = new AlliedFireState(id++);//10
-					AlliedStrafeState* strafe_state = new AlliedStrafeState(id++);//11
+		AlliedAttackState* atack_state = new AlliedAttackState(id++);//9
 
-				AlliedSeekState* seek_state = new AlliedSeekState(id++);//12
+		AlliedFireState*   fire_state = new AlliedFireState(id++);//10
+		AlliedStrafeState* strafe_state = new AlliedStrafeState(id++);//11
 
-					AlliedExploreState* explore_state = new AlliedExploreState(id++);//13
-					AlliedInspectState* inspect_state = new AlliedInspectState(id++);//14
+		AlliedSeekState* seek_state = new AlliedSeekState(id++);//12
 
-				//AlliedKeepCloseState* kclose_state2 = new AlliedKeepCloseState(id++);//15
-					//AlliedGetCloseState*   gclose_state2  = new AlliedGetCloseState(id++);//16
+		AlliedExploreState* explore_state = new AlliedExploreState(id++);//13
+		AlliedInspectState* inspect_state = new AlliedInspectState(id++);//14
 
-		//setup hierarchy
+	//AlliedKeepCloseState* kclose_state2 = new AlliedKeepCloseState(id++);//15
+		//AlliedGetCloseState*   gclose_state2  = new AlliedGetCloseState(id++);//16
+
+//setup hierarchy
 		base->AddChild(idle_state);
-			idle_state->AddChild(kclose_state1);
-				kclose_state1->AddChild(gclose_state1);
+		idle_state->AddChild(kclose_state1);
+		kclose_state1->AddChild(gclose_state1);
 
-			idle_state->AddChild(wait_state);
-				wait_state->AddChild(looka_state);
-				wait_state->AddChild(widling_state);
-				wait_state->AddChild(outofway_state);
+		idle_state->AddChild(wait_state);
+		wait_state->AddChild(looka_state);
+		wait_state->AddChild(widling_state);
+		wait_state->AddChild(outofway_state);
 
 		base->AddChild(ofensive_state);
-			ofensive_state->AddChild(atack_state);
-				atack_state->AddChild(fire_state);
-				atack_state->AddChild(strafe_state);
+		ofensive_state->AddChild(atack_state);
+		atack_state->AddChild(fire_state);
+		atack_state->AddChild(strafe_state);
 
-			ofensive_state->AddChild(seek_state);
-				seek_state->AddChild(explore_state);
-				seek_state->AddChild(inspect_state);
+		ofensive_state->AddChild(seek_state);
+		seek_state->AddChild(explore_state);
+		seek_state->AddChild(inspect_state);
 
-			//ofensive_state->AddChild(kclose_state2);
-				//kclose_state2->AddChild(gclose_state2);
+		//ofensive_state->AddChild(kclose_state2);
+			//kclose_state2->AddChild(gclose_state2);
 
-		//create sm
+	//create sm
 		sm = new AIStateMachine(agent, base, 1.0);
 	}
 	else
@@ -119,7 +119,7 @@ void AlliedAIController::SetAgent(Agent* a)
 
 void AlliedAIController::Update()
 {
-	if (sm != NULL && !agent->isDead())
+	if (sm != nullptr && !agent->isDead())
 	{
 		sm->Update();
 	}

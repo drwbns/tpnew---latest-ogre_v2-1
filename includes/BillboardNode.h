@@ -34,7 +34,7 @@ private:
 	BillboardNode();
 	~BillboardNode();
 
-	Ogre::Billboard* bill;
+	Ogre::v1::Billboard* bill;
 	float liveTime;
 };
 

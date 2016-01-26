@@ -23,7 +23,7 @@ THE SOFTWARE.
 #include "PtfNode.h"
 #include "OgreVector3.h"
 
-PtfNode::PtfNode(float x, float y, float z)
+PtfNode::PtfNode(float x, float y, float z) : pos(nullptr)
 {
 	pos->x = x;
 	pos->y = y;

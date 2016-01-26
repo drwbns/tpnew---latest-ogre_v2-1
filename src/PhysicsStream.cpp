@@ -1,18 +1,15 @@
 #include "PhysicsStream.h"
 
-#include "PxPhysics.h"
 #include "foundation\PxSimpleTypes.h"
 
-
-
-UserInputStream::UserInputStream(const char* filename, bool load) : fp(NULL)
+UserInputStream::UserInputStream(const char* filename, bool load) : fp(nullptr)
 {
 	fopen_s(&fp, filename, load ? "rb" : "wb");
 }
 
 UserInputStream::~UserInputStream()
 {
-	if(fp)	fclose(fp);
+	if (fp)	fclose(fp);
 }
 
 // Loading API
@@ -105,9 +102,7 @@ PxInputStream& UserInputStream::storeBuffer(const void* buffer, PxU32 size)
 	return *this;
 }
 
-
-
-MemoryWriteBuffer::MemoryWriteBuffer() : currentSize(0), maxSize(0), data(NULL)
+MemoryWriteBuffer::MemoryWriteBuffer() : currentSize(0), maxSize(0), data(nullptr)
 {
 }
 
@@ -149,7 +144,7 @@ PxInputStream& MemoryWriteBuffer::storeDouble(PxF64 f)
 PxInputStream& MemoryWriteBuffer::storeBuffer(const void* buffer, PxU32 size)
 {
 	PxU32 expectedSize = currentSize + size;
-	if(expectedSize > maxSize)
+	if (expectedSize > maxSize)
 	{
 		maxSize = expectedSize + 4096;
 		/*
@@ -162,7 +157,7 @@ PxInputStream& MemoryWriteBuffer::storeBuffer(const void* buffer, PxU32 size)
 		data = newData;
 		*/
 	}
-	memcpy(data+currentSize, buffer, size);
+	memcpy(data + currentSize, buffer, size);
 	currentSize += size;
 	return *this;
 }

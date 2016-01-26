@@ -2,7 +2,7 @@
 #define TextRendererH
 
 #include <Overlay/OgreOverlayContainer.h>
-#include <Overlay/OgreOverlayManager.h>
+//#include <Overlay/OgreOverlayManager.h>
 #include <Overlay/OgreOverlaySystem.h>
 
 class TextRenderer : public Ogre::GeneralAllocatedObject
@@ -18,17 +18,17 @@ public:
 		Ogre::Real width, Ogre::Real height,
 		const Ogre::ColourValue& color = Ogre::ColourValue(1.0, 1.0, 1.0, 1.0));
 
-	void setPosition(const std::string& ID,float x,float y);
+	void setPosition(const std::string& ID,float x,float y) const;
 	void removeTextBox(const std::string& ID);
-	void setText(const std::string& ID, const std::string& Text);
+	void setText(const std::string& ID, const std::string& Text) const;
 	void reset();
 
 private:
 	std::vector<std::string> txts;
-	Ogre::OverlayManager*    _overlayMgr;
+	Ogre::v1::OverlayManager*    _overlayMgr;
 	Ogre::Overlay*           _overlay;
 	Ogre::OverlayContainer*  _panel;
-	Ogre::OverlaySystem* pOverlaySystem;
+	Ogre::v1::OverlaySystem* pOverlaySystem;
 };
 
 #endif

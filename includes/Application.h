@@ -42,16 +42,16 @@ class Application : Ogre::Singleton<Application>, public Ogre::GeneralAllocatedO
 {
 public:
 	Application();
-	~Application();
+	virtual ~Application();
 	static Application& getSingleton();
 	static Application* getSingletonPtr();
 
 	void Initialize();
-	void Finalize();
+	void Finalize() const;
 
 	//frameListener overrides
-	bool frameStarted(const Ogre::FrameEvent& evt); 
-	bool frameEnded(const Ogre::FrameEvent& evt); 
+	bool frameStarted(const Ogre::FrameEvent& evt) override; 
+	bool frameEnded(const Ogre::FrameEvent& evt) override; 
 
 private:
 	GraphicsSystem*    GS;

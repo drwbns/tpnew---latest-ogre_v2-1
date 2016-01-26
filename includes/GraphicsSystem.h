@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include "OgreRoot.h"
 #include "OgreRenderWindow.h"
 #include "OgreCamera.h"
-#include <Overlay/OgreOverlayManager.h>
-#include "Overlay\OgreOverlaySystem.h"
+//#include <Overlay/OgreOverlayManager.h>
+//#include "Overlay\OgreOverlaySystem.h"
 
 #define GSYS GraphicsSystem::getSingletonPtr()
 
@@ -48,25 +48,31 @@ public:
 	void Start();
 
 	//windowEvent overrides
-	virtual void windowResized(Ogre::RenderWindow* rw);
-	virtual void windowClosed(Ogre::RenderWindow* rw);
-	virtual void windowFocusChange(Ogre::RenderWindow* rw);
-	virtual void eventOccurred(const Ogre::String& eventName, const Ogre::NameValuePairList* parameters);
+	virtual void windowResized();
+	virtual void windowClosed();
+	virtual void windowFocusChange();
+	virtual void eventOccurred();
 
-	Ogre::Root* GetRoot()             { return mRoot; }
-	Ogre::SceneManager* GetSceneMgr() { return mSceneMgr; }
-	Ogre::RenderWindow* GetWindow()   { return mWindow; }
-	Ogre::Camera* GetCamera()		  { return mCamera; }
-	Ogre::OverlayManager * GetOverlayMgr() { return mOverlayMgr; }
-	Ogre::OverlaySystem * GetOverlaySystem() { return mOverlaySystem; }
+	Ogre::Root* GetRoot()             const 
+	{ return mRoot; }
+	Ogre::SceneManager* GetSceneMgr() const 
+	{ return mSceneMgr; }
+	Ogre::RenderWindow* GetWindow()   const 
+	{ return mWindow; }
+	Ogre::Camera* GetCamera()		  const 
+	{ return mCamera; }
+	//Ogre::v1::OverlayManager * GetOverlayMgr() const 
+	//{ return mOverlayMgr; }
+	//Ogre::v1::OverlaySystem * GetOverlaySystem() const 
+	//{ return mOverlaySystem; }
 	
 private:
 	Ogre::Root*			mRoot;
 	Ogre::RenderWindow* mWindow;
 	Ogre::SceneManager* mSceneMgr;
 	Ogre::Camera*		mCamera;
-	Ogre::OverlayManager * mOverlayMgr;
-	Ogre::OverlaySystem * mOverlaySystem;
+	//Ogre::v1::OverlayManager * mOverlayMgr;
+	//Ogre::v1::OverlaySystem * mOverlaySystem;
 };
 
 #endif

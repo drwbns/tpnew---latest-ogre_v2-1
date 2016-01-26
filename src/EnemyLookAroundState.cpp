@@ -23,9 +23,6 @@ THE SOFTWARE.
 
 #include "EnemyLookAroundState.h"
 #include "World.h"
-#include "AIKnowledge.h"
-#include "StateSystem.h"
-#include "GameState.h"
 using namespace Ogre;
 
 EnemyLookAroundState::EnemyLookAroundState(int id) : AIState(id)
@@ -36,7 +33,7 @@ EnemyLookAroundState::~EnemyLookAroundState()
 {
 }
 
-void EnemyLookAroundState::Enter(Agent* agent)
+void EnemyLookAroundState::Enter(Agent * agent)
 {
 	Quaternion mq = agent->GetRotation();
 	float some = Math::fDeg2Rad * Math::RangeRandom(-90, 90);
@@ -46,15 +43,15 @@ void EnemyLookAroundState::Enter(Agent* agent)
 	agent->setWaitTime(0);
 }
 
-void EnemyLookAroundState::Execute(Agent* agent)
+void EnemyLookAroundState::Execute(Agent * agent)
 {
 }
 
-void EnemyLookAroundState::Exit(Agent* agent)
+void EnemyLookAroundState::Exit(Agent * agent)
 {
 }
 
-bool EnemyLookAroundState::isReady(Agent* agent)
+bool EnemyLookAroundState::isReady(Agent * agent)
 {
 	return agent->getCwaitTime() == agent->getMwaitTime();
 }

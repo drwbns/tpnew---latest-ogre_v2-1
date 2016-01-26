@@ -27,7 +27,6 @@ THE SOFTWARE.
 #include <map>
 #include <vector>
 
-#include "SoundPrereqs.h"
 #include "SoundSource.h"
 #include "SoundListener.h"
 #include "SoundDevices.h"
@@ -94,22 +93,23 @@ public:
 	bool update(float elapsedTime = 0);
 	void finalize();
 
-	void setDopplerFactor(Ogre::Real dopplerFactor);
+	static void setDopplerFactor();
 	Ogre::Real getDopplerFactor() const {return mDopplerFactor;}
 
-	void setDistanceModel(DistanceModel model);
-	DistanceModel getDistanceModel() const;
+	static void setDistanceModel(DistanceModel model);
+	static DistanceModel getDistanceModel();
 
-	void setSpeedOfSound(Ogre::Real speedOfSound);
+	static void setSpeedOfSound();
 	Ogre::Real getSpeedOfSound() const {return mSpeedOfSound;}
 
 	FormatMapIterator getSupportedFormatIterator();
-	const FormatData* retrieveFormatData(AudioFormat format);
+	static const FormatData* retrieveFormatData();
 
 	int eaxSupport() const {return mEAXVersion;}
 	bool xRamSupport() const {return mXRAMSupport;}
-	ALboolean eaxSetBufferMode(ALsizei numBuffers, ALuint *buffers, ALuint bufferMode);
-	ALenum eaxGetBufferMode(ALuint buffer, ALint *reserved = 0);
+
+	static ALboolean eaxSetBufferMode();
+	static ALenum eaxGetBufferMode();
 
 	SoundBuffer* createBuffer(const Ogre::String& fileName);
 	SoundBuffer* createStreamingBuffer(SoundSource* mSource, const Ogre::String& fileName);
@@ -118,21 +118,23 @@ public:
 
 	SoundSource* createSource(const Ogre::String& name, const Ogre::String& buffer, bool streaming = false);
 	SoundSource* getSource(const Ogre::String& name);
-	bool hasSource(const Ogre::String& name) const;
-	void destroySource(const Ogre::String& name);
+	static bool hasSource();
+	static void destroySource();
 	void destroySource(SoundSource* sound);
 	void destroyAllSources();
 	void pauseAllSounds();
 	void resumeAllSounds(); 
-	void restoreContext();
+	void restoreContext() const;
 
 	static Ogre::String errorToString(int code);
 	static void checkError(const Ogre::String& reference);
 
-	size_t getPlayingSourceCount() { return mPlayingSources.size(); }
-	size_t getSourceCount() { return mSourceMap.size(); }
+	size_t getPlayingSourceCount() const
+	{ return mPlayingSources.size(); }
+	size_t getSourceCount() const
+	{ return mSourceMap.size(); }
 
-	void logMessage(const Ogre::String& msg);
+	static void logMessage(const Ogre::String& msg);
 
 protected:
 	typedef std::map<std::string, SoundBuffer*> BufferMap;
@@ -141,7 +143,7 @@ protected:
 	struct UpdateSource;
 	struct SortSources;
 
-	SoundListener* createListener();
+	SoundListener* createListener() const;
 	
 	SoundSourceFactory* mSourceFactory;
 	SoundListenerFactory* mListenerFactory;

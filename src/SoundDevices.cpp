@@ -24,7 +24,6 @@ THE SOFTWARE.
 
 #include "OgreStringConverter.h"
 
-
 //----------------------------------------------------------------------------//
 SoundDevices::SoundDevices()
 {
@@ -42,15 +41,15 @@ SoundDevices::SoundDevices()
 
 	// grab function pointers for 1.0-API functions, and if successful proceed to enumerate all devices
 
-	if (alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT")) 
+	if (alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"))
 	{
-		devices = (char *)alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-		defaultDeviceName = (char *)alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER);
+		devices = static_cast<char *>(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
+		defaultDeviceName = static_cast<char *>(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER));
 		index = 0;
 		// go through device list (each device terminated with a single NULL, list terminated with double NULL)
-		while (*devices != NULL) 
+		while (*devices != NULL)
 		{
-			if (strcmp(defaultDeviceName, devices) == 0) 
+			if (strcmp(defaultDeviceName, devices) == 0)
 			{
 				defaultDeviceIndex = index;
 			}
@@ -62,7 +61,7 @@ SoundDevices::SoundDevices()
 					// if new actual device name isn't already in the list, then add it...
 					actualDeviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
 					bool bNewName = (getDeviceIndex(actualDeviceName) < 0);
-					if ((bNewName) && (actualDeviceName != NULL) && (strlen(actualDeviceName) > 0)) {
+					if ((bNewName) && (actualDeviceName != nullptr) && (strlen(actualDeviceName) > 0)) {
 						memset(&ALDeviceInfo, 0, sizeof(ALDEVICEINFO));
 						ALDeviceInfo.bSelected = true;
 						ALDeviceInfo.strDeviceName = actualDeviceName;
@@ -85,7 +84,7 @@ SoundDevices::SoundDevices()
 							ALDeviceInfo.pvstrExtensions->push_back("AL_EXT_LINEAR_DISTANCE");
 						if (alIsExtensionPresent("AL_EXT_EXPONENT_DISTANCE") == AL_TRUE)
 							ALDeviceInfo.pvstrExtensions->push_back("AL_EXT_EXPONENT_DISTANCE");
-						
+
 						if (alIsExtensionPresent("EAX2.0") == AL_TRUE)
 							ALDeviceInfo.pvstrExtensions->push_back("EAX2.0");
 						if (alIsExtensionPresent("EAX3.0") == AL_TRUE)
@@ -132,16 +131,15 @@ SoundDevices::~SoundDevices()
 //----------------------------------------------------------------------------//
 int SoundDevices::getNumDevices() const
 {
-	return (int)vDeviceInfo.size();	
+	return static_cast<int>(vDeviceInfo.size());
 }
 
 //----------------------------------------------------------------------------//
 char * SoundDevices::getDeviceName(int index) const
 {
 	if (index < getNumDevices())
-		return (char *)vDeviceInfo[index].strDeviceName.c_str();
-	else
-		return NULL;
+		return const_cast<char *>(vDeviceInfo[index].strDeviceName.c_str());
+	return nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -153,7 +151,6 @@ void SoundDevices::getDeviceVersion(int index, int *major, int *minor) const
 		if (minor)
 			*minor = vDeviceInfo[index].iMinorVersion;
 	}
-	return;
 }
 
 //----------------------------------------------------------------------------//
@@ -175,7 +172,7 @@ bool SoundDevices::isExtensionSupported(int index, char *szExtName) const
 			if (!_stricmp(vDeviceInfo[index].pvstrExtensions->at(i).c_str(), szExtName)) {
 				bReturn = true;
 				break;
-			}				
+			}
 		}
 	}
 
@@ -268,7 +265,7 @@ int SoundDevices::getNextFilteredDevice()
 }
 
 //----------------------------------------------------------------------------//
-unsigned int SoundDevices::getMaxNumSources() const
+unsigned int SoundDevices::getMaxNumSources()
 {
 	ALuint uiSources[256];
 	unsigned int iSourceCount = 0;
@@ -303,14 +300,14 @@ void SoundDevices::logDevices() const
 
 	sys.logMessage("Sound Devices");
 	sys.logMessage("-------------");
-	for(size_t i = 0; i < vDeviceInfo.size(); i++)
+	for (size_t i = 0; i < vDeviceInfo.size(); i++)
 	{
 		sys.logMessage(Ogre::String("# ") + vDeviceInfo[i].strDeviceName);
 		sys.logMessage(Ogre::String(" * Version: ") + Ogre::StringConverter::toString(vDeviceInfo[i].iMajorVersion) + "." + Ogre::StringConverter::toString(vDeviceInfo[i].iMinorVersion));
 		sys.logMessage(Ogre::String(" * Max. Sources: ") + Ogre::StringConverter::toString(vDeviceInfo[i].uiSourceCount));
 		sys.logMessage(" * Extensions: ");
 		std::vector<Ogre::String> &ext = *vDeviceInfo[i].pvstrExtensions;
-		for(size_t j = 0; j < ext.size(); j++)
+		for (size_t j = 0; j < ext.size(); j++)
 			sys.logMessage(Ogre::String("  + ") + ext[j]);
 	}
 }
@@ -318,9 +315,9 @@ void SoundDevices::logDevices() const
 int SoundDevices::getDeviceIndex(const char* DeviceName) const
 {
 	int index = -1;
-	for (int i = 0; i < getNumDevices(); i++) 
+	for (int i = 0; i < getNumDevices(); i++)
 	{
-		if (strcmp(getDeviceName(i), DeviceName) == 0) 
+		if (strcmp(getDeviceName(i), DeviceName) == 0)
 		{
 			index = i;
 			break;

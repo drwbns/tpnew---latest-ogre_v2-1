@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "InputController.h"
 
 #include "GuiSystem.h"
@@ -29,13 +28,9 @@ THE SOFTWARE.
 #include "StateSystem.h"
 #include "GameState.h"
 #include "World.h"
-#include "GraphicsSystem.h"
-#include "GlobalVars.h"
 
 #include "OIS\OISMouse.h"
 #include "OIS\OISKeyboard.h"
-
-
 
 using namespace Ogre;
 
@@ -65,7 +60,7 @@ void InputController::injectMousePress(int id, bool buffered)
 	}
 	if (id == OIS::MB_Left)
 	{
-		WORLD->getPlayerAgent()->Shoot(buffered,GSYS->GetCamera()->getDirection().normalisedCopy());
+		WORLD->getPlayerAgent()->Shoot();
 	}
 }
 
@@ -79,7 +74,7 @@ void InputController::injectMouseRelease(int id)
 	}
 }
 
-void InputController::injectKeyPress(int key)
+void InputController::injectKeyPress()
 {
 }
 
@@ -94,7 +89,9 @@ void InputController::injectKeyRelease(int key)
 void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 {
 	//camera
-	float walk = 0,strafe = 0, up = 0;
+	float walk;
+	float strafe = 0;
+	float up = 0;
 	/*
 	if (mKeyboard->isKeyDown(OIS::KC_A))
 	{
@@ -121,7 +118,7 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 		up = -1;
 	}
 	*/
-	GAMESTATE->GetCurrentCam()->UpdateLocation(walk, strafe, up);
+	GAMESTATE->GetCurrentCam()->UpdateLocation();
 
 	//player movement
 	walk = 0, strafe = 0;
@@ -130,7 +127,7 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 	if ((mKeyboard->isKeyDown(OIS::KC_LSHIFT) || mKeyboard->isKeyDown(OIS::KC_RSHIFT)) && (mKeyboard->isKeyDown(OIS::KC_UP) || mKeyboard->isKeyDown(OIS::KC_DOWN) || mKeyboard->isKeyDown(OIS::KC_LEFT) || mKeyboard->isKeyDown(OIS::KC_RIGHT) || mKeyboard->isKeyDown(OIS::KC_A) || mKeyboard->isKeyDown(OIS::KC_S) || mKeyboard->isKeyDown(OIS::KC_D) || mKeyboard->isKeyDown(OIS::KC_W))) {
 		WORLD->getPlayerAgent()->SetMaxSpeed(10);
 	}
-	else if(!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)) { WORLD->getPlayerAgent()->SetMaxSpeed(6); } // Run if not Sprinting
+	else if (!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)) { WORLD->getPlayerAgent()->SetMaxSpeed(6); } // Run if not Sprinting
 
 	if (mKeyboard->isKeyDown(OIS::KC_UP) || mKeyboard->isKeyDown(OIS::KC_W) && (!mKeyboard->isKeyDown(OIS::KC_LSHIFT) || !mKeyboard->isKeyDown(OIS::KC_RSHIFT)))
 	{
@@ -152,8 +149,8 @@ void InputController::injectKeyboardState(OIS::Keyboard* mKeyboard)
 	if (walk != 0 || strafe != 0)
 	{
 		Quaternion q = TPCAM->GetRotation().Inverse();
-		Ogre::Vector3 send(walk,0,strafe);
+		Vector3 send(walk, 0, strafe);
 		send = q * send;
-		WORLD->getPlayerAgent()->orderMove(send.x,send.z);
+		WORLD->getPlayerAgent()->orderMove(send.x, send.z);
 	}
 }

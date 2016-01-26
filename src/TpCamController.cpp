@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "PhysicsSystem.h"
 #include "GlobalVars.h"
 
-template<> TpCamController* Ogre::Singleton<TpCamController>::msSingleton = 0;
+template<> TpCamController* Ogre::Singleton<TpCamController>::msSingleton = nullptr;
 
 using namespace Ogre;
 
@@ -47,10 +47,10 @@ TpCamController::TpCamController() : CamController()
 
 TpCamController::~TpCamController()
 {
-	Finalize();
+	TpCamController::Finalize();
 }
 
-void TpCamController::Initialize(Ogre::Camera* camera)
+void TpCamController::Initialize(Camera* camera)
 {
 	CamController::Initialize(camera);
 }
@@ -60,7 +60,7 @@ void TpCamController::Finalize()
 	CamController::Finalize();
 }
 
-void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
+void TpCamController::UpdateLocation()
 {
 	Vector3 targetPosition = Vector3::ZERO;
 	Quaternion targetRotation = Quaternion::IDENTITY;
@@ -100,7 +100,8 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	Quaternion q;
 	q.FromAngleAxis(Radian(pitch), Vector3::UNIT_X);
 	Vector3 addPos = rotation * q * curCamOffset;
-	Vector3 castPos = PHY->CastRay1(mPos, addPos.normalisedCopy());
+	Vector3 addPosNorm = addPos.normalisedCopy();
+	Vector3 castPos = PHY->CastRay1(mPos, addPosNorm);
 	float dist = castPos.distance(mPos);
 	float skinWidth2 = 0.25;
 	if (dist - skinWidth2 < addPos.length())
@@ -130,7 +131,7 @@ void TpCamController::UpdateLocation(float mWalk, float mStrafe, float mUp)
 	mCamera->lookAt(nDest);
 }
 
-void TpCamController::UpdateRotation(float mPitch, float mYaw)
+void TpCamController::UpdateRotation()
 {
 	if (WORLD->getPlayerAgent()->getID() > -1)
 	{

@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "AlliedStrafeState.h"
 #include "AIKnowledge.h"
 
@@ -34,11 +33,11 @@ AlliedStrafeState::~AlliedStrafeState()
 {
 }
 
-void AlliedStrafeState::Enter(Agent* agent)
+void AlliedStrafeState::Enter(Agent * agent)
 {
 }
 
-void AlliedStrafeState::Execute(Agent* agent)
+void AlliedStrafeState::Execute(Agent * agent)
 {
 	int i = agent->getKnowledge()->getClosestCover();
 	if (i != -1)
@@ -51,11 +50,11 @@ void AlliedStrafeState::Execute(Agent* agent)
 	}
 }
 
-void AlliedStrafeState::Exit(Agent* agent)
+void AlliedStrafeState::Exit(Agent * agent)
 {
 }
 
-bool AlliedStrafeState::isReady(Agent* agent)
+bool AlliedStrafeState::isReady(Agent * agent)
 {
 	return agent->getKnowledge()->totalCover() > 0;
 }

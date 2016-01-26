@@ -20,14 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "Projectile.h"
-#include "Moving.h"
 using namespace Ogre;
 
 Projectile::Projectile()
 {
-	mOwner = NULL;
+	mOwner = nullptr;
 	mStart = Vector3::ZERO;
 	mPosition = Vector3::ZERO;
 	mDirection = Vector3::ZERO;
@@ -38,5 +36,5 @@ Projectile::Projectile()
 
 Projectile::~Projectile()
 {
-	mOwner = NULL;
+	mOwner = nullptr;
 }
