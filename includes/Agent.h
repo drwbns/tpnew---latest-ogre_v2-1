@@ -23,7 +23,7 @@ THE SOFTWARE.
 #ifndef Agent_H_
 #define Agent_H_
 
-#include "prereqs.h"
+//#include "prereqs.h"
 #include "OGRE\OgrePrerequisites.h"
 #include "physxPrereqs.h"
 

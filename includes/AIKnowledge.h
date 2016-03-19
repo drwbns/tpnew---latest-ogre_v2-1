@@ -26,6 +26,9 @@ THE SOFTWARE.
 #include "AgentInfo.h"
 #include "PositionalInfo.h"
 
+class Agent;
+class AgentInfo;
+
 class AIKnowledge
 {
 	friend class AIPerceptor;

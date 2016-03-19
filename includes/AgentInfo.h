@@ -23,7 +23,9 @@ THE SOFTWARE.
 #ifndef AgentInfo_H_
 #define AgentInfo_H_
 
+#include "OgreVector3.h"
 #include "Agent.h"
+
 
 class AgentInfo
 {
